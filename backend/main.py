@@ -1,10 +1,24 @@
+import os
+
 from flask import Flask
+from dotenv import load_dotenv
+load_dotenv()
+
 app = Flask(__name__)
 
-class 
-@app.route('/')
-def hello_world():
-    return 'Hello, World!'
+class APIServer:
+    def __init__(self,port):
+        self.port = port
 
-if __name__ == '__main__':
-    app.run()
+    def start(self):
+        app.run(port = self.port)
+    
+    @app.route('/ping')
+    def test():
+        return 'pong'
+
+    # Users endpoints
+    
+
+server = APIServer(port = 5000)
+server.start()
