@@ -1,10 +1,3 @@
-import os
-
-import firebase_admin
-from firebase_admin import credentials
-cred = credentials.Certificate(os.getenv("CREDS_PATH"))
-firebase_admin.initialize_app(cred)
-
 from flask import Flask
 from dotenv import load_dotenv
 load_dotenv()
