@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 
 import {
     Grid,
@@ -7,22 +7,9 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import coverImage from '../assets/digitalart.png';
 import waveform from '../assets/waveform.svg'
+import AuthLayout from '../Layout/AuthLayout';
+
 const useStyles = makeStyles(() => ({
-    container: {
-      display:"flex",
-      flex:1,
-      padding:"4%",
-      paddingRight:"0%",
-      paddingTop:"0.5%"
-    },
-    nav: {
-        display:'flex',
-        width:"100%"
-    },
-    navText: {
-        fontWeight:'bold',
-        fontSize:42
-    },
     heading1:{
         fontWeight:'bold',
         fontSize:64,
@@ -57,11 +44,7 @@ const useStyles = makeStyles(() => ({
 const Landing = () => {
     const classes = useStyles();
     return (
-        <Grid container direction="column" className = {classes.container}>
-            <Grid item className = {classes.nav}>
-                <h1 className = {classes.navText}>elevate.</h1>
-            </Grid>
-            <Grid item container direction="row" >
+            <AuthLayout>
                 <Grid item container xs={7} direction="column" style={{padding:"2%", height:'100%'}}>
                     <Grid item>
                         <img src={waveform} height="90%" />
@@ -82,12 +65,8 @@ const Landing = () => {
                             Get Started
                         </Button>
                     </Grid>
-                </Grid>
-                <Grid item container xs={5}>
-                    <img src={coverImage} height="90%" width="90%" />
-                </Grid>
-            </Grid>
-        </Grid>  
+                </Grid> 
+            </AuthLayout> 
     );
 }
 
