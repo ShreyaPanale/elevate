@@ -13,7 +13,8 @@ import { auth } from "./firebase";
 
 function App() {
   let { user, setUser } = React.useContext(AuthContext);
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
+  /*
   React.useEffect(() => {
       if(user){
         setUser(user)
@@ -23,6 +24,7 @@ function App() {
       }
       setLoading(false);
   },[])
+  */
   if(loading) return <p>Loading...</p>
   let signedInRoutes = (
     <Switch>
