@@ -1,5 +1,5 @@
 import React from 'react';
-
+import {useHistory} from 'react-router-dom';
 import {
     Grid,
     Button
@@ -42,6 +42,7 @@ const useStyles = makeStyles(() => ({
   
 const Landing = () => {
     const classes = useStyles();
+    const history = useHistory();
     return (
             <AuthLayout>
                     <Grid item>
@@ -59,7 +60,7 @@ const Landing = () => {
                         </p>
                     </Grid>
                     <Grid item style={{flex:1,marginTop:'auto'}}>
-                        <Button className = {classes.btn}>
+                        <Button className = {classes.btn} onClick={()=>{history.push('/signin')}}>
                             Get Started
                         </Button>
                 </Grid> 
