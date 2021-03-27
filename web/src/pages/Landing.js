@@ -5,7 +5,6 @@ import {
     Button
 } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
-import coverImage from '../assets/digitalart.png';
 import waveform from '../assets/waveform.svg'
 import AuthLayout from '../Layout/AuthLayout';
 
@@ -45,7 +44,6 @@ const Landing = () => {
     const classes = useStyles();
     return (
             <AuthLayout>
-                <Grid item container xs={7} direction="column" style={{padding:"2%", height:'100%'}}>
                     <Grid item>
                         <img src={waveform} height="90%" />
                     </Grid>
@@ -64,7 +62,6 @@ const Landing = () => {
                         <Button className = {classes.btn}>
                             Get Started
                         </Button>
-                    </Grid>
                 </Grid> 
             </AuthLayout> 
     );

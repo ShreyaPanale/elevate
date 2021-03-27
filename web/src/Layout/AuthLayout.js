@@ -33,7 +33,10 @@ const AuthLayout = ({children}) => {
                 <h1 className = {classes.navText}>elevate.</h1>
             </Grid>
             <Grid item container direction="row" >
-                {children}
+                <Grid item container xs={7} direction="column" style={{padding:"2%", height:'100%'}}>
+                    {children}
+                </Grid> 
+                
                 <Grid item container xs={5}>
                     <img src={coverImage} height="90%" width="90%" />
                 </Grid>
