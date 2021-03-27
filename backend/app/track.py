@@ -7,10 +7,13 @@ class Track(object):
         self.cover=cover
         self.mp3file=mp3file
         
-    def modify_track(self):
+    def saveTrack(self):
+        pass
+    
+    def modifyTrack(self):
         pass
 
-    def get_track(self):
+    def getTrack(self):
         pass
 
 class TrackManager(object):

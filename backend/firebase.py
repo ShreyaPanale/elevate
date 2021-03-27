@@ -16,3 +16,6 @@ class FirestoreController:
     
     def createUser(self):
         pass
+
+    def addNewTrack(self):
+        pass
