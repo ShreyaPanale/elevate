@@ -8,7 +8,8 @@ import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
 import SignIn from "./pages/auth/Signin";
-
+import Landing from "./pages/Landing";
+import SignUp from './pages/auth/Signup';
 import { auth } from "./firebase";
 
 function App() {
@@ -37,7 +38,9 @@ function App() {
   let signedOutRoutes = (
     <Switch>
       <Route exact path={ROUTES.signin} component={()=><SignIn setUser = {setUser} />} />
-      <Redirect to={ROUTES.signin} />
+      <Route exact path={ROUTES.signup} component={SignUp} />
+      <Route exact path={ROUTES.landing} component = {Landing} />
+      <Redirect to={ROUTES.landing} />
     </Switch>
   );
   return (
