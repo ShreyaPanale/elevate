@@ -17,5 +17,29 @@ class FirestoreController:
     def createUser(self):
         pass
 
-    def addNewTrack(self):
-        pass
+    def addNewTrack(self,track):
+        doc_ref = self.db.collection(u'tracks').document(track.tname)
+        doc_ref.set({
+            u'artist': track.artist,
+            u'genre': track.genre,
+            u'desc': track.desc
+            u'coverurl': track.coverurl
+            u'mp3fileurl': track,mp3fileurl
+        })
+
+    def getTracks(self):
+        tracks_ref = db.collection(u'tracks')
+        tracks = tracks_ref.stream()
+        for track in tracks:
+            print(f'{track.id} => {track.to_dict()}')
+        
+    def deleteTrack(self,tname):
+        db.collection(u'tracks').document(tname).delete()
+
+    def getTrack(self,tname):
+        doc_ref = db.collection(u'tracks').document(tname)
+        doc = doc_ref.get()
+        if doc.exists:
+            print(f'Document data: {doc.to_dict()}')
+        else:
+            print(u'No such document!')

@@ -1,3 +1,10 @@
+import os, sys
+currentdir = os.path.dirname(os.path.realpath(__file__))
+parentdir = os.path.dirname(currentdir)
+sys.path.append(parentdir)
+ 
+from firebase import firebase
+
 class Track(object):
     def __init__(self,tname,artist,genre,desc,cover,mp3file):
         self.tname=tname
@@ -14,14 +21,22 @@ class Track(object):
         pass
 
     def getTrack(self):
-        pass
+        controller=firebase.FirestoreController()
+        controller.getTrack(self.tname)
 
 class TrackManager(object):
-    def __init__():
+    def __init__(self):
         pass
-    def addNewTrack():
-        pass
-    def deleteTrack():
-        pass
-    def getTracks():
-        pass
+    def addNewTrack(self,tnm,artist,genre,desc,coberurl,mp3fileurl):
+        newTrack=Track(tnm,artist,genre,desc,coverurl,mp3fileurl)
+        controller=firebase.FirestoreController()
+        controller.addNewTrack(newTrack)
+
+    def deleteTrack(self,tname):
+        controller=firebase.FirestoreController()
+        controller.deleteTracks(tname)
+        
+
+    def getTracks(self):
+        controller=firebase.FirestoreController()
+        controller.getTracks()
