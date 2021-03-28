@@ -37,7 +37,30 @@ const useStyles = makeStyles(() => ({
         fontSize:18,
         color:"#FFF",
         fontWeight:400,
-        fontFamily:"Poppins"
+        fontFamily:"Poppins",
+    },
+    "@keyframes strike":{
+        '0%': { 
+            width:0
+        },
+        '100%': { 
+            width:'100%'
+        }
+    },
+    magicText:{
+        "&::after":{
+            borderBottom: '0.125em solid black',
+            borderRadius:100,
+            content:'""',
+            left:0,
+            position:'absolute',
+            right:0,
+            top:'50%',
+            animation:"$strike 1s linear"
+        },
+        lineHeight:'1em',
+        position:'relative',
+        
     }
   }));
   
@@ -50,22 +73,22 @@ const Landing = () => {
                     in={true}
                     timeout={1500}
                     direction="up"
-                ><div>
+                ><div style={{display:"flex",flexDirection:"column",height:"80%"}}>
                     <Grid item>
                         <img src={waveform} height="90%" />
                     </Grid>
-                    <Grid item>
+                    <Grid item style={{flex:1}}>
                         <h1 className = {classes.heading1}>
                             Play your feel<br/>
                             <text className = {classes.heading2}>
-                                Its simply <span style={{textDecoration:'line-through'}}>magic</span> <span style={{color:"#EF757D"}}>music</span>.
+                                Its simply <span className={classes.magicText}>magic</span> <span style={{color:"#EF757D"}}>music</span>.
                             </text>
                         </h1>
                         <p className = {classes.info}>
                             Access a large set of non copyright songs directly from the artists on your web browser.
                         </p>
                     </Grid>
-                    <Grid item style={{flex:1,marginTop:'auto'}}>
+                    <Grid item>
                         <Button className = {classes.btn} onClick={()=>{history.push('/signin')}}>
                             Get Started
                         </Button>
