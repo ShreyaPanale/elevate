@@ -5,6 +5,7 @@ import {
     Grid,
     TextField,
     Button,
+    Fade
 } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import GoogleButton from "../../components/GoogleButton";
@@ -63,6 +64,11 @@ const Signin = () => {
     const classes = useStyles();
     return (
         <AuthLayout>
+            <Fade
+                in={true}
+                timeout={1500}
+                direction="up">
+                    <div>
             <Grid item container className={classes.container} direction="column">
                 <Grid item> 
                     <h1 className={classes.heading}>
@@ -88,6 +94,8 @@ const Signin = () => {
                     Don’t have an account yet? <a href = "/signup" style={{color:"#EF757D",textDecoration:"underline"}}>Sign up</a> now.
                 </span>
             </Grid>
+            </div>
+            </Fade>
         </AuthLayout>
     )
 }

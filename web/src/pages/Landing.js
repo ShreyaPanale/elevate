@@ -2,7 +2,8 @@ import React from 'react';
 import {useHistory} from 'react-router-dom';
 import {
     Grid,
-    Button
+    Button,
+    Slide
 } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import waveform from '../assets/waveform.svg'
@@ -45,6 +46,11 @@ const Landing = () => {
     const history = useHistory();
     return (
             <AuthLayout>
+                <Slide
+                    in={true}
+                    timeout={1500}
+                    direction="up"
+                ><div>
                     <Grid item>
                         <img src={waveform} height="90%" />
                     </Grid>
@@ -63,7 +69,8 @@ const Landing = () => {
                         <Button className = {classes.btn} onClick={()=>{history.push('/signin')}}>
                             Get Started
                         </Button>
-                </Grid> 
+                </Grid> </div>
+                </Slide>
             </AuthLayout> 
     );
 }

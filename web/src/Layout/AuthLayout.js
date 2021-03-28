@@ -1,8 +1,7 @@
 import React from 'react';
-
+import {useHistory} from 'react-router-dom';
 import {
     Grid,
-    Button
 } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import coverImage from '../assets/digitalart.png';
@@ -17,26 +16,31 @@ const useStyles = makeStyles(() => ({
     },
     nav: {
         display:'flex',
-        width:"100%"
+        width:"100%",
     },
     navText: {
         fontWeight:'bold',
-        fontSize:42
+        fontSize:42,
+        '&:hover':{
+            cursor:'pointer'
+        }
     },
   }));
   
 const AuthLayout = ({children}) => {
     const classes = useStyles();
+    const history = useHistory();
     return (
         <Grid container direction="column" className = {classes.container}>
-            <Grid item className = {classes.nav}>
-                <h1 className = {classes.navText}>elevate.</h1>
+            <Grid item className = {classes.nav} >
+                <h1 className = {classes.navText} onClick={()=>{history.push('/')}}>elevate.</h1>
             </Grid>
             <Grid item container direction="row" >
-                <Grid item container xs={7} direction="column" style={{padding:"2%", height:'100%'}}>
-                    {children}
-                </Grid> 
-                
+                    <Grid item container xs={7} direction="column" style={{padding:"2%", height:'100%'}}>
+                        
+                            {children}
+                        
+                    </Grid>
                 <Grid item container xs={5}>
                     <img src={coverImage} height="90%" width="90%" />
                 </Grid>
