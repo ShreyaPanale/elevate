@@ -4,5 +4,6 @@ export default {
     profile:"/profile",
     signin:"/signin",
     signup:"/signup",
-    landing:"/landing"
+    landing:"/landing",
+    admin:"/admin",
 }

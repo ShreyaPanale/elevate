@@ -10,10 +10,12 @@ import Profile from "./pages/Profile";
 import SignIn from "./pages/auth/Signin";
 import Landing from "./pages/Landing";
 import SignUp from './pages/auth/Signup';
+import AdminPanel from './pages/admin/AdminPanel';
 import { auth } from "./firebase";
+import routes from "./routes";
 
 function App() {
-  let { user, setUser } = React.useContext(AuthContext);
+  let { user, setUser, admin, setAdmin } = React.useContext(AuthContext);
   const [loading, setLoading] = React.useState(false);
   /*
   React.useEffect(() => {
@@ -43,11 +45,17 @@ function App() {
       <Redirect to={ROUTES.landing} />
     </Switch>
   );
+  let adminRoutes = (
+    <Switch>
+      <Route exact path={ROUTES.admin} component={AdminPanel} />
+      <Redirect to={ROUTES.admin} />
+    </Switch>
+  )
   return (
     <BrowserRouter>
       {
         user 
-        ? <> {signedInRoutes} </>
+        ? admin? <> {adminRoutes} </> : <> {signedInRoutes} </>
         : <> {signedOutRoutes} </>
       }
     </BrowserRouter>
