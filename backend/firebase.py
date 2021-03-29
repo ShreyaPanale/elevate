@@ -18,8 +18,9 @@ class FirestoreController:
         pass
 
     def addNewTrack(self,track):
-        doc_ref = self.db.collection(u'tracks').document(track.tname)
+        doc_ref = self.db.collection(u'tracks').document()
         doc_ref.set({
+            u'tname': track.tname,
             u'artist': track.artist,
             u'genre': track.genre,
             u'desc': track.desc
@@ -33,11 +34,11 @@ class FirestoreController:
         for track in tracks:
             print(f'{track.id} => {track.to_dict()}')
         
-    def deleteTrack(self,tname):
-        db.collection(u'tracks').document(tname).delete()
+    def deleteTrack(self,id):
+        db.collection(u'tracks').document(id).delete()
 
     def getTrack(self,tname):
-        doc_ref = db.collection(u'tracks').document(tname)
+        doc_ref = db.collection(u'tracks').document(id)
         doc = doc_ref.get()
         if doc.exists:
             print(f'Document data: {doc.to_dict()}')
