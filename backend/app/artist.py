@@ -26,7 +26,6 @@ class ArtistManager(object):
         controller=firebase.FirestoreController()
         controller.deleteArtist(id)
         
-
     def getArtists(self):
         controller=firebase.FirestoreController()
         controller.getArtists()

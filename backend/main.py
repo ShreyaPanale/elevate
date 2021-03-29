@@ -1,7 +1,7 @@
 from flask import Flask,request,jsonify
 from dotenv import load_dotenv
 load_dotenv()
-from app import *
+from app import track
 
 
 #firestore imports
@@ -108,7 +108,7 @@ class APIServer:
                 mp3file.save(os.path.join(upload_folder,mp3file.filename))
                 mp3fileurl = uploader.uploadertrack(os.path.join(upload_folder,mp3file.filename),mp3file)
                 
-                trackManager=TrackManager()
+                trackManager=track.TrackManager()
                 trackManager.addNewTrack(tnm=tnm,artist=artist,genre=genre,desc=desc,coverurl=coverurl,mp3fileurl=mp3fileurl)
 
                 response_msg=jsonify({"status":"200 ok","message":"success"}),200
