@@ -72,9 +72,12 @@ const useStyles = makeStyles(() => ({
         borderBottom:"2px solid black",
         width:"100%"
     },
-    label:{
+    tag:{
         backgroundColor: "#342D71",
         padding:"10%",
+        paddingLeft:"80%",
+        paddingRight:"80%",
+        marginLeft:"135%",
         borderTopRightRadius:20,
         borderBottomRightRadius:20,
         fontSize:20,
@@ -195,7 +198,7 @@ const AdminPanel = ({children}) => {
                     />
                     </Grid>
                     <Grid item container xs={2} style={{justifyContent:"center",alignItems:"center"}}>
-                        <div className={classes.label}>
+                        <div className={classes.tag}>
                             Preview
                         </div>  
                     </Grid>
