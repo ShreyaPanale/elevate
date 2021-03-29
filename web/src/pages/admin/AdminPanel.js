@@ -31,7 +31,8 @@ const useStyles = makeStyles(() => ({
         }
     },
     inputContainer:{
-        width:"50%"
+        display:"flex",
+        width:"100%"
     },
     input:{
         marginTop:"3%",
@@ -199,15 +200,17 @@ const AdminPanel = ({children}) => {
                         />
                     </Grid>
                 <Grid item container xs={6} className={classes.inputContainer}>
-                <label htmlFor="img" style={{width:"100%",padding:'3%'}}>
-                <span className={classes.text}><text style={{width:'90%'}}>{selectedFileName}</text><Camera style={{width:"10%"}}/></span>
-                <input
-                    style={{visibility:"hidden"}}
-                    type="file"
-                    id="img"
-                    onChange={handleImageUpload}
-                    />    
-                </label>
+                    <Grid item >
+                        <label htmlFor="img" style={{width:"100%",padding:'3%'}}>
+                            <span className={classes.text}><text style={{width:'90%'}}>{selectedFileName}</text><Camera style={{width:"10%"}}/></span>
+                            <input
+                                style={{visibility:"hidden"}}
+                                type="file"
+                                id="img"
+                                onChange={handleImageUpload}
+                                />    
+                        </label>
+                    </Grid>
                     <Grid item container xs={4}>
                     <img
                         className={classes.previmg}
