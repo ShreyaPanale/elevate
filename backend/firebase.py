@@ -44,3 +44,20 @@ class FirestoreController:
             print(f'Document data: {doc.to_dict()}')
         else:
             print(u'No such document!')
+
+    #Artist controller functions
+
+    def addNewArtist(self,artist):
+        doc_ref = self.db.collection(u'artists').document()
+        doc_ref.set({
+            u'aname': artist.aname,
+        })
+
+    def getArtists(self):
+        tracks_ref = db.collection(u'artists')
+        tracks = tracks_ref.stream()
+        for track in tracks:
+            print(f'{track.id} => {track.to_dict()}')
+        
+    def deleteArtist(self,id):
+        db.collection(u'artists').document(id).delete()
