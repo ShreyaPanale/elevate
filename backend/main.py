@@ -79,6 +79,18 @@ class APIServer:
                 response_msg=jsonify({"error":"400","message":"Bad request"}),400
                 return response_msg
 
+    @app.route('/gettracks',methods=['GET'])
+    def getTracks():
+        try:
+            trackManager=track.TrackManager()
+            return trackManager.getTracks(),200
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
+
+    #artist endpoints
+
     @app.route('/addartist',methods=['POST'])
     def addArtist():
         try:
@@ -91,5 +103,16 @@ class APIServer:
             print(e)
             response_msg=jsonify({"error":"400","message":"Bad request"}),400
             return response_msg
+
+    @app.route('/getartists',methods=['GET'])
+    def getArtists():
+        try:
+            artistManager=artist.ArtistManager()
+            return artistManager.getArtists(),200
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
+    
 server = APIServer(port = 5000)
 server.start()

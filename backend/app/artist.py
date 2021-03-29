@@ -23,4 +23,4 @@ class ArtistManager(object):
         
     def getArtists(self):
         controller=firebase.FirestoreController()
-        controller.getArtists()
+        return controller.getArtists()

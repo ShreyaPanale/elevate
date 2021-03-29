@@ -33,4 +33,4 @@ class TrackManager(object):
         
     def getTracks(self):
         controller=firebase.FirestoreController()
-        controller.getTracks()
+        return controller.getTracks()

@@ -25,16 +25,19 @@ class FirestoreController:
         })
 
     def getTracks(self):
-        tracks_ref = db.collection(u'tracks')
+        tracks_ref = self.db.collection(u'tracks')
         tracks = tracks_ref.stream()
+        trackarr=[]
         for track in tracks:
             print(f'{track.id} => {track.to_dict()}')
+            trackarr.append(track.to_dict())
+        return {"data":trackarr}
         
     def deleteTrack(self,id):
-        db.collection(u'tracks').document(id).delete()
+        self.db.collection(u'tracks').document(id).delete()
 
     def getTrack(self,tname):
-        doc_ref = db.collection(u'tracks').document(id)
+        doc_ref = self.db.collection(u'tracks').document(id)
         doc = doc_ref.get()
         if doc.exists:
             print(f'Document data: {doc.to_dict()}')
@@ -50,10 +53,13 @@ class FirestoreController:
         })
 
     def getArtists(self):
-        tracks_ref = db.collection(u'artists')
-        tracks = tracks_ref.stream()
-        for track in tracks:
-            print(f'{track.id} => {track.to_dict()}')
+        artists_ref = self.db.collection(u'artists')
+        artists = artists_ref.stream()
+        artistarr=[]
+        for artist in artists:
+            print(f'{artist.id} => {artist.to_dict()}')
+            artistarr.append(artist.to_dict())
+        return {"data":artistarr}
         
     def deleteArtist(self,id):
-        db.collection(u'artists').document(id).delete()
+        self.db.collection(u'artists').document(id).delete()
