@@ -48,8 +48,10 @@ const useStyles = makeStyles(() => ({
     },
     inputBox:{
         marginTop:"3%",
-        '& input':{
-            paddingLeft:"5%",
+        '& textarea':{
+            border:"2px solid black",
+            borderRadius:20,
+            padding:"5%",
             borderRadius:20,
             border:"2px solid black",
             fontFamily:"Poppins",
@@ -104,6 +106,9 @@ const useStyles = makeStyles(() => ({
         marginBottom:8,
         width:300,
         alignSelf:"center"
+    },
+    placeholder: {
+        color:"#ABABAB"
     }
   }));
   const BootstrapInput = withStyles((theme) => ({
@@ -124,12 +129,13 @@ const AdminPanel = ({children}) => {
     
     const classes = useStyles();
     const history = useHistory();
-    const [artist, setArtist] = React.useState('');
+    const [artist, setArtist] = React.useState(0);
     const [selectedFile,setSelectedFile] = React.useState('https://customercare.igloosoftware.com/.api2/api/v1/communities/10068556/previews/thumbnails/4fc20722-5368-e911-80d5-b82a72db46f2?width=680&height=680&crop=False');
     const [selectedFileName,setSelectedFileName] = React.useState('Track Cover Image');
     const [selectedTrack,setSelectedTrack] = React.useState(null);
     const [selectedTrackName,setSelectedTrackName] = React.useState('Track mp3 File');
     let data =[
+        0,
         'item 1',
         'item 2',
         'item 3'
@@ -172,6 +178,10 @@ const AdminPanel = ({children}) => {
                         IconComponent={ChevronDown}
                         >
                             {data.map((value) => (
+                                (value == 0)?
+                                <MenuItem value={value} disabled>
+                                    <span className={classes.placeholder}>Artist</span>
+                                </MenuItem>:
                                 <MenuItem value={value}>
                                     {value}
                                 </MenuItem>
@@ -179,7 +189,14 @@ const AdminPanel = ({children}) => {
                         </Select>
                         <TextField  placeholder="Artist Name" className={classes.input}  />
                         <TextField  placeholder="Genre" className={classes.input}  />
-                        <TextField  variant="outlined" placeholder="Description" className={classes.inputBox}  InputProps={{classes:{notchedOutline:classes.notchedOutline}}} InputProps={{classes:{notchedOutline:classes.notchedOutline}}}/>
+                        <TextField  
+                            variant="outlined" 
+                            placeholder="Description" 
+                            className={classes.inputBox}  
+                            InputProps={{classes:{notchedOutline:classes.notchedOutline}}} 
+                            multiline
+                            rows={6}
+                        />
                     </Grid>
                 <Grid item container xs={6} className={classes.inputContainer}>
                 <label htmlFor="img" style={{width:"100%",padding:'3%'}}>
