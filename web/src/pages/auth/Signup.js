@@ -1,6 +1,6 @@
-import React from 'react'
+import React,{useState} from 'react'
 import AuthLayout from '../../Layout/AuthLayout';
-
+import { useAuth } from "../../firebase/provider"
 import {
     Grid,
     TextField,
@@ -62,6 +62,10 @@ const useStyles = makeStyles(()=>({
 
 const Signup = () => {
     const classes = useStyles();
+    const { signup, googleSignin } = useAuth();
+
+    const [ email, setEmail ] = useState("");
+    const [ password, setPassword ] = useState("");
     return (
         <AuthLayout>
             <Fade
@@ -76,10 +80,14 @@ const Signup = () => {
                     </h1>
                 </Grid>
                 <Grid item container direction="column" className={classes.inputContainer}> 
-                    <TextField variant="outlined" placeholder="email" className={classes.input} InputProps={{classes:{notchedOutline:classes.notchedOutline}}} />
-                    <TextField variant="outlined" type="password" placeholder="password" className={classes.input} InputProps={{classes:{notchedOutline:classes.notchedOutline}}} />
+                    <TextField variant="outlined" placeholder="email" className={classes.input} InputProps={{classes:{notchedOutline:classes.notchedOutline}}} onChange={(e)=>{setEmail(e.target.value)}} />
+                    <TextField variant="outlined" type="password" placeholder="password" className={classes.input} InputProps={{classes:{notchedOutline:classes.notchedOutline}}} onChange={(e)=>{setPassword(e.target.value)}}  />
                 </Grid>
-                <Button className = {classes.btn}>
+                <Button className = {classes.btn} onClick = {() => {
+                    if (email!='' && password!=''){
+                        signup(email,password);
+                    }
+                }}>
                     Sign up
                 </Button>
                 <span>
@@ -88,7 +96,7 @@ const Signup = () => {
                 <GoogleButton 
                     logo="https://skipway.com/wp-content/uploads/2020/05/image-20150902-6700-t2axrz.jpg" 
                     content="Sign up with Google"
-                    handleClick={()=>{}}
+                    handleClick={googleSignin}
                 />
                 <span style={{fontFamily:"Poppins",fontWeight:400,color:"#ABABAB"}}>
                     Already have an account? <a href = "/signin" style={{color:"#EF757D",textDecoration:"underline"}}>Sign in</a> now.

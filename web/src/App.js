@@ -2,7 +2,7 @@ import { Route, Switch, BrowserRouter, Redirect } from "react-router-dom";
 import ROUTES from "./routes";
 import React from 'react';
 
-import { AuthContext } from "./firebase/provider";
+import { useAuth } from "./firebase/provider";
 
 import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/Settings";
@@ -10,23 +10,10 @@ import Profile from "./pages/Profile";
 import SignIn from "./pages/auth/Signin";
 import Landing from "./pages/Landing";
 import SignUp from './pages/auth/Signup';
-import { auth } from "./firebase";
 
 function App() {
-  let { user, setUser } = React.useContext(AuthContext);
-  const [loading, setLoading] = React.useState(false);
-  /*
-  React.useEffect(() => {
-      if(user){
-        setUser(user)
-      }
-      else {
-        setUser(null);
-      }
-      setLoading(false);
-  },[])
-  */
-  if(loading) return <p>Loading...</p>
+  let { currentUser } = useAuth();
+  
   let signedInRoutes = (
     <Switch>
       <Route exact path={ROUTES.dashboard} component={Dashboard} />
@@ -37,7 +24,7 @@ function App() {
   );
   let signedOutRoutes = (
     <Switch>
-      <Route exact path={ROUTES.signin} component={()=><SignIn setUser = {setUser} />} />
+      <Route exact path={ROUTES.signin} component={SignIn} />
       <Route exact path={ROUTES.signup} component={SignUp} />
       <Route exact path={ROUTES.landing} component = {Landing} />
       <Redirect to={ROUTES.landing} />
@@ -46,7 +33,7 @@ function App() {
   return (
     <BrowserRouter>
       {
-        user 
+        currentUser 
         ? <> {signedInRoutes} </>
         : <> {signedOutRoutes} </>
       }
