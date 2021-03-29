@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 from firebase import config
 from utils import fileUploader
-from app import track
+from app import track,artist
 import os
 app = Flask(__name__)
 
@@ -79,5 +79,17 @@ class APIServer:
                 response_msg=jsonify({"error":"400","message":"Bad request"}),400
                 return response_msg
 
+    @app.route('/addartist',methods=['POST'])
+    def addArtist():
+        try:
+            anm=request.form['aname']
+            artistManager=artist.ArtistManager()
+            artistManager.addNewArtist(anm=anm)
+            response_msg=jsonify({"status":"200 ok","message":"success"}),200
+            return response_msg
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
 server = APIServer(port = 5000)
 server.start()
