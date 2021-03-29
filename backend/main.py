@@ -1,52 +1,13 @@
 from flask import Flask,request,jsonify
+
+#configurations and environment setup
 from dotenv import load_dotenv
 load_dotenv()
+from firebase import config
+from utils import fileUploader
 from app import track
-
-
-#firestore imports
-
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import storage
 import os
-from werkzeug.utils import secure_filename
-upload_folder ="app\\uploads"
-import time
-
-cred = credentials.Certificate(os.getenv("CREDS_PATH"))
-firebase_admin.initialize_app(cred, {
-    'storageBucket': 'elevate-25d94.appspot.com'
-})
-bucket = storage.bucket()
-
 app = Flask(__name__)
-
-
-allowed_extensions_cover = {'png', 'jpg', 'jpeg'}
-def allowed_file_cover(filename):
-    return '.' in filename and filename.rsplit('.',1)[1].lower() in allowed_extensions_cover
-
-allowed_extensions_track = {'mp3'}
-def allowed_file_track(filename):
-    return '.' in filename and filename.rsplit('.',1)[1].lower() in allowed_extensions_track
-
-
-class FileUploader:
-    def __init__(self):
-        pass
-    def uploaderimg(self,imagepath,cover):
-        blob = bucket.blob("cover/img"+str(time.time()))
-        blob.upload_from_filename(
-        imagepath
-        )
-        return(blob.public_url)
-    def uploadertrack(self,trackpath,track):
-        blob = bucket.blob("tracks/trk"+str(time.time()))
-        blob.upload_from_filename(
-        trackpath
-        )
-        return(blob.public_url)
 
 class APIServer:
     def __init__(self,port):
@@ -101,8 +62,8 @@ class APIServer:
                 '''
                 #Something happens here
 
-                uploader=FileUploader()
-
+                uploader=fileUploader.FileUploader()
+                upload_folder ="app\\uploads"
                 cover.save(os.path.join(upload_folder,cover.filename))
                 coverurl = uploader.uploaderimg(os.path.join(upload_folder,cover.filename),cover)
                 mp3file.save(os.path.join(upload_folder,mp3file.filename))
