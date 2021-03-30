@@ -34,6 +34,7 @@ class User(object):
         self.recommendations = recommendations
         self.history = history
 
+    # Retrives user object from the database
     @classmethod
     def fromDB(cls,uid):
         userData = firestore.getUser(uid)
@@ -43,18 +44,36 @@ class User(object):
     def save(self):
         firestore.saveUser(self)
     
-    #returning the user details as a dictionary
+    # returning the user details as a dictionary
     def data(self):
         return {'email': self.email,'uid': self.uid,'displayName': self.displayName,'likedSongs': self.likedSongs,'playlists': self.playlists,'recommendations': self.recommendations,'history': self.history}
     
+    # adds the liked song to its list
     def likeSong(self, trackId):
-        pass
+        self.likedSongs = self.likedSongs.append(trackId)
+        self.save()
+
+    # removes the liked song from its list
+    def unLikeSong(self, trackId):
+        self.likedSongs = self.likedSongs.remove(trackId)
+        self.save()
 
     def getRecommendations(self):
         pass
     
-    def addPlaylist(self, playlistId):
-        pass
+    # adds the created playlist to the user
+    def createPlaylist(self, playlistId):
+        self.playlists = self.playlists.append(playlistId)
+        self.save()
 
-    def addToHistory(self,playlistId):
-        pass
+    # removes the playlist from users list
+    def removePlaylist(self, playlistId):
+        self.playlists = self.playlists.remove(playlistId)
+        self.save()
+
+    # adds the song played recently to the users history
+    def addToHistory(self,trackId):
+        historyLimit = 20 # tracks only the last 20 iterations
+        self.history = self.history.append(trackId)[:historyLimit]
+        self.save()
+
