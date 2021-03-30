@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
     },
     navText: {
         fontWeight:'bold',
-        fontSize:42,
+        fontSize:38,
         '&:hover':{
             cursor:'pointer'
         }
@@ -41,7 +41,7 @@ const useStyles = makeStyles(() => ({
             borderBottom:"2px solid black",
             fontFamily:"Poppins",
             fontWeight:500,
-            fontSize:20
+            fontSize:18
         },
         '& input:focus':{
          
@@ -53,11 +53,9 @@ const useStyles = makeStyles(() => ({
             border:"2px solid black",
             borderRadius:20,
             padding:"5%",
-            borderRadius:20,
-            border:"2px solid black",
             fontFamily:"Poppins",
             fontWeight:500,
-            fontSize:20,
+            fontSize:18,
         },
         '& input:focus':{
          
@@ -68,12 +66,17 @@ const useStyles = makeStyles(() => ({
     },
     text:{
         marginTop:'5%',
-        fontSize:20,
+        fontSize:18,
         color:"#ABABAB",
         fontWeight:400,
         fontFamily:"Poppins",
-        borderBottom:"2px solid black",
-        width:"100%"
+        width:"100%",
+        marginRight:'10%'
+    },
+    hr:{
+        height:'2px',
+        backgroundColor:'black',
+        marginRight:"10%"
     },
     tag:{
         backgroundColor: "#342D71",
@@ -83,7 +86,7 @@ const useStyles = makeStyles(() => ({
         marginLeft:"135%",
         borderTopRightRadius:20,
         borderBottomRightRadius:20,
-        fontSize:20,
+        fontSize:18,
         color:"#FFF",
         fontWeight:400,
         fontFamily:"Poppins",
@@ -103,7 +106,7 @@ const useStyles = makeStyles(() => ({
         color:"#FFF",
         fontWeight:400,
         fontFamily:"Poppins",
-        marginTop:40,
+        marginTop:20,
         marginBottom:8,
         width:300,
         alignSelf:"center"
@@ -118,7 +121,7 @@ const useStyles = makeStyles(() => ({
       position:'relative',
       paddingLeft:"5%",
       borderBottom:"2px solid black",
-      fontSize: 20,
+      fontSize: 18,
       transition: theme.transitions.create(['border-color', 'box-shadow']),
       fontFamily:"Poppins",
       '&:focus': {
@@ -179,7 +182,7 @@ const AdminPanel = ({children}) => {
                         IconComponent={ChevronDown}
                         >
                             {data.map((value) => (
-                                (value == 0)?
+                                (value === 0)?
                                 <MenuItem value={value} disabled>
                                     <span className={classes.placeholder}>Artist</span>
                                 </MenuItem>:
@@ -196,34 +199,38 @@ const AdminPanel = ({children}) => {
                             className={classes.inputBox}  
                             InputProps={{classes:{notchedOutline:classes.notchedOutline}}} 
                             multiline
-                            rows={6}
+                            rows={4}
                         />
                     </Grid>
                 <Grid item container xs={6} className={classes.inputContainer}>
-                    <Grid item >
-                        <label htmlFor="img" style={{width:"100%",padding:'3%'}}>
-                            <span className={classes.text}><text style={{width:'90%'}}>{selectedFileName}</text><Camera style={{width:"10%"}}/></span>
+                    <label htmlFor="img" style={{width:"100%",paddingTop:'3%'}}>
+                            <span className={classes.text}>
+                                <text style={{width:'80%',float:'left'}}>{selectedFileName}</text>
+                                <Camera style={{width:"10%",}}/>
+                            </span>
+                            <div className={classes.hr}></div>
                             <input
                                 style={{visibility:"hidden"}}
                                 type="file"
                                 id="img"
                                 onChange={handleImageUpload}
                                 />    
-                        </label>
-                    </Grid>
-                    <Grid item container xs={4}>
+                    </label>
+                    
+                <Grid item container xs={4}>
                     <img
                         className={classes.previmg}
                         src={selectedFile}
                     />
                     </Grid>
-                    <Grid item container xs={2} style={{justifyContent:"center",alignItems:"center"}}>
+                <Grid item container xs={2} style={{justifyContent:"center",alignItems:"center"}}>
                         <div className={classes.tag}>
                             Preview
                         </div>  
                     </Grid>
-                <label htmlFor="track" style={{width:"100%",padding:'3%'}}>
-                <span className={classes.text}><text style={{width:'90%'}}>{selectedTrackName}</text><Upload style={{width:"10%"}}/></span>
+                    <label htmlFor="track" style={{width:"100%",padding:'3%'}}>
+                <span className={classes.text}><text style={{width:'80%',float:'left'}}>{selectedTrackName}</text><Upload style={{width:"10%"}}/></span>
+                <div className={classes.hr}></div>
                 <input
                     style={{visibility:"hidden"}}
                     type="file"
@@ -231,8 +238,8 @@ const AdminPanel = ({children}) => {
                     onChange={handleTrackUpload}
                     />    
                 </label>
-                </Grid>
                 
+                </Grid>               
             </Grid>
             <Button className={classes.btn}>Upload Track</Button>
         </Grid>  
