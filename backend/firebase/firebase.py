@@ -6,12 +6,19 @@ class FirestoreController:
     def __init__(self):
         self.db = firestore.client()
 
-    def getUser(self, id):
-        pass
-        #return self.db.collection('users').document(id).get()
+    def getUser(self, uid):
+        user = self.db.collection('users').document(uid).get()
+        user['likedSongs'] = user.get('likedSongs',[])
+        user['playlists'] = user.get('playlists',[])
+        user['recommendations'] = user.get('recommendations',[])
+        user['history'] = user.get('history',[])
+        return user
     
-    def createUser(self):
-        pass
+    def saveUser(self, user):
+        self.db.collection('users').document(user.uid).set(user.data())
+
+    def deleteUser(self, uid):
+        self.db.collection('users').document(user.uid).delete()
 
     def addNewTrack(self,track):
         doc_ref = self.db.collection(u'tracks').document()

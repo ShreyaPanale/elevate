@@ -20,8 +20,7 @@ class UserManager(object):
 
     #deleting the user with id = uid
     def deleteUser(self,uid):
-        # TOOD: implement delete
-        pass
+        firestore.deleteUser(uid)
 
 # class to handle user objects and related functions
 class User(object):
@@ -58,6 +57,7 @@ class User(object):
         self.likedSongs = self.likedSongs.remove(trackId)
         self.save()
 
+    # recommendor system, to be implemented
     def getRecommendations(self):
         pass
     
