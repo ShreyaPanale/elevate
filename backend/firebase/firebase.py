@@ -7,13 +7,8 @@ class FirestoreController:
         self.db = firestore.client()
 
     def getUser(self, uid):
-        user = self.db.collection('users').document(uid).get()
-        user['likedSongs'] = user.get('likedSongs',[])
-        user['playlists'] = user.get('playlists',[])
-        user['recommendations'] = user.get('recommendations',[])
-        user['history'] = user.get('history',[])
-        return user
-    
+        return self.db.collection('users').document(uid).get().to_dict()
+        
     def saveUser(self, user):
         self.db.collection('users').document(user.uid).set(user.data())
 

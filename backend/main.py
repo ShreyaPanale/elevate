@@ -8,9 +8,9 @@ from app.users import UserManager
 from app import track,artist
 import os
 app = Flask(__name__)
-
+userManager = UserManager()
 class APIServer:
-    userManager = UserManager()
+    
     def __init__(self,port):
         self.port = port
 
@@ -24,11 +24,12 @@ class APIServer:
     # Users endpoints
 
     # create user api
-    @app.route('/user/create')
+    @app.route('/user/create',methods=['POST'])
     def createUser():
         if request.method == 'POST':
             try:
-                userManager.createUser( request.body.uid, request.body.email, request.body.displayName)
+                print(request.json)
+                userManager.createUser( request.json['uid'], request.json['email'], request.json['displayName'])
                 return {"message":"success"},200
             except Exception as e:
                 print(e)
@@ -40,7 +41,7 @@ class APIServer:
     def updateUser():
         if request.method == 'POST':
             try:
-                userManager.updateUser(request.body.uid, request.body.email, request.body.displayName)
+                userManager.updateUser(request.json.uid, request.json.email, request.json.displayName)
                 return {"message":"success"},200
             except Exception as e:
                 print(e)
@@ -48,8 +49,9 @@ class APIServer:
                 return response_msg
     
     # get user endpoint
-    @app.route('/user/:uid')
-    def getUser(uid):
+    @app.route('/user')
+    def getUser():
+        uid = request.args.get('uid')
         return userManager.getUserData(uid)
 
     @app.route('/user/:uid/recommendations')
@@ -58,39 +60,58 @@ class APIServer:
 
     @app.route('/user/like',methods=['POST'])
     def setLike():
-        uid = request.args.get('uid')
-        trackId = request.args.get('trackId')
-        action = request.args.get('action')
-        user = userManager.getUser(uid)
-        if (action=='like'):
-            user.likeSong(trackId)
-        else:
-            user.unlikeSong(trackId)
+        try:
+            uid = request.json.get('uid')
+            trackId = request.json.get('trackId')
+            action = request.json.get('action')
+            user = userManager.getUser(uid)
+            if (action=='like'):
+                user.likeSong(trackId)
+            else:
+                user.unLikeSong(trackId)
+            return {"message":"success"},200
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
+        
     
     @app.route('/user/playlists',methods=['POST'])
     def managePlaylist():
-        uid = request.args.get('uid')
-        trackId = request.args.get('playlistId')
-        action = request.args.get('action')
-        user = userManager.getUser(uid)
-        if (action=='addPlaylist'):
-            user.addPlaylist(playlistId)
-        else:
-            user.removePlaylist(trackId)
+        try:
+            uid = request.json.get('uid')
+            playlistId = request.json.get('playlistId')
+            action = request.json.get('action')
+            user = userManager.getUser(uid)
+            if (action=='addPlaylist'):
+                user.addPlaylist(playlistId)
+            else:
+                user.removePlaylist(playlistId)
+            return {"message":"success"},200
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
 
     @app.route('/user/history',methods=['POST'])
     def manageHistory():
-        uid = request.args.get('uid')
-        trackId = request.args.get('trackId')
-        user = userManager.getUser(uid)
-        user.addToHistory(trackId)
+        try:
+            uid = request.json.get('uid')
+            trackId = request.json.get('trackId')
+            user = userManager.getUser(uid)
+            user.addToHistory(trackId)
+            return {"message":"success"},200
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
 
     # delete user endpoint
     @app.route('/user/delete')
-    def deleteUser(uid):
+    def deleteUser():
         if request.method == 'POST':
             try:
-                userManager.deleteUser(request.body.uid)
+                userManager.deleteUser(request.json.get('uid'))
                 return {"message":"success"},200
             except Exception as e:
                 print(e)

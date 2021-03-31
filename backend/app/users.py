@@ -45,7 +45,7 @@ class User(object):
     @classmethod
     def fromDB(cls,uid):
         userData = firestore.getUser(uid)
-        return cls(userData.email,userData.uid, userData.displayName,userData.likedSongs,userData.playlists,userData.recommendations, userData.history)
+        return cls(userData['email'],userData['uid'], userData['displayName'],userData['likedSongs'],userData['playlists'],userData['recommendations'], userData['history'])
 
     # saving the user on to the database
     def save(self):
@@ -57,12 +57,12 @@ class User(object):
     
     # adds the liked song to its list
     def likeSong(self, trackId):
-        self.likedSongs = self.likedSongs.append(trackId)
+        self.likedSongs.append(trackId)
         self.save()
 
     # removes the liked song from its list
     def unLikeSong(self, trackId):
-        self.likedSongs = self.likedSongs.remove(trackId)
+        self.likedSongs.remove(trackId)
         self.save()
 
     # recommendor system, to be implemented
@@ -71,17 +71,17 @@ class User(object):
     
     # adds the created playlist to the user
     def addPlaylist(self, playlistId):
-        self.playlists = self.playlists.append(playlistId)
+        self.playlists.append(playlistId)
         self.save()
 
     # removes the playlist from users list
     def removePlaylist(self, playlistId):
-        self.playlists = self.playlists.remove(playlistId)
+        self.playlists.remove(playlistId)
         self.save()
 
     # adds the song played recently to the users history
     def addToHistory(self,trackId):
         historyLimit = 20 # tracks only the last 20 iterations
-        self.history = self.history.append(trackId)[:historyLimit]
+        self.history.append(trackId)[:historyLimit]
         self.save()
 
