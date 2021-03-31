@@ -9,12 +9,20 @@ class UserManager(object):
         pass
 
     # creating the new user object
-    def createUser(self,email,uid,displayName):
+    def createUser(self,uid,email,displayName):
         new_user = User(email,uid,displayName);
-        new_user.save();
+        new_user.save()
+    
+    def updateUser(self,uid,email,displayName):
+        user = User.fromDB(uid)
+        user.email = email
+        user.displayName = displayName
+        user.save()
 
-    # getting the user object
     def getUser(self,uid):
+        return User.fromDB(uid)
+    # getting the user object
+    def getUserData(self,uid):
         user = User.fromDB(uid)
         return user.data()
 
@@ -62,7 +70,7 @@ class User(object):
         pass
     
     # adds the created playlist to the user
-    def createPlaylist(self, playlistId):
+    def addPlaylist(self, playlistId):
         self.playlists = self.playlists.append(playlistId)
         self.save()
 

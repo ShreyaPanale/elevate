@@ -1,15 +1,16 @@
 from flask import Flask,request,jsonify
-
 #configurations and environment setup
 from dotenv import load_dotenv
 load_dotenv()
 from firebase import config
 from utils import fileUploader
+from app.users import UserManager
 from app import track,artist
 import os
 app = Flask(__name__)
 
 class APIServer:
+    userManager = UserManager()
     def __init__(self,port):
         self.port = port
 
@@ -23,22 +24,80 @@ class APIServer:
     # Users endpoints
 
     # create user api
-    @app.route('/createUser')
+    @app.route('/user/create')
     def createUser():
-        return "create user called"
+        if request.method == 'POST':
+            try:
+                userManager.createUser( request.body.uid, request.body.email, request.body.displayName)
+                return {"message":"success"},200
+            except Exception as e:
+                print(e)
+                response_msg=jsonify({"error":"400","message":"Bad request"}),400
+                return response_msg
     
     # update user endpoint
-    @app.route('/updateUser')
+    @app.route('/user/update')
     def updateUser():
-        return "update user called"
+        if request.method == 'POST':
+            try:
+                userManager.updateUser(request.body.uid, request.body.email, request.body.displayName)
+                return {"message":"success"},200
+            except Exception as e:
+                print(e)
+                response_msg=jsonify({"error":"400","message":"Bad request"}),400
+                return response_msg
     
     # get user endpoint
-    @app.route('/getUser')
-    def getUser():
-        return "get user called"
+    @app.route('/user/:uid')
+    def getUser(uid):
+        return userManager.getUserData(uid)
 
+    @app.route('/user/:uid/recommendations')
+    def getRecommendations(uid):
+        return userManager.getRecommendations(uid)
+
+    @app.route('/user/like',methods=['POST'])
+    def setLike():
+        uid = request.args.get('uid')
+        trackId = request.args.get('trackId')
+        action = request.args.get('action')
+        user = userManager.getUser(uid)
+        if (action=='like'):
+            user.likeSong(trackId)
+        else:
+            user.unlikeSong(trackId)
+    
+    @app.route('/user/playlists',methods=['POST'])
+    def managePlaylist():
+        uid = request.args.get('uid')
+        trackId = request.args.get('playlistId')
+        action = request.args.get('action')
+        user = userManager.getUser(uid)
+        if (action=='addPlaylist'):
+            user.addPlaylist(playlistId)
+        else:
+            user.removePlaylist(trackId)
+
+    @app.route('/user/history',methods=['POST'])
+    def manageHistory():
+        uid = request.args.get('uid')
+        trackId = request.args.get('trackId')
+        user = userManager.getUser(uid)
+        user.addToHistory(trackId)
+
+    # delete user endpoint
+    @app.route('/user/delete')
+    def deleteUser(uid):
+        if request.method == 'POST':
+            try:
+                userManager.deleteUser(request.body.uid)
+                return {"message":"success"},200
+            except Exception as e:
+                print(e)
+                response_msg=jsonify({"error":"400","message":"Bad request"}),400
+                return response_msg
+    
     # track endpoints
-
     @app.route('/addtrack',methods=['POST'])
     def addTrack():
         if request.method == 'POST':
