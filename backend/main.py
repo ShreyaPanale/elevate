@@ -54,10 +54,12 @@ class APIServer:
         uid = request.args.get('uid')
         return userManager.getUserData(uid)
 
-    @app.route('/user/:uid/recommendations')
-    def getRecommendations(uid):
-        return userManager.getRecommendations(uid)
+    # user recommendations endpoint
+    @app.route('/user/recommendations')
+    def getRecommendations():
+        return {"info":"to be implemented!"}
 
+    # manages user like/unlike a track
     @app.route('/user/like',methods=['POST'])
     def setLike():
         try:
@@ -75,7 +77,7 @@ class APIServer:
             response_msg=jsonify({"error":"400","message":"Bad request"}),400
             return response_msg
         
-    
+    # manages add/remove playlist for user
     @app.route('/user/playlists',methods=['POST'])
     def managePlaylist():
         try:
@@ -93,6 +95,7 @@ class APIServer:
             response_msg=jsonify({"error":"400","message":"Bad request"}),400
             return response_msg
 
+    # updates user history
     @app.route('/user/history',methods=['POST'])
     def manageHistory():
         try:

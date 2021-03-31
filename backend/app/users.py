@@ -66,7 +66,7 @@ class User(object):
         self.save()
 
     # recommendor system, to be implemented
-    def getRecommendations(self):
+    def getRecommendations(self,user):
         pass
     
     # adds the created playlist to the user
@@ -82,6 +82,7 @@ class User(object):
     # adds the song played recently to the users history
     def addToHistory(self,trackId):
         historyLimit = 20 # tracks only the last 20 iterations
-        self.history.append(trackId)[:historyLimit]
+        self.history.append(trackId)
+        self.history = self.history[:historyLimit]
         self.save()
 
