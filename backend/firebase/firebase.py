@@ -36,6 +36,7 @@ class FirestoreController:
     def deleteTrack(self,id):
         self.db.collection(u'tracks').document(id).delete()
 
+    #do it
     def getTrack(self,tname):
         doc_ref = self.db.collection(u'tracks').document(id)
         doc = doc_ref.get()
@@ -51,6 +52,11 @@ class FirestoreController:
         doc_ref.set({
             u'aname': artist.aname,
         })
+
+    #do it
+    def getArtist(self,aid):
+        pass
+
 
     def getArtists(self):
         artists_ref = self.db.collection(u'artists')
