@@ -17,7 +17,8 @@ const useStyles = makeStyles(() => ({
       },
       fullHeight:{
         height:"100vh",
-        overflow: "hidden"
+        overflow: "hidden",
+        paddingBottom: 100
       }
   }));
   
