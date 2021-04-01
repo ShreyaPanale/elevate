@@ -51,6 +51,11 @@ class FirestoreController:
         else:
             return {'error':'Document not found,Missing track'}
 
+    def retrieveTrackArtist(self,tid):
+        track = self.db.collection(u'tracks').document(tid).get().to_dict()
+        artist = self.db.collection(u'artists').document(track['artist']).get().to_dict()
+        return artist['aname']
+
     #Artist controller functions
 
     def addNewArtist(self,artist):

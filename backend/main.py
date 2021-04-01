@@ -94,10 +94,25 @@ class APIServer:
     def getTrack():
         try:
             tid=request.args.get('tid')
-            return trackManager.getTrackData(tid)
+            res=trackManager.getTrackData(tid)
+            res['aname']=trackManager.retrieveTrackArtist(tid)
+            return res
         except:
             response_msg=jsonify({"error":"400","message":"Bad request"}),400
             return response_msg
+
+
+    @app.route('/track/update')
+    def updateTrack():
+        #updating cover and mp3file not added
+        if request.method == 'POST':
+            try:
+                trackManager.updateTrack(request.json.tname, request.json.artist, request.json.genre, request.json.desc)
+                return {"message":"success"},200
+            except Exception as e:
+                print(e)
+                response_msg=jsonify({"error":"400","message":"Bad request"}),400
+                return response_msg
 
 
     @app.route('/track/delete',methods=['POST'])
