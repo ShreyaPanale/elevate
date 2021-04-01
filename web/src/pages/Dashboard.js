@@ -14,14 +14,13 @@ const Dashboard = () => {
         }
       }
     return (
-        <AppLayout>
+        
         <div style={{display:"flex",flexDirection:"column",flexGrow:1,}}>
             <h1>Dashboard, hello {currentUser.email}</h1>
             <button variant="link" onClick={handleLogout}>
                 Log Out
             </button>
         </div>
-        </AppLayout>
     )
 }
 

@@ -18,6 +18,8 @@ import Favourites from './pages/Favourites';
 import Playlist from './pages/Playlist/Playlist';
 import AdminPanel from './pages/admin/AdminPanel';
 
+import AppLayout from './Layout/AppLayout';
+
 function App() {
   let { currentUser } = useAuth();
   let admin=false
@@ -53,7 +55,7 @@ function App() {
       {
         admin? <> {adminRoutes} </> : 
         currentUser 
-        ? <> {signedInRoutes} </>
+        ? <> <AppLayout>{signedInRoutes}</AppLayout> </>
         : <> {signedOutRoutes} </>
       }
     </BrowserRouter>

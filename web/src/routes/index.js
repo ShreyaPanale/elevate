@@ -6,9 +6,13 @@ export default {
     landing:"/landing",
     admin:"/admin",
     favourites: "/favourites",
-    artists: "/artists",
+    artists: "/artist",
     artist:"/artist/:id",
     songs:"/songs",
     history:"/history",
-    playlist:"/playlist/:id"
+    playlist:"/playlist/:id",
+
+    // route generator functions
+    genPlaylist:(id)=>`/playlist/${id}`,
+    genArtist:(id)=>`/artist/${id}`
 }

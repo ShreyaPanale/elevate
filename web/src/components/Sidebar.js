@@ -52,8 +52,9 @@ const Indicator = ({active}) => {
     )
 }
 
-const ListGroup = ({title, tabs, index, setActive, active, indices}) => {
+const ListGroup = ({title, tabs, index, setActive, active, indices,routes}) => {
     const classes = sidebarStyles();
+    const history = useHistory();
     return (
         <>
         <ListItem 
@@ -68,7 +69,10 @@ const ListGroup = ({title, tabs, index, setActive, active, indices}) => {
                 <ListItem 
                     alignItems={'start'}
                     className={classes.listItem} 
-                    onClick = {()=>{setActive(indices[idx])}}
+                    onClick = {()=>{
+                        setActive(indices[idx])
+                        history.push(routes[idx])
+                    }}
                     style = {{fontWeight: indices[idx] == active? 700: 400}}
                 >
                         <Indicator active = {indices[idx] == active}/>
@@ -82,21 +86,21 @@ const ListGroup = ({title, tabs, index, setActive, active, indices}) => {
 const Sidebar = () => {
     const classes = sidebarStyles();
     const [active, setActive] = React.useState(0);
-    const history = useHistory();
-
     const sidebarGroups = {
         "Browser Music" : {
             "tabs" : ["Discover", "Artists", "Songs"],
             "indices": [0,1,2],
-            "routes": []
+            "routes": [ROUTES.dashboard, ROUTES.artists, ROUTES.songs]
         },
         "Your Music" : {
             "tabs": ["Favourites", "Play History"],
-            "indices": [3,4]
+            "indices": [3,4],
+            "routes": [ROUTES.favourites,ROUTES.history]
         },
         "Playlists" : {
             "tabs": ["Pop time", "Punk Rock"],
             "indices": [5,6],
+            "routes": [1,2].map(id => ROUTES.genPlaylist(id)) //playlist ids = [1,2]
         }
     }
     return (
@@ -112,6 +116,7 @@ const Sidebar = () => {
                             tabs = {sidebarGroups[title].tabs}
                             indices = {sidebarGroups[title].indices}
                             active = {active}
+                            routes = {sidebarGroups[title].routes}
                         />
                     )
                 }
