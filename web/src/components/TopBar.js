@@ -22,11 +22,11 @@ const TopBar = ({placeholder}) => {
     const history = useHistory();
     const classes = topbarStyles();
     return (
-        <Grid container direction="row" style = {{marginTop:'2%',paddingLeft:'4%'}}>
+        <Grid container direction="row" style = {{marginTop:'2%',paddingLeft:'4%',marginBottom:0,paddingBottom:0}}>
             <Grid item xs={8} style = {{paddingRight:'8%'}}>
                 <Searchbar placeholder={placeholder} />
             </Grid>
-            <Grid item container justify="flex-end" xs={4} style={{paddingRight:'4%', }}>
+            <Grid item container justify="flex-end" xs={4} style={{paddingRight:'4%',margin:0 }}>
                 <span
                 className={classes.profile}
                 onClick = {
