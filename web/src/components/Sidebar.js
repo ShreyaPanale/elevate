@@ -1,9 +1,7 @@
 import React from 'react';
 import { Box, List, ListItem, Avatar } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
-import { Home, Info, Settings, LogOut } from 'react-feather';
 import { useHistory } from 'react-router-dom';
-import { useAuth } from '../firebase/provider';
 
 const Logo = () => {
     return (
@@ -29,15 +27,8 @@ const sidebarStyles = makeStyles(() => ({
         "&:hover":{
             cursor:"pointer",
         },
-        flexDirection:"column",
+        flexDirection:"row",
         color:'#000'    
-    },
-    listItemBottom:{
-        "&:hover":{
-            cursor:"pointer",
-        },
-        position:"absolute",
-        bottom:40
     },
     title :{
         color:'#9D9EA0',
@@ -51,33 +42,38 @@ const Indicator = ({active}) => {
         <div style = {{
             minHeight:8,
             minWidth:8,
-            backgroundColor:active?"#FF8400":"transparent",
+            backgroundColor:active?"#EF757D":"transparent",
             borderRadius:100,
-            margin:2
+            position:'absolute',
+            marginLeft:-20,
+            marginTop:8
         }}
         />
     )
 }
 
-const ListGroup = ({title, tabs, index}) => {
+const ListGroup = ({title, tabs, index, setActive, active, indices}) => {
     const classes = sidebarStyles();
     return (
         <>
         <ListItem 
             alignItems={'start'}
             className={classes.listItem+" "+classes.title} 
-            style = {{marginTop:index==0?0:"12%"}}
+            style = {{marginTop:index==0?0:"12%", }}
         >
            {title}
         </ListItem>
         {
-            tabs.map(tab => 
-            <ListItem 
-                alignItems={'start'}
-                className={classes.listItem} 
-            >
-                    {tab}
-            </ListItem>)
+            tabs.map((tab,idx) => 
+                <ListItem 
+                    alignItems={'start'}
+                    className={classes.listItem} 
+                    onClick = {()=>{setActive(indices[idx])}}
+                    style = {{fontWeight: indices[idx] == active? 700: 400}}
+                >
+                        <Indicator active = {indices[idx] == active}/>
+                        {tab}
+                </ListItem>)
         }
         </>
     )
@@ -85,21 +81,21 @@ const ListGroup = ({title, tabs, index}) => {
 
 const Sidebar = () => {
     const classes = sidebarStyles();
-    const [index, setIndex] = React.useState(0);
+    const [active, setActive] = React.useState(0);
     const history = useHistory();
-    const { currentUser:user } = useAuth();
+
     const sidebarGroups = {
         "Browser Music" : {
             "tabs" : ["Discover", "Artists", "Songs"],
-            "functions": []
+            "indices": [0,1,2]
         },
         "Your Music" : {
             "tabs": ["Favourites", "Play History"],
-            "functions": []
+            "indices": [3,4]
         },
         "Playlists" : {
             "tabs": ["Pop time", "Punk Rock"],
-            "functions": [],
+            "indices": [5,6],
         }
     }
     return (
@@ -107,12 +103,14 @@ const Sidebar = () => {
             <Logo />
             <List style = {{ height:"100%"}}>
                 {
-                    Object.keys(sidebarGroups).map((title,index) => 
+                    Object.keys(sidebarGroups).map((title,idx) => 
                         <ListGroup
-                            index = {index}
+                            index = {idx}
                             title = {title}
+                            setActive = {setActive}
                             tabs = {sidebarGroups[title].tabs}
-                            functions = {sidebarGroups[title].functions}
+                            indices = {sidebarGroups[title].indices}
+                            active = {active}
                         />
                     )
                 }
