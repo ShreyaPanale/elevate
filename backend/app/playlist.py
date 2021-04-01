@@ -18,16 +18,19 @@ class Playlist(object):
     def save(self):
         return firestore.savePlaylist(self)
 
+    def update(self,pid):
+        return firestore.updatePlaylist(self,pid)
+
     def data(self):
         return {'uid':self.uid,'pname':self.pname,'tracks':self.tracks}
 
-    def addSong(self,trackID):
+    def addSong(self,pid,trackID):
         self.tracks.append(trackID)
-        self.save()
+        self.update(pid)
 
-    def removeSong(self,trackID):
+    def removeSong(self,pid,trackID):
         self.tracks.remove(trackID)
-        self.save()
+        self.update(pid)
 
     
 class PlaylistManager(object):
@@ -38,6 +41,9 @@ class PlaylistManager(object):
         new_playlist = Playlist(uid,pname)
         return new_playlist.save()
 
+    def getPlaylist(self,pid):
+        return Playlist.fromDB(pid)
+    
     def getPlaylistData(self,pid):
         playlist = Playlist.fromDB(pid)
         print("Playlist Data",playlist.data())

@@ -106,6 +106,10 @@ class FirestoreController:
         doc_ref.set(playlist.data())
         return doc_ref.id
 
+    def updatePlaylist(self,playlist,pid):
+        doc_ref = self.db.collection('playlists').document(pid)
+        doc_ref.set(playlist.data())
+
     def deletePlaylist(self,pid):
         doc_ref=self.db.collection(u'playlists').document(pid)
         if doc_ref.get().exists:
