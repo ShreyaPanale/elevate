@@ -5,7 +5,8 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import Sidebar from '../components/Sidebar';
- 
+import Player from '../components/Player';
+
 const useStyles = makeStyles(() => ({
     container: {
         height: "100%",
@@ -23,6 +24,8 @@ const useStyles = makeStyles(() => ({
 const AppLayout = ({children}) => {
     const classes = useStyles();
     return (
+        <Grid container>
+        <Player />
         <Grid container className={classes.fullHeight}>
             <Grid item xs = {2}>
                 <Sidebar />
@@ -34,7 +37,8 @@ const AppLayout = ({children}) => {
                 className={classes.container}>
                 {children}
             </Grid>
-        </Grid> 
+        </Grid>
+        </Grid>
     );
 }
 
