@@ -49,8 +49,8 @@ class TrackManager(object):
         print("hello",track.data())
         return track.data()
     
-    def deleteTrack(self,tname):
-        firestore.deleteTracks(tname)
+    def deleteTrack(self,tid):
+        firestore.deleteTrack(tid)
         
     def getTracks(self):
         return firestore.getTracks()

@@ -34,7 +34,12 @@ class FirestoreController:
         return {"data":trackarr}
         
     def deleteTrack(self,id):
-        self.db.collection(u'tracks').document(id).delete()
+        doc_ref=self.db.collection(u'tracks').document(id)
+        print(doc_ref)
+        if doc_ref.get().exists:
+            doc_ref.delete()
+        else:
+            return {'error':"Track doesn't exist"}
 
     def getTrack(self,tid):
         doc_ref = self.db.collection(u'tracks').document(tid)
@@ -73,4 +78,8 @@ class FirestoreController:
         return {"data":artistarr}
         
     def deleteArtist(self,id):
-        self.db.collection(u'artists').document(id).delete()
+        doc_ref=self.db.collection(u'artists').document(id)
+        if doc_ref.get().exists:
+            doc_ref.delete()
+        else:
+            return {'error':"Artist doesn't exist"}

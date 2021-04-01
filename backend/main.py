@@ -99,6 +99,19 @@ class APIServer:
             response_msg=jsonify({"error":"400","message":"Bad request"}),400
             return response_msg
 
+
+    @app.route('/track/delete',methods=['POST'])
+    def deleteTrack():
+        try:
+            print(request.json)
+            trackManager.deleteTrack(request.json.get('tid'))
+            return {"message":"success"},200
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
+
+
     #artist endpoints
 
     @app.route('/addartist',methods=['POST'])
@@ -128,5 +141,16 @@ class APIServer:
             response_msg=jsonify({"error":"400","message":"Bad request"}),400
             return response_msg
     
+    @app.route('/artist/delete',methods=['POST'])
+    def deleteArtist():
+        try:
+            artistManager.deleteArtist(request.json.get('aid'))
+            return {"message":"success"},200
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
+
+
 server = APIServer(port = 5000)
 server.start()
