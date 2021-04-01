@@ -14,10 +14,14 @@ class Track(object):
     @classmethod
     def fromDB(cls,tid):
         trackData = firestore.getTrack(tid)
+        print('Am in fromDB Track')
         return cls(trackData['tname'],trackData['artist'],trackData['genre'],trackData['desc'],trackData['coverurl'],trackData['mp3fileurl'])
     
     def saveTrack(self):
         firestore.addNewTrack(self)
+    
+    def data(self):
+        return {'tname':self.tname,'artist':self.artist,'genre':self.genre,'desc':self.desc,'coverurl':self.coverurl,'mp3fileurl':self.mp3fileurl}
     
     def modifyTrack(self):
         pass
@@ -35,8 +39,15 @@ class TrackManager(object):
         newTrack=Track(tnm,artist,genre,desc,coverurl,mp3fileurl)
         newTrack.saveTrack()
         
-    def getTrack(self,trackid):
-        return Track.fromDB(trackid)
+    def getTrack(self,tid):
+        print("in track manager")
+        return Track.fromDB(tid)
+    
+    def getTrackData(self,tid):
+        track = Track.fromDB(tid)
+        print("why not")
+        print("hello",track.data())
+        return track.data()
     
     def deleteTrack(self,tname):
         firestore.deleteTracks(tname)

@@ -36,14 +36,15 @@ class FirestoreController:
     def deleteTrack(self,id):
         self.db.collection(u'tracks').document(id).delete()
 
-    #do it
-    def getTrack(self,tname):
-        doc_ref = self.db.collection(u'tracks').document(id)
+    def getTrack(self,tid):
+        doc_ref = self.db.collection(u'tracks').document(tid)
         doc = doc_ref.get()
         if doc.exists:
-            print(f'Document data: {doc.to_dict()}')
+            print("firebase controller")
+            print(doc.to_dict())
+            return doc.to_dict()
         else:
-            print(u'No such document!')
+            return {'error':'Document not found,Missing track'}
 
     #Artist controller functions
 
@@ -53,9 +54,13 @@ class FirestoreController:
             u'aname': artist.aname,
         })
 
-    #do it
     def getArtist(self,aid):
-        pass
+        doc_ref = self.db.collection(u'artists').document(aid)
+        doc = doc_ref.get()
+        if doc.exists:
+            return doc.to_dict()
+        else:
+            return {'error':'Document not found,Missing artist'}
 
 
     def getArtists(self):
