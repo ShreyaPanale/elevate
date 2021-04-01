@@ -8,12 +8,14 @@ from utils import fileUploader
 from app.users import UserManager
 from app.track import TrackManager
 from app.artist import ArtistManager
+from app.playlist import PlaylistManager
 
 import os
 app = Flask(__name__)
 trackManager=TrackManager()
 artistManager=ArtistManager()
 userManager = UserManager()
+playlistManager = PlaylistManager()
 
 class APIServer:
     
@@ -251,6 +253,20 @@ class APIServer:
             print(e)
             response_msg=jsonify({"error":"400","message":"Bad request"}),400
             return response_msg
+
+    #playlist endpoints
+
+    @app.route('/playlist/create',methods=['POST'])
+    def createPlaylist():
+        if request.method == 'POST':
+            try:
+                print(request.json)
+                pid=playlistManager.createPlaylist(request.json['uid'], request.json['pname'])
+                return {"pid":pid},200
+            except Exception as e:
+                print(e)
+                response_msg=jsonify({"error":"400","message":"Bad request"}),400
+                return response_msg
 
 
 server = APIServer(port = 5000)

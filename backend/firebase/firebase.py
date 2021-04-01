@@ -93,11 +93,13 @@ class FirestoreController:
 
     #playlist controller functions
 
-    def getPlaylist(pid):
+    def getPlaylist(self,pid):
         pass
 
-    def savePlaylist(playlist):
-        pass
+    def savePlaylist(self,playlist):
+        doc_ref = self.db.collection('playlists').document()
+        doc_ref.set(playlist.data())
+        return doc_ref.id
 
-    def deletePlaylist(pid):
+    def deletePlaylist(self,pid):
         pass
