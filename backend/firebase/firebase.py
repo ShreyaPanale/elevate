@@ -90,3 +90,14 @@ class FirestoreController:
             doc_ref.delete()
         else:
             return {'error':"Artist doesn't exist"}
+
+    #playlist controller functions
+
+    def getPlaylist(pid):
+        pass
+
+    def savePlaylist(playlist):
+        pass
+
+    def deletePlaylist(pid):
+        pass
