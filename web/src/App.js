@@ -10,9 +10,15 @@ import Profile from "./pages/Profile";
 import SignIn from "./pages/auth/Signin";
 import Landing from "./pages/Landing";
 import SignUp from './pages/auth/Signup';
-
+import Artist from './pages/Artist/Artist';
+import Artists from './pages/Artist/Artists';
+import Songs from './pages/Songs';
+import History from './pages/History';
+import Favourites from './pages/Favourites';
+import Playlist from './pages/Playlist/Playlist';
 import AdminPanel from './pages/admin/AdminPanel';
-import routes from "./routes";
+
+import AppLayout from './Layout/AppLayout';
 
 function App() {
   let { currentUser } = useAuth();
@@ -21,7 +27,12 @@ function App() {
     <Switch>
       <Route exact path={ROUTES.dashboard} component={Dashboard} />
       <Route exact path={ROUTES.profile} component={Profile} />
-      <Route exact path={ROUTES.settings} component={Settings} />
+      <Route exact path={ROUTES.artist} component={Artist} />
+      <Route exact path={ROUTES.artists} component={Artists} />
+      <Route exact path={ROUTES.playlist} component={Playlist} />
+      <Route exact path={ROUTES.songs} component={Songs} />
+      <Route exact path={ROUTES.history} component={History} />
+      <Route exact path={ROUTES.favourites} component={Favourites} />
       <Redirect to={ROUTES.dashboard} />
     </Switch>
   );
@@ -44,7 +55,7 @@ function App() {
       {
         admin? <> {adminRoutes} </> : 
         currentUser 
-        ? <> {signedInRoutes} </>
+        ? <> <AppLayout>{signedInRoutes}</AppLayout> </>
         : <> {signedOutRoutes} </>
       }
     </BrowserRouter>
