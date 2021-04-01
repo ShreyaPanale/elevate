@@ -56,7 +56,7 @@ const useStyles = makeStyles(() => ({
             position:'absolute',
             right:0,
             top:'50%',
-            animation:"$strike 1s linear"
+            animation:"$strike 2s linear"
         },
         lineHeight:'1em',
         position:'relative',
