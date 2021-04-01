@@ -1,9 +1,23 @@
 from firebase import firebase;
 
+firestore = firebase.FirestoreController()
+
 class Artist(object):
     def __init__(self,aname):
         self.aname=aname
           
+    @classmethod
+    def fromDB(cls,aid):
+        artistData=firestore.getArtist(aid)
+        print(artistData)
+        return cls(artistData['aname'])
+
+    def save(self):
+        firestore.addNewArtist(self)
+    
+    def data(self):
+        return {'aname':self.aname}
+
     def getTracks(self):
         #return tracks by this artist 
         pass
@@ -14,13 +28,17 @@ class ArtistManager(object):
 
     def addNewArtist(self,anm):
         newArtist=Artist(anm)
-        controller=firebase.FirestoreController()
-        controller.addNewArtist(newArtist)
+        newArtist.save()
 
     def deleteArtist(self,id):
-        controller=firebase.FirestoreController()
-        controller.deleteArtist(id)
+        firestore.deleteArtist(id)
         
     def getArtists(self):
-        controller=firebase.FirestoreController()
-        return controller.getArtists()
+        return firestore.getArtists()
+
+    def getArtist(self,aid):
+        return Artist.fromDB(aid)
+
+    def getArtistData(self,aid):
+        artist=Artist.fromDB(aid)
+        return artist.data()

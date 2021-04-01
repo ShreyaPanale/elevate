@@ -4,11 +4,17 @@ from dotenv import load_dotenv
 load_dotenv()
 from firebase import config
 from utils import fileUploader
+
 from app.users import UserManager
-from app import track,artist
+from app.track import TrackManager
+from app.artist import ArtistManager
+
 import os
 app = Flask(__name__)
+trackManager=TrackManager()
+artistManager=ArtistManager()
 userManager = UserManager()
+
 class APIServer:
     
     def __init__(self,port):
@@ -152,7 +158,6 @@ class APIServer:
                 mp3file.save(os.path.join(upload_folder,mp3file.filename))
                 mp3fileurl = uploader.uploadertrack(os.path.join(upload_folder,mp3file.filename),mp3file)
                 
-                trackManager=track.TrackManager()
                 trackManager.addNewTrack(tnm=tnm,artist=artist,genre=genre,desc=desc,coverurl=coverurl,mp3fileurl=mp3fileurl)
 
                 response_msg=jsonify({"status":"200 ok","message":"success"}),200
@@ -165,12 +170,48 @@ class APIServer:
     @app.route('/gettracks',methods=['GET'])
     def getTracks():
         try:
-            trackManager=track.TrackManager()
             return trackManager.getTracks(),200
         except Exception as e:
             print(e)
             response_msg=jsonify({"error":"400","message":"Bad request"}),400
             return response_msg
+
+    @app.route('/track',methods=['GET'])
+    def getTrack():
+        try:
+            tid=request.args.get('tid')
+            res=trackManager.getTrackData(tid)
+            res['aname']=trackManager.retrieveTrackArtist(tid)
+            return res
+        except:
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
+
+
+    @app.route('/track/update')
+    def updateTrack():
+        #updating cover and mp3file not added
+        if request.method == 'POST':
+            try:
+                trackManager.updateTrack(request.json.tname, request.json.artist, request.json.genre, request.json.desc)
+                return {"message":"success"},200
+            except Exception as e:
+                print(e)
+                response_msg=jsonify({"error":"400","message":"Bad request"}),400
+                return response_msg
+
+
+    @app.route('/track/delete',methods=['POST'])
+    def deleteTrack():
+        try:
+            print(request.json)
+            trackManager.deleteTrack(request.json.get('tid'))
+            return {"message":"success"},200
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
+
 
     #artist endpoints
 
@@ -178,7 +219,6 @@ class APIServer:
     def addArtist():
         try:
             anm=request.form['aname']
-            artistManager=artist.ArtistManager()
             artistManager.addNewArtist(anm=anm)
             response_msg=jsonify({"status":"200 ok","message":"success"}),200
             return response_msg
@@ -187,15 +227,31 @@ class APIServer:
             response_msg=jsonify({"error":"400","message":"Bad request"}),400
             return response_msg
 
+    
+    @app.route('/artist',methods=['GET'])
+    def getArtist():
+        aid=request.args.get('aid')
+        return artistManager.getArtistData(aid)
+
     @app.route('/getartists',methods=['GET'])
     def getArtists():
         try:
-            artistManager=artist.ArtistManager()
             return artistManager.getArtists(),200
         except Exception as e:
             print(e)
             response_msg=jsonify({"error":"400","message":"Bad request"}),400
             return response_msg
     
+    @app.route('/artist/delete',methods=['POST'])
+    def deleteArtist():
+        try:
+            artistManager.deleteArtist(request.json.get('aid'))
+            return {"message":"success"},200
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
+
+
 server = APIServer(port = 5000)
 server.start()
