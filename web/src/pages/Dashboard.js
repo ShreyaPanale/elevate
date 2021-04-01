@@ -1,7 +1,6 @@
 import React from 'react'
 import { useAuth } from "../firebase/provider";
 import { useHistory } from "react-router-dom";
-import AppLayout from '../Layout/AppLayout';
 
 const Dashboard = () => {
     const { logout,currentUser } = useAuth();

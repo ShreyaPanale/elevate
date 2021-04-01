@@ -1,7 +1,7 @@
 import React from 'react';
 import { List, ListItem} from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import ROUTES from '../routes';
 const Logo = () => {
     return (
@@ -85,7 +85,15 @@ const ListGroup = ({title, tabs, index, setActive, active, indices,routes}) => {
 
 const Sidebar = () => {
     const classes = sidebarStyles();
-    const [active, setActive] = React.useState(0);
+    const indexToRoute= {
+        [ROUTES.dashboard]:0,
+        [ROUTES.artists]:1,
+        [ROUTES.songs]:2,
+        [ROUTES.favourites]:3,
+        [ROUTES.history]:4
+    }
+    const location = useLocation();
+    const [active, setActive] = React.useState(indexToRoute[location.pathname]);
     const sidebarGroups = {
         "Browser Music" : {
             "tabs" : ["Discover", "Artists", "Songs"],

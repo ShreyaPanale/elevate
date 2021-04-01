@@ -22,7 +22,6 @@ const useStyles = makeStyles(() => ({
   
 const AppLayout = ({children}) => {
     const classes = useStyles();
-    const history = useHistory();
     return (
         <Grid container className={classes.fullHeight}>
             <Grid item xs = {2}>
