@@ -268,6 +268,25 @@ class APIServer:
                 response_msg=jsonify({"error":"400","message":"Bad request"}),400
                 return response_msg
 
+    @app.route('/playlist/delete',methods=['POST'])
+    def deletePlaylist():
+        try:
+            playlistManager.deletePlaylist(request.json.get('pid'))
+            return {"message":"success"},200
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
+
+    @app.route('/playlist',methods=['GET'])
+    def getPlaylist():
+        try:
+            pid=request.args.get('pid')
+            return playlistManager.getPlaylistData(pid),200
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
 
 server = APIServer(port = 5000)
 server.start()

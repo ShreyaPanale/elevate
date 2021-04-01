@@ -12,6 +12,7 @@ class Playlist(object):
     @classmethod
     def fromDB(cls,pid):
         playlistData=firestore.getPlaylist(pid)
+        print(playlistData)
         return cls(playlistData['uid'],playlistData['pname'],playlistData['tracks'])
     
     def save(self):
@@ -39,6 +40,7 @@ class PlaylistManager(object):
 
     def getPlaylistData(self,pid):
         playlist = Playlist.fromDB(pid)
+        print("Playlist Data",playlist.data())
         return playlist.data()
 
     def deletePlaylist(self,pid):

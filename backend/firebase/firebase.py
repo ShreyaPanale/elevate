@@ -94,7 +94,12 @@ class FirestoreController:
     #playlist controller functions
 
     def getPlaylist(self,pid):
-        pass
+        doc_ref = self.db.collection(u'playlists').document(pid)
+        doc = doc_ref.get()
+        if doc.exists:
+            return doc.to_dict()
+        else:
+            return {'error':'Document not found,Missing playlist'}
 
     def savePlaylist(self,playlist):
         doc_ref = self.db.collection('playlists').document()
@@ -102,4 +107,8 @@ class FirestoreController:
         return doc_ref.id
 
     def deletePlaylist(self,pid):
-        pass
+        doc_ref=self.db.collection(u'playlists').document(pid)
+        if doc_ref.get().exists:
+            doc_ref.delete()
+        else:
+            return {'error':"Playlist doesn't exist"}
