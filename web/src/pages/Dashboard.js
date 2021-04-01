@@ -41,7 +41,7 @@ const songListStyles = makeStyles(()=>({
         width: '100%',
       },
       container: {
-          
+          maxHeight: 600
       },
 }))
 
@@ -100,7 +100,7 @@ const columns = [
     },
     {
         play: <Play />,
-        place: 1,
+        place: 2,
         title: <TrackItem />,
         artist:"NF",
         plays: 200,
@@ -109,7 +109,7 @@ const columns = [
     },
     {
         play: <Play />,
-        place: 1,
+        place: 3,
         title: <TrackItem />,
         artist:"NF",
         plays: 200,
@@ -118,7 +118,7 @@ const columns = [
     },
     {
         play: <Play />,
-        place: 1,
+        place: 4,
         title: <TrackItem />,
         artist:"NF",
         plays: 200,
@@ -127,7 +127,7 @@ const columns = [
     },
     {
         play: <Play />,
-        place: 1,
+        place: 5,
         title: <TrackItem />,
         artist:"NF",
         plays: 200,
@@ -136,13 +136,14 @@ const columns = [
     },
     {
         play: <Play />,
-        place: 1,
+        place: 6,
         title: <TrackItem />,
         artist:"NF",
         plays: 200,
         time: "02:40",
         like: <Heart/>
     },
+    
   ];
 
 const SongList = () => {
@@ -156,7 +157,7 @@ const SongList = () => {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth }}
+                  style={{ minWidth: column.minWidth, color:'#383838', fontFamily:'Poppins', fontSize: 16  }}
                 >
                   {column.label}
                 </TableCell>
@@ -166,7 +167,7 @@ const SongList = () => {
           <TableBody>
             {rows.map((row) => {
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                <TableRow tabIndex={-1} key={row.code}>
                   {columns.map((column) => {
                     const value = row[column.id];
                     return (
