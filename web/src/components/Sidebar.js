@@ -1,8 +1,8 @@
 import React from 'react';
-import { Box, List, ListItem, Avatar } from '@material-ui/core';
+import { List, ListItem} from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from 'react-router-dom';
-
+import ROUTES from '../routes';
 const Logo = () => {
     return (
         <div style = {{display:"flex", color:"#EF757D",  width:"100%", marginLeft:30}}>
@@ -87,7 +87,8 @@ const Sidebar = () => {
     const sidebarGroups = {
         "Browser Music" : {
             "tabs" : ["Discover", "Artists", "Songs"],
-            "indices": [0,1,2]
+            "indices": [0,1,2],
+            "routes": []
         },
         "Your Music" : {
             "tabs": ["Favourites", "Play History"],
