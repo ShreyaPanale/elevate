@@ -11,9 +11,12 @@ import SignIn from "./pages/auth/Signin";
 import Landing from "./pages/Landing";
 import SignUp from './pages/auth/Signup';
 
+import AdminPanel from './pages/admin/AdminPanel';
+import routes from "./routes";
+
 function App() {
   let { currentUser } = useAuth();
-  
+  let admin=false
   let signedInRoutes = (
     <Switch>
       <Route exact path={ROUTES.dashboard} component={Dashboard} />
@@ -30,9 +33,16 @@ function App() {
       <Redirect to={ROUTES.landing} />
     </Switch>
   );
+  let adminRoutes = (
+    <Switch>
+      <Route exact path={ROUTES.admin} component={AdminPanel} />
+      <Redirect to={ROUTES.admin} />
+    </Switch>
+  )
   return (
     <BrowserRouter>
       {
+        admin? <> {adminRoutes} </> : 
         currentUser 
         ? <> {signedInRoutes} </>
         : <> {signedOutRoutes} </>
