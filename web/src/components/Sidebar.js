@@ -15,7 +15,6 @@ const sidebarStyles = makeStyles(() => ({
     root: {
         display:"flex",
         color: "#FFF",
-        transition: "850ms",
         height: "100%",
         backgroundColor:"#F5F6FA",
         flexDirection:"column",
@@ -46,7 +45,9 @@ const Indicator = ({active}) => {
             borderRadius:100,
             position:'absolute',
             marginLeft:-20,
-            marginTop:8
+            marginTop:8,
+            
+            transition: "500ms",
         }}
         />
     )
