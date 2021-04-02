@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Avatar, Typography, IconButton} from '@material-ui/core';
-import { Heart, ChevronUp, Play, SkipForward, SkipBack } from 'react-feather'
+import { Heart, ChevronUp, Play, SkipForward, SkipBack, Plus } from 'react-feather'
 const useStyles = makeStyles(()=>({
     root:{
         boxShadow: "0px 4px 4px 5px rgba(0, 0, 0, 0.25)",
@@ -34,7 +34,7 @@ const useStyles = makeStyles(()=>({
     }
 }))
 
-const Player = () => {
+const Player = (props) => {
     const classes = useStyles();
     let curPercentage = 80; // will handle progress
     const [like,setLike] = React.useState(0);
@@ -45,6 +45,7 @@ const Player = () => {
             setLike(0)
         //call necessary endpoints
     }
+   
     return (
         <Grid className={classes.root} container direction="row">
             <Grid item xs={1}>
@@ -55,7 +56,7 @@ const Player = () => {
                     marginLeft:20
                 }} alt="nf" src="https://i.ytimg.com/vi/glNleDYUPu4/maxresdefault.jpg" />
             </Grid>
-            <Grid item container xs={2} spacing={2} direction="row" style={{alignItems:'center'}}>
+            <Grid item container xs={2} spacing={1} direction="row" style={{alignItems:'center'}}>
                 <Grid item>
                     <Typography style = {{
                         fontFamily: "Poppins",
@@ -75,6 +76,9 @@ const Player = () => {
                     <IconButton onClick={handleLike}>
                         {like==0 && <Heart style={{color:"#EF757D",fill:"#EF757D"}}/>}
                         {like==1 && <Heart />}
+                    </IconButton>
+                    <IconButton onClick={props.handleAddTrack}>
+                       <Plus/>
                     </IconButton>
                 </Grid>
             </Grid>
