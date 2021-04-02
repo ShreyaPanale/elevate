@@ -14,7 +14,7 @@ const useStyles = makeStyles(()=>({
         paddingTop:"2%",
         paddingBottom:'1%',
         marginTop:0,   
-    }
+    },
 }))
 
 const History = () => {
@@ -25,9 +25,9 @@ const History = () => {
                 <TopBar placeholder = {"Search for songs or artists"} />
             </Grid>
             <Grid item container direction="row" className={classes.root}>
-                    <Grid item xs={12}>
+                    <Grid item>
                         <h1>
-                        🎧 ⏱️ Play History
+                        ⏱️ Play History
                         </h1>
                     </Grid>
                     <Grid item xs={12} style={{width:"100%"}}>
