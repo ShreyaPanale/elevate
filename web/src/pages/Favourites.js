@@ -25,7 +25,7 @@ const Favourites = () => {
             <Grid item container direction="row" className={classes.root}>
                     <Grid item xs={12}>
                         <h1>
-                            Favourites
+                        ❤️ Favourites
                         </h1>
                     </Grid>
                     <Grid item xs={12} style={{width:"100%"}}>
