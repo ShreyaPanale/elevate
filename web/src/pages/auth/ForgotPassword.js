@@ -108,6 +108,9 @@ const ForgotPassword = () => {
 
                 <span style={{fontFamily:"Poppins",fontWeight:400,color:"#ABABAB"}}>
                     Don’t have an account yet? <a href = "/signup" style={{color:"#EF757D",textDecoration:"underline"}}>Sign up</a> now.
+                </span> 
+                <span style={{fontFamily:"Poppins",fontWeight:200,marginTop:16}}>
+                👈  <a href = "/signin" style={{color:"black"}}> Back to sign in!</a>
                 </span>
             </Grid>
             </div>
