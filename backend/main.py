@@ -24,7 +24,8 @@ class APIServer:
         self.port = port
 
     def start(self):
-        app.run(port = self.port)
+        if __name__ == '__main__':
+            app.run(port = self.port,debug=True)
     
     @app.route('/ping')
     def test():
