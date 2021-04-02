@@ -21,7 +21,9 @@ class FirestoreController:
             u'genre': track.genre,
             u'desc': track.desc,
             u'coverurl': track.coverurl,
-            u'mp3fileurl': track.mp3fileurl
+            u'mp3fileurl': track.mp3fileurl,
+            u'duration':track.duration,
+            u'plays':track.plays
         })
 
     def getTracks(self):

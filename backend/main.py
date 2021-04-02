@@ -8,6 +8,7 @@ from utils import fileUploader
 from app.track import TrackManager
 from app.artist import ArtistManager
 import os
+from mutagen.mp3 import MP3
 app = Flask(__name__)
 trackManager=TrackManager()
 artistManager=ArtistManager()
@@ -66,11 +67,13 @@ class APIServer:
                 upload_folder ="app\\uploads"
                 cover.save(os.path.join(upload_folder,cover.filename))
                 coverurl = uploader.uploaderimg(os.path.join(upload_folder,cover.filename),cover)
-                mp3file.save(os.path.join(upload_folder,mp3file.filename))
-                mp3fileurl = uploader.uploadertrack(os.path.join(upload_folder,mp3file.filename),mp3file)
-                
-                trackManager.addNewTrack(tnm=tnm,artist=artist,genre=genre,desc=desc,coverurl=coverurl,mp3fileurl=mp3fileurl)
-
+                filepath=os.path.join(upload_folder,mp3file.filename)
+                mp3file.save(filepath)
+                mp3fileurl = uploader.uploadertrack(filepath,mp3file)
+                audio = MP3(filepath)
+                audio_info = audio.info    
+                duration = int(audio_info.length)
+                trackManager.addNewTrack(tnm=tnm,artist=artist,genre=genre,desc=desc,coverurl=coverurl,mp3fileurl=mp3fileurl,duration=duration)
                 response_msg=jsonify({"status":"200 ok","message":"success"}),200
                 return response_msg 
             except Exception as e:
