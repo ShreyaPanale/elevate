@@ -1,8 +1,9 @@
 import React from 'react';
-import { List, ListItem} from '@material-ui/core';
+import { List, ListItem, Typography,IconButton} from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory, useLocation } from 'react-router-dom';
 import ROUTES from '../routes';
+import { Plus } from 'react-feather'
 const Logo = () => {
     return (
         <div style = {{display:"flex", color:"#EF757D",  width:"100%", marginLeft:30}}>
@@ -83,7 +84,7 @@ const ListGroup = ({title, tabs, index, setActive, active, indices,routes}) => {
     )
 }
 
-const Sidebar = () => {
+const Sidebar = (props) => {
     const classes = sidebarStyles();
     const indexToRoute= {
         [ROUTES.dashboard]:0,
@@ -114,6 +115,7 @@ const Sidebar = () => {
     return (
         <div className = {classes.root}>
             <Logo />
+            <span style={{paddingLeft:30,color:"#EF757D",fontSize:12}}><IconButton onClick={props.handleCreatePlaylist}><Plus size={15} color="#EF757D"/></IconButton> New Playlist</span>
             <List style = {{
                 overflowX:"hidden",
                 overflowY:"auto",
@@ -137,7 +139,9 @@ const Sidebar = () => {
                         />
                     )
                 }
+                
             </List>
+            
         </div>
     )
 }

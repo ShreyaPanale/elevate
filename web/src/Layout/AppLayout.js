@@ -6,7 +6,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import Sidebar from '../components/Sidebar';
 import Player from '../components/Player';
-import AddTrack from '../components/AddTrack'
+import {AddTrack,CreatePlaylist} from '../components/Modals'
 const useStyles = makeStyles(() => ({
     container: {
         height: "100%",
@@ -29,12 +29,15 @@ const AppLayout = ({children}) => {
     const handleAddTrack = (event) => {
         setModal(1)
     }
+    const handleCreatePlaylist = (event) => {
+        setModal(2)
+    }
     return (
         <Grid container>
         <Player handleAddTrack={handleAddTrack}/>
         <Grid container className={classes.fullHeight}>
             <Grid item xs = {2}>
-                <Sidebar />
+                <Sidebar handleCreatePlaylist={handleCreatePlaylist}/>
             </Grid>
             <Grid
                 item
@@ -43,6 +46,7 @@ const AppLayout = ({children}) => {
                 {children}
             </Grid>
             <AddTrack handleClose={handleClose} open={modal===1} />
+            <CreatePlaylist handleClose={handleClose} open={modal===2} />
         </Grid>
         </Grid>
     );

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, Typography, Grid,Button, FormControlLabel} from '@material-ui/core';
+import { Modal, Typography, Grid,Button, FormControlLabel,TextField} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { FormLabel, FormControl, FormGroup,Checkbox} from '@material-ui/core';
 
@@ -32,7 +32,6 @@ let playlists=[
 
 const modalStyles = makeStyles((theme)=>({
     root:{
-        height: '50%',
         width: '40%',
         background: "#FFF",
         borderRadius: 20,
@@ -58,7 +57,7 @@ const modalStyles = makeStyles((theme)=>({
         flexDirection:'row',
         width:"100%",
         padding:'3%',
-        paddingBottom:"1%"
+        paddingLeft:'5%',
     },
     content:{
         height:520,
@@ -72,7 +71,7 @@ const modalStyles = makeStyles((theme)=>({
         padding:"4%",
         paddingTop:"1%",
         paddingBottom:"1%",
-        borderRadius:20,
+        borderRadius:10,
         textTransform:"none",
         fontSize:18,
         color:"#FFF",
@@ -83,12 +82,24 @@ const modalStyles = makeStyles((theme)=>({
         width:"70%"
     },
     formControl:{
-        margin: theme.spacing(3)
-    }
+        marginLeft: theme.spacing(3),
+        marginTop: theme.spacing(3)
+    },
+    input:{
+        marginTop:"4%",
+        '& input':{
+            paddingLeft:"5%",
+            border:"4px solid black",
+            fontFamily:"Poppins",
+            fontWeight:700,
+            fontSize:20
+        },
+        '& input:focus':{
+            borderColor:'#EF757D'
+        },
+}}))
 
-}))
-
-const AddTrack = ({open,handleClose}) => {
+export const AddTrack = ({open,handleClose}) => {
     const classes = modalStyles();
     const handleAddTrack = () => {
         //add necessary endpoint calls
@@ -110,7 +121,7 @@ const AddTrack = ({open,handleClose}) => {
             onClose={handleClose}
             className={classes.modal}
         >
-            <div className={classes.root}>
+            <div className={classes.root} style={{height:"60%"}}>
                 <div className={classes.header}>
                     <Typography className={classes.text}>
                         Choose your playlist
@@ -135,4 +146,29 @@ const AddTrack = ({open,handleClose}) => {
     )
 }
 
-export default AddTrack;
+export const CreatePlaylist = ({open,handleClose}) => {
+    const classes = modalStyles();
+    const handleSubmit = () =>{
+        //will do
+    }
+    const [pname,setName] = React.useState('')
+    return (
+        <Modal
+            open={open}
+            onClose={handleClose}
+            className={classes.modal}
+        >
+            <div className={classes.root}>
+                <div className={classes.header}>
+                    <Typography className={classes.text}>
+                        Create playlist
+                    </Typography>
+                </div>
+                
+                <TextField variant="outlined" placeholder="Playlist Name" className={classes.input}  onChange={(e)=>{setName(e.target.value)}}/>
+                
+                <Button className={classes.btn} onClick={handleSubmit}>Create Playlist</Button>
+            </div>
+        </Modal>
+    )
+}
