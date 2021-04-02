@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Avatar, Typography } from '@material-ui/core';
-import { Heart, List, Play, SkipForward, SkipBack } from 'react-feather';
+import { Grid, Avatar, Typography, IconButton } from '@material-ui/core';
+import { Heart, List, Play, SkipForward, SkipBack, Plus } from 'react-feather';
 import {useHistory,useLocation} from 'react-router-dom';
 import ROUTES from '../routes';
 const useStyles = makeStyles(()=>({
@@ -36,9 +36,18 @@ const useStyles = makeStyles(()=>({
     }
 }))
 
-const Player = () => {
+const Player = (props) => {
     const classes = useStyles();
     let curPercentage = 80; // will handle progress
+    const [like,setLike] = React.useState(0);
+    const handleLike = (event) => {
+        if(like==0)
+            setLike(1)
+        else
+            setLike(0)
+        //call necessary endpoints
+    }
+   
     const history = useHistory();
     const location = useLocation();
     const [isQueue,setQueue] = React.useState(location.pathname==ROUTES.queue);
@@ -56,7 +65,7 @@ const Player = () => {
                     marginLeft:20
                 }} alt="nf" src="https://i.ytimg.com/vi/glNleDYUPu4/maxresdefault.jpg" />
             </Grid>
-            <Grid item container xs={2} spacing={2} direction="row" style={{alignItems:'center'}}>
+            <Grid item container xs={2} spacing={1} direction="row" style={{alignItems:'center'}}>
                 <Grid item>
                     <Typography style = {{
                         fontFamily: "Poppins",
@@ -73,7 +82,13 @@ const Player = () => {
                     </Typography>
                 </Grid>
                 <Grid item>
-                    <Heart />
+                    <IconButton onClick={handleLike}>
+                        {like==0 && <Heart style={{color:"#EF757D",fill:"#EF757D"}}/>}
+                        {like==1 && <Heart />}
+                    </IconButton>
+                    <IconButton onClick={props.handleAddTrack}>
+                       <Plus/>
+                    </IconButton>
                 </Grid>
             </Grid>
             <Grid item container xs={8} style={{alignItems:'center'}} direction="column">

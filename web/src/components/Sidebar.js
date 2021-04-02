@@ -1,8 +1,9 @@
 import React from 'react';
-import { List, ListItem} from '@material-ui/core';
+import { List, ListItem, Typography,IconButton} from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory, useLocation } from 'react-router-dom';
 import ROUTES from '../routes';
+import { Plus } from 'react-feather'
 const Logo = () => {
     return (
         <div style = {{display:"flex", color:"#EF757D",  width:"100%", marginLeft:30}}>
@@ -31,6 +32,11 @@ const sidebarStyles = makeStyles(() => ({
     title :{
         color:'#9D9EA0',
         fontWeight:500
+    },
+    hover:{
+        "&:hover":{
+            cursor:'pointer'
+        }
     }
 }))
 
@@ -83,7 +89,7 @@ const ListGroup = ({title, tabs, index, setActive, active, indices,routes}) => {
     )
 }
 
-const Sidebar = () => {
+const Sidebar = (props) => {
     const classes = sidebarStyles();
     const indexToRoute= {
         [ROUTES.dashboard]:0,
@@ -137,7 +143,9 @@ const Sidebar = () => {
                         />
                     )
                 }
+            <span className={classes.hover} onClick={props.handleCreatePlaylist} style={{paddingLeft:30,color:"#EF757D",fontSize:12}}><IconButton ><Plus size={15} color="#EF757D"/></IconButton> New Playlist</span>
             </List>
+            
         </div>
     )
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Avatar, Grid } from '@material-ui/core';
+import { Avatar, Grid, IconButton } from '@material-ui/core';
 import {Heart, Play, Plus} from 'react-feather';
 
 import { makeStyles } from '@material-ui/core/styles'
@@ -68,7 +68,7 @@ const columns = [
     )
   }
 
-  const rows = [
+  let rows = [
     {
         play: <Play />,
         place: 1,
@@ -76,7 +76,7 @@ const columns = [
         artist:"NF",
         plays: 200,
         time: "02:40",
-        like: <Heart/>,
+        like: 1,
         plus: <Plus />
     },
     {
@@ -86,7 +86,7 @@ const columns = [
         artist:"NF",
         plays: 200,
         time: "02:40",
-        like: <Heart/>,
+        like: 0,
         plus: <Plus />
     },
     {
@@ -96,7 +96,7 @@ const columns = [
         artist:"NF",
         plays: 200,
         time: "02:40",
-        like: <Heart/>,
+        like: 1,
         plus: <Plus />
     },
     {
@@ -106,7 +106,7 @@ const columns = [
         artist:"NF",
         plays: 200,
         time: "02:40",
-        like: <Heart/>,
+        like: 0,
         plus: <Plus />
     },
     {
@@ -116,7 +116,7 @@ const columns = [
         artist:"NF",
         plays: 200,
         time: "02:40",
-        like: <Heart/>,
+        like: 1,
         plus: <Plus />
     },
     {
@@ -126,12 +126,31 @@ const columns = [
         artist:"NF",
         plays: 200,
         time: "02:40",
-        like: <Heart/>,
+        like: 1,
         plus: <Plus />
     },
     
   ];
 
+const SongRow = ({row}) => {
+  const [like,setLike] = React.useState(row['like']);
+  const handleLike = ()=>{
+    if(like) setLike(0)
+    else setLike(1)
+  }
+  return (
+      <TableRow tabIndex={-1} key={row.code}>
+            {columns.map((column) => {
+              const value = row[column.id];
+              return (
+                <TableCell key={column.id} align={column.align}>
+                  {column.id=="like"?<IconButton onClick={handleLike}><Heart style={like==0?{color:"#EF757D",fill:"#EF757D"}:{}}/></IconButton> :value}
+                </TableCell>
+              );
+            })}
+          </TableRow>
+  )
+}
 const SongList = () => {
     const classes = songListStyles();
     return (
@@ -153,16 +172,7 @@ const SongList = () => {
           <TableBody>
             {rows.map((row) => {
               return (
-                <TableRow tabIndex={-1} key={row.code}>
-                  {columns.map((column) => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell key={column.id} align={column.align}>
-                        {value}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
+                <SongRow row={row} />
               );
             })}
           </TableBody>
