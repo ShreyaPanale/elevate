@@ -3,53 +3,19 @@ import { useHistory } from 'react-router-dom'
 import {makeStyles} from '@material-ui/core/styles';
 import { Avatar, Grid} from '@material-ui/core';
 import ROUTES from '../routes';
-const artists = [
+const artists = [1,2,3,4,5,6].map(x=>(
     {
         id: 123,
         name: "NF",
         imageUrl : "https://assetsds.cdnedge.bluemix.net/sites/default/files/styles/very_big_1/public/feature/images/nf.jpg?itok=ZSBlQuYh"
-    },
-    {
-        id: 123,
-        name: "NF",
-        imageUrl : "https://assetsds.cdnedge.bluemix.net/sites/default/files/styles/very_big_1/public/feature/images/nf.jpg?itok=ZSBlQuYh"
-    },
-    {
-        id: 123,
-        name: "NF",
-        imageUrl : "https://assetsds.cdnedge.bluemix.net/sites/default/files/styles/very_big_1/public/feature/images/nf.jpg?itok=ZSBlQuYh"
-    },{
-        id: 123,
-        name: "NF",
-        imageUrl : "https://assetsds.cdnedge.bluemix.net/sites/default/files/styles/very_big_1/public/feature/images/nf.jpg?itok=ZSBlQuYh"
-    },{
-        id: 123,
-        name: "NF",
-        imageUrl : "https://assetsds.cdnedge.bluemix.net/sites/default/files/styles/very_big_1/public/feature/images/nf.jpg?itok=ZSBlQuYh"
-    },{
-        id: 123,
-        name: "NF",
-        imageUrl : "https://assetsds.cdnedge.bluemix.net/sites/default/files/styles/very_big_1/public/feature/images/nf.jpg?itok=ZSBlQuYh"
-    },{
-        id: 123,
-        name: "NF",
-        imageUrl : "https://assetsds.cdnedge.bluemix.net/sites/default/files/styles/very_big_1/public/feature/images/nf.jpg?itok=ZSBlQuYh"
-    },{
-        id: 123,
-        name: "NF",
-        imageUrl : "https://assetsds.cdnedge.bluemix.net/sites/default/files/styles/very_big_1/public/feature/images/nf.jpg?itok=ZSBlQuYh"
-    },{
-        id: 123,
-        name: "NF",
-        imageUrl : "https://assetsds.cdnedge.bluemix.net/sites/default/files/styles/very_big_1/public/feature/images/nf.jpg?itok=ZSBlQuYh"
-    },  
-]
+    }  
+));
 
 const useStyles = makeStyles(()=>({
     hover:{
         '&:hover':{
             cursor:'pointer',
-            boxShadow: "0px 2px 2px #EF757D",
+            boxShadow: "0px 4px 8px #EF757D",
         },
     }
 }))
