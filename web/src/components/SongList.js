@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { Avatar, Grid,IconButton } from '@material-ui/core';
-import {Heart, Play} from 'react-feather';
+import { Avatar, Grid } from '@material-ui/core';
+import {Heart, Play, Plus} from 'react-feather';
 
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -42,7 +42,11 @@ const columns = [
     },
     {
         id:'like',
-        minWidth: 50
+        minWidth: 30
+    },
+    {
+        id:'plus',
+        minWidth: 30
     }
   ];
 
@@ -72,7 +76,8 @@ const columns = [
         artist:"NF",
         plays: 200,
         time: "02:40",
-        like: 1
+        like: 1,
+        plus: <Plus />
     },
     {
         play: <Play />,
@@ -81,7 +86,8 @@ const columns = [
         artist:"NF",
         plays: 200,
         time: "02:40",
-        like: 0
+        like: 0,
+        plus: <Plus />
     },
     {
         play: <Play />,
@@ -90,7 +96,8 @@ const columns = [
         artist:"NF",
         plays: 200,
         time: "02:40",
-        like: 1
+        like: 1,
+        plus: <Plus />
     },
     {
         play: <Play />,
@@ -99,7 +106,8 @@ const columns = [
         artist:"NF",
         plays: 200,
         time: "02:40",
-        like: 0
+        like: 0,
+        plus: <Plus />
     },
     {
         play: <Play />,
@@ -108,7 +116,8 @@ const columns = [
         artist:"NF",
         plays: 200,
         time: "02:40",
-        like: 1
+        like: 1,
+        plus: <Plus />
     },
     {
         play: <Play />,
@@ -117,7 +126,8 @@ const columns = [
         artist:"NF",
         plays: 200,
         time: "02:40",
-        like: 0
+        like: 1,
+        plus: <Plus />
     },
     
   ];
