@@ -115,7 +115,6 @@ const Sidebar = (props) => {
     return (
         <div className = {classes.root}>
             <Logo />
-            <span style={{paddingLeft:30,color:"#EF757D",fontSize:12}}><IconButton onClick={props.handleCreatePlaylist}><Plus size={15} color="#EF757D"/></IconButton> New Playlist</span>
             <List style = {{
                 overflowX:"hidden",
                 overflowY:"auto",
@@ -139,7 +138,7 @@ const Sidebar = (props) => {
                         />
                     )
                 }
-                
+            <span style={{paddingLeft:30,color:"#EF757D",fontSize:12}}><IconButton onClick={props.handleCreatePlaylist}><Plus size={15} color="#EF757D"/></IconButton> New Playlist</span>
             </List>
             
         </div>

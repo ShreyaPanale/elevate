@@ -32,7 +32,7 @@ let playlists=[
 
 const modalStyles = makeStyles((theme)=>({
     root:{
-        width: '40%',
+        
         background: "#FFF",
         borderRadius: 20,
         display: "flex",
@@ -64,7 +64,8 @@ const modalStyles = makeStyles((theme)=>({
         width:"100%",
         borderRadius:10,
         overflowY:"auto",
-        display:'flex'
+        display:'flex',
+        fontFamily:"Poppins"
     },
     btn:{
         backgroundColor: "#EF757D",
@@ -84,6 +85,10 @@ const modalStyles = makeStyles((theme)=>({
     formControl:{
         marginLeft: theme.spacing(3),
         marginTop: theme.spacing(3)
+    },
+    formControlLabel:{
+        fontFamily:"Poppins",
+        fontSize:20
     },
     input:{
         marginTop:"4%",
@@ -121,7 +126,7 @@ export const AddTrack = ({open,handleClose}) => {
             onClose={handleClose}
             className={classes.modal}
         >
-            <div className={classes.root} style={{height:"60%"}}>
+            <div className={classes.root} style={{height:"60%",width: '35%',}}>
                 <div className={classes.header}>
                     <Typography className={classes.text}>
                         Choose your playlist
@@ -132,8 +137,9 @@ export const AddTrack = ({open,handleClose}) => {
                         <FormGroup>
                             {
                                 playlists.map((playlist) => (
-                                    <FormControlLabel control={<Checkbox name={playlist.pid} onChange={handleChange}/>}
-                                     label={playlist.pname}
+                                    <FormControlLabel 
+                                    control={<Checkbox name={playlist.pid} onChange={handleChange} style ={{color: "#EF757D"}}/>}
+                                     label={<Typography className={classes.formControlLabel}>{playlist.pname}</Typography>}
                                      />
                                 ))
                             }
@@ -158,7 +164,7 @@ export const CreatePlaylist = ({open,handleClose}) => {
             onClose={handleClose}
             className={classes.modal}
         >
-            <div className={classes.root}>
+            <div className={classes.root} style={{width: '40%',}}>
                 <div className={classes.header}>
                     <Typography className={classes.text}>
                         Create playlist
