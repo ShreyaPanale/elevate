@@ -32,6 +32,11 @@ const sidebarStyles = makeStyles(() => ({
     title :{
         color:'#9D9EA0',
         fontWeight:500
+    },
+    hover:{
+        "&:hover":{
+            cursor:'pointer'
+        }
     }
 }))
 
@@ -138,7 +143,7 @@ const Sidebar = (props) => {
                         />
                     )
                 }
-            <span style={{paddingLeft:30,color:"#EF757D",fontSize:12}}><IconButton onClick={props.handleCreatePlaylist}><Plus size={15} color="#EF757D"/></IconButton> New Playlist</span>
+            <span className={classes.hover} onClick={props.handleCreatePlaylist} style={{paddingLeft:30,color:"#EF757D",fontSize:12}}><IconButton ><Plus size={15} color="#EF757D"/></IconButton> New Playlist</span>
             </List>
             
         </div>

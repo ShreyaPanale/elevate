@@ -92,6 +92,7 @@ const modalStyles = makeStyles((theme)=>({
     },
     input:{
         marginTop:"4%",
+        width:"80%",
         '& input':{
             paddingLeft:"5%",
             border:"4px solid black",
@@ -102,7 +103,11 @@ const modalStyles = makeStyles((theme)=>({
         '& input:focus':{
             borderColor:'#EF757D'
         },
-}}))
+    },
+    notchedOutline:{
+        border:'none'
+    },
+}))
 
 export const AddTrack = ({open,handleClose}) => {
     const classes = modalStyles();
@@ -171,7 +176,7 @@ export const CreatePlaylist = ({open,handleClose}) => {
                     </Typography>
                 </div>
                 
-                <TextField variant="outlined" placeholder="Playlist Name" className={classes.input}  onChange={(e)=>{setName(e.target.value)}}/>
+                <TextField variant="outlined" placeholder="Playlist Name" className={classes.input} InputProps={{classes:{notchedOutline:classes.notchedOutline}}} onChange={(e)=>{setName(e.target.value)}}/>
                 
                 <Button className={classes.btn} onClick={handleSubmit}>Create Playlist</Button>
             </div>
