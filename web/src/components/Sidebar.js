@@ -15,11 +15,10 @@ const sidebarStyles = makeStyles(() => ({
     root: {
         display:"flex",
         color: "#FFF",
-        height: "100%",
+        height: "100vh",
         backgroundColor:"#F5F6FA",
         flexDirection:"column",
-        overflowX:"hidden",
-        overflowY:"auto"
+        overflow:"none"
     },
     listItem: {
         marginLeft:30,
@@ -96,7 +95,7 @@ const Sidebar = () => {
     const location = useLocation();
     const [active, setActive] = React.useState(indexToRoute[location.pathname]);
     const sidebarGroups = {
-        "Browser Music" : {
+        "Browse Music" : {
             "tabs" : ["Discover", "Artists", "Songs"],
             "indices": [0,1,2],
             "routes": [ROUTES.dashboard, ROUTES.artists, ROUTES.songs]
@@ -115,7 +114,16 @@ const Sidebar = () => {
     return (
         <div className = {classes.root}>
             <Logo />
-            <List style = {{ height:"100%"}}>
+            <List style = {{
+                overflowX:"hidden",
+                overflowY:"auto",
+                marginBottom:100,
+                "&::-webkit-scrollbar": {
+                    display: "none",
+                    width:'0px !important'
+                },
+                scrollbarWidth:0,
+            }}>
                 {
                     Object.keys(sidebarGroups).map((title,idx) => 
                         <ListGroup
