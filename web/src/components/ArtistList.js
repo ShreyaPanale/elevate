@@ -1,8 +1,8 @@
 import React from 'react';
-
+import { useHistory } from 'react-router-dom'
 import {makeStyles} from '@material-ui/core/styles';
 import { Avatar, Grid} from '@material-ui/core';
-
+import ROUTES from '../routes';
 const artists = [
     {
         id: 123,
@@ -45,14 +45,27 @@ const artists = [
     },  
 ]
 
+const useStyles = makeStyles(()=>({
+    hover:{
+        '&:hover':{
+            cursor:'pointer',
+            boxShadow: "0px 2px 2px #EF757D",
+        },
+    }
+}))
 const ArtistList = () => {
+    const classes = useStyles();
+    const history = useHistory();
     return (
         <Grid container direction="row" spacing={10} style={{padding:20}}>
             {
                 artists.map(artist => 
                     <Grid item direction="column" justify="center" align="center">
-                        <Grid item>
+                        <Grid item onClick={()=>{
+                            history.push(ROUTES.genArtist(artist.id))
+                        }}>
                             <Avatar 
+                                className={classes.hover}
                                 style={{
                                     width:200,
                                     height:200,
