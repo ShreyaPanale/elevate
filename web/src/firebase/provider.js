@@ -9,13 +9,24 @@ export const useAuth = () => {
 export const AuthProvider = ({children}) => {
     const [currentUser, setCurrentUser] = React.useState();
     const [loading, setLoading] = useState(true)
+    const [errors, setErrors] = useState("");
 
-    function signup(email, password) {
-        return auth.createUserWithEmailAndPassword(email, password)
+     async function signup(email, password) {
+        try {
+          await auth.createUserWithEmailAndPassword(email, password)
+        } 
+        catch(e) {
+          setErrors(e.message)
+        }
       }
     
-      function login(email, password) {
-        return auth.signInWithEmailAndPassword(email, password)
+      async function login(email, password) {
+        try {
+          await auth.signInWithEmailAndPassword(email, password)
+        }
+        catch(e) {
+          setErrors(e.message)
+        }
       }
     
       function logout() {
@@ -26,8 +37,13 @@ export const AuthProvider = ({children}) => {
         return auth.sendPasswordResetEmail(email)
       }
       
-      function googleSignin(){
-        return auth.signInWithPopup(googleProvider)
+      async function googleSignin(){
+        try {
+          await auth.signInWithPopup(googleProvider)
+        } 
+        catch(e) {
+          setErrors(e.message)
+        }
       }
 
       useEffect(() => {
@@ -47,7 +63,9 @@ export const AuthProvider = ({children}) => {
                 signup,
                 logout,
                 resetPassword,
-                googleSignin
+                googleSignin,
+                errors,
+                setErrors
             }} 
         >
             {!loading && children}

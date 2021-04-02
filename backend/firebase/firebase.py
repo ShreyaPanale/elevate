@@ -6,12 +6,14 @@ class FirestoreController:
     def __init__(self):
         self.db = firestore.client()
 
-    def getUser(self, id):
-        pass
-        #return self.db.collection('users').document(id).get()
-    
-    def createUser(self):
-        pass
+    def getUser(self, uid):
+        return self.db.collection('users').document(uid).get().to_dict()
+        
+    def saveUser(self, user):
+        self.db.collection('users').document(user.uid).set(user.data())
+
+    def deleteUser(self, uid):
+        self.db.collection('users').document(user.uid).delete()
 
     def addNewTrack(self,track):
         doc_ref = self.db.collection(u'tracks').document()
@@ -90,3 +92,29 @@ class FirestoreController:
             doc_ref.delete()
         else:
             return {'error':"Artist doesn't exist"}
+
+    #playlist controller functions
+
+    def getPlaylist(self,pid):
+        doc_ref = self.db.collection(u'playlists').document(pid)
+        doc = doc_ref.get()
+        if doc.exists:
+            return doc.to_dict()
+        else:
+            return {'error':'Document not found,Missing playlist'}
+
+    def savePlaylist(self,playlist):
+        doc_ref = self.db.collection('playlists').document()
+        doc_ref.set(playlist.data())
+        return doc_ref.id
+
+    def updatePlaylist(self,playlist,pid):
+        doc_ref = self.db.collection('playlists').document(pid)
+        doc_ref.set(playlist.data())
+
+    def deletePlaylist(self,pid):
+        doc_ref=self.db.collection(u'playlists').document(pid)
+        if doc_ref.get().exists:
+            doc_ref.delete()
+        else:
+            return {'error':"Playlist doesn't exist"}

@@ -22,7 +22,7 @@ const useStyles = makeStyles(()=>({
         width:'100%',
         "&::-webkit-scrollbar": {
             display: "none",
-            width:'0 !important'
+            width:'0px !important'
         },
         paddingLeft:20
     }

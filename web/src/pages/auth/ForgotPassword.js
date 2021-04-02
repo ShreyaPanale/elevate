@@ -60,53 +60,63 @@ const useStyles = makeStyles(()=>({
     }
 }));
 
-const Signup = () => {
+const ForgotPassword = () => {
     const classes = useStyles();
-    const { signup, googleSignin, errors } = useAuth();
-
+    const { resetPassword, errors, setErrors } = useAuth();
+    const [loading, setLoading] = useState(false);
     const [ email, setEmail ] = useState("");
-    const [ password, setPassword ] = useState("");
+    const [ msg, setMsg] = useState("")
+    async function handleSubmit(email) {
+        try {
+          setMsg("")
+          setLoading(true)
+          await resetPassword(email)
+          setMsg("An email has been send to you, check it out.")
+        } catch {
+          setErrors("Failed to reset password")
+        }
+    
+        setLoading(false)
+      }
+
     return (
         <AuthLayout>
             <Fade
                 in={true}
                 timeout={1500}
-                direction="up"
-                ><div>
+                direction="up">
+                    <div>
             <Grid item container className={classes.container} direction="column">
                 <Grid item> 
                     <h1 className={classes.heading}>
-                        Sign up
+                        Forgot Password
                     </h1>
                 </Grid>
                 <Grid item container direction="column" className={classes.inputContainer}> 
-                    <TextField variant="outlined" placeholder="email" className={classes.input} InputProps={{classes:{notchedOutline:classes.notchedOutline}}} onChange={(e)=>{setEmail(e.target.value)}} />
-                    <TextField variant="outlined" type="password" placeholder="password" className={classes.input} InputProps={{classes:{notchedOutline:classes.notchedOutline}}} onChange={(e)=>{setPassword(e.target.value)}}  />
+                    <TextField variant="outlined" placeholder="email" className={classes.input} InputProps={{classes:{notchedOutline:classes.notchedOutline}}} onChange={(e)=>{setEmail(e.target.value)}}/>
                 </Grid>
                 <span style={{fontFamily:"Poppins",fontWeight:400,color:"#EF757D", marginTop:8}}>
                     {errors}
                 </span>
-                <Button className = {classes.btn} onClick = {() => {
-                    if (email!='' && password!=''){
-                        signup(email,password);
+                <Button disabled = {loading} className = {classes.btn} onClick = {() => {
+                    if (email!=''){
+                        handleSubmit(email);
                     }
                 }}>
-                    Sign up
+                    Reset Password
                 </Button>
-                <span>
-                    or
-                </span>
-                <GoogleButton 
-                    logo="https://skipway.com/wp-content/uploads/2020/05/image-20150902-6700-t2axrz.jpg" 
-                    content="Sign up with Google"
-                    handleClick={googleSignin}
-                />
+
                 <span style={{fontFamily:"Poppins",fontWeight:400,color:"#ABABAB"}}>
-                    Already have an account? <a href = "/signin" style={{color:"#EF757D",textDecoration:"underline"}}>Sign in</a> now.
+                    Don’t have an account yet? <a href = "/signup" style={{color:"#EF757D",textDecoration:"underline"}}>Sign up</a> now.
+                </span> 
+                <span style={{fontFamily:"Poppins",fontWeight:200,marginTop:16}}>
+                👈  <a href = "/signin" style={{color:"black"}}> Back to sign in!</a>
                 </span>
-            </Grid></div></Fade>
+            </Grid>
+            </div>
+            </Fade>
         </AuthLayout>
     )
 }
 
-export default Signup;
+export default ForgotPassword;

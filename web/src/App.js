@@ -9,6 +9,7 @@ import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
 import SignIn from "./pages/auth/Signin";
 import Landing from "./pages/Landing";
+import ForgotPassword from "./pages/auth/ForgotPassword";
 import SignUp from './pages/auth/Signup';
 import Artist from './pages/Artist/Artist';
 import Artists from './pages/Artist/Artists';
@@ -40,6 +41,7 @@ function App() {
     <Switch>
       <Route exact path={ROUTES.signin} component={SignIn} />
       <Route exact path={ROUTES.signup} component={SignUp} />
+      <Route exact path={ROUTES.forgotPassword} component={ForgotPassword} />
       <Route exact path={ROUTES.landing} component = {Landing} />
       <Redirect to={ROUTES.landing} />
     </Switch>

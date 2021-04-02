@@ -4,6 +4,7 @@ export default {
     signin:"/signin",
     signup:"/signup",
     landing:"/landing",
+    forgotPassword:'/forgotPassword',
     admin:"/admin",
     favourites: "/favourites",
     artists: "/artist",
