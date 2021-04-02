@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Avatar, Typography } from '@material-ui/core';
+import { Grid, Avatar, Typography, IconButton} from '@material-ui/core';
 import { Heart, ChevronUp, Play, SkipForward, SkipBack } from 'react-feather'
 const useStyles = makeStyles(()=>({
     root:{
@@ -37,6 +37,14 @@ const useStyles = makeStyles(()=>({
 const Player = () => {
     const classes = useStyles();
     let curPercentage = 80; // will handle progress
+    const [like,setLike] = React.useState(0);
+    const handleLike = (event) => {
+        if(like==0)
+            setLike(1)
+        else
+            setLike(0)
+        //call necessary endpoints
+    }
     return (
         <Grid className={classes.root} container direction="row">
             <Grid item xs={1}>
@@ -64,7 +72,10 @@ const Player = () => {
                     </Typography>
                 </Grid>
                 <Grid item>
-                    <Heart />
+                    <IconButton onClick={handleLike}>
+                        {like==0 && <Heart style={{color:"#EF757D",fill:"#EF757D"}}/>}
+                        {like==1 && <Heart />}
+                    </IconButton>
                 </Grid>
             </Grid>
             <Grid item container xs={8} style={{alignItems:'center'}} direction="column">

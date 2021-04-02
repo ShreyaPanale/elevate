@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Avatar, Grid } from '@material-ui/core';
+import { Avatar, Grid,IconButton } from '@material-ui/core';
 import {Heart, Play} from 'react-feather';
 
 import { makeStyles } from '@material-ui/core/styles'
@@ -64,7 +64,7 @@ const columns = [
     )
   }
 
-  const rows = [
+  let rows = [
     {
         play: <Play />,
         place: 1,
@@ -72,7 +72,7 @@ const columns = [
         artist:"NF",
         plays: 200,
         time: "02:40",
-        like: <Heart/>
+        like: 1
     },
     {
         play: <Play />,
@@ -81,7 +81,7 @@ const columns = [
         artist:"NF",
         plays: 200,
         time: "02:40",
-        like: <Heart/>
+        like: 0
     },
     {
         play: <Play />,
@@ -90,7 +90,7 @@ const columns = [
         artist:"NF",
         plays: 200,
         time: "02:40",
-        like: <Heart/>
+        like: 1
     },
     {
         play: <Play />,
@@ -99,7 +99,7 @@ const columns = [
         artist:"NF",
         plays: 200,
         time: "02:40",
-        like: <Heart/>
+        like: 0
     },
     {
         play: <Play />,
@@ -108,7 +108,7 @@ const columns = [
         artist:"NF",
         plays: 200,
         time: "02:40",
-        like: <Heart/>
+        like: 1
     },
     {
         play: <Play />,
@@ -117,13 +117,16 @@ const columns = [
         artist:"NF",
         plays: 200,
         time: "02:40",
-        like: <Heart/>
+        like: 0
     },
     
   ];
 
 const SongList = () => {
     const classes = songListStyles();
+    const handleLike = (event)=>{
+      //need to make this flexible
+    }
     return (
         <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
@@ -148,7 +151,9 @@ const SongList = () => {
                     const value = row[column.id];
                     return (
                       <TableCell key={column.id} align={column.align}>
-                        {value}
+                        {column.id=="like" && value==1 && <IconButton onClick={handleLike}><Heart style={{color:"#EF757D",fill:"#EF757D"}}/></IconButton>}
+                        {column.id=="like" && value==0 && <IconButton onClick={handleLike}><Heart /></IconButton>}
+                        {column.id!="like" && value}
                       </TableCell>
                     );
                   })}
