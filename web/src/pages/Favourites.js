@@ -1,4 +1,5 @@
 import React from 'react'
+import TopBar from '../components/TopBar';
 
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles'
@@ -17,19 +18,21 @@ const useStyles = makeStyles(()=>({
 const Favourites = () => {
     const classes = useStyles();
     return (
-        <div style = {{display:"flex",flexDirection:'column', maxWidth:'100%'}} direction="row">
-        
-        <Grid item container direction="row" className={classes.root}>
-                <Grid item>
-                    <h2 className={classes.sectionTitle}>
-                        Favourites
-                    </h2>
-                </Grid>
-                <Grid item className={classes.horizontal}>
-                    <SongList />
-                </Grid>
+        <Grid container direction="row">
+            <Grid item container xs={12} >
+                <TopBar placeholder = {"Search for songs or artists"} />
+            </Grid>
+            <Grid item container direction="row" className={classes.root}>
+                    <Grid item xs={12}>
+                        <h1>
+                            Favourites
+                        </h1>
+                    </Grid>
+                    <Grid item xs={12} style={{width:"100%"}}>
+                        <SongList />
+                    </Grid>
+            </Grid>
         </Grid>
-    </div>
     )
 }
 
