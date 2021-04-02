@@ -12,17 +12,6 @@ const useStyles = makeStyles(()=>({
         paddingBottom:'1%',
         marginTop:0,   
     },
-    horizontal:{
-        overflowX:'auto',
-        flexDirection:"row",
-        display:'inline-flex',
-        paddingBottom:"2%",
-        "&::-webkit-scrollbar": {
-            display: "none",
-            width:'0px !important'
-        },
-        paddingLeft:20
-    }
 }))
 
 const Queue = () => {
@@ -32,16 +21,16 @@ const Queue = () => {
         history.goBack()
       }
     return (
-        <div style = {{display:"flex",flexDirection:'column', maxWidth:'100%'}} direction="row">
+        <div style = {{display:"flex",flexDirection:'column', width:'100%'}} direction="row">
             <Grid item container direction="row" className={classes.root}>
                 <Grid container>
                 <Grid item xs={6}> 
                         <h2 style = {{color:"#EF757D"}}>Next Up</h2>
                 </Grid>
                 <Grid item xs={6} style = {{textAlign: 'right'}}> 
-                        <Button onClick={goBack}><h2  style = {{color:"#EF757D"}}>Close</h2></Button>
+                        <Button onClick={goBack}><h2  style = {{color:"#EF757D", textTransform:'none'}}>Close</h2></Button>
                     </Grid>
-                    <Grid item className={classes.horizontal}>
+                    <Grid item style={{width:'100%'}}>
                         <SongList />
                     </Grid>
                 </Grid>

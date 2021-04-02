@@ -18,7 +18,7 @@ import History from './pages/History';
 import Favourites from './pages/Favourites';
 import Playlist from './pages/Playlist/Playlist';
 import AdminPanel from './pages/admin/AdminPanel';
-
+import Queue from './pages/Queue';
 import AppLayout from './Layout/AppLayout';
 
 function App() {
@@ -34,6 +34,7 @@ function App() {
       <Route exact path={ROUTES.songs} component={Songs} />
       <Route exact path={ROUTES.history} component={History} />
       <Route exact path={ROUTES.favourites} component={Favourites} />
+      <Route exact path={ROUTES.queue} component={Queue} />
       <Redirect to={ROUTES.dashboard} />
     </Switch>
   );
