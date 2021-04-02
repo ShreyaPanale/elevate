@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Avatar, Grid } from '@material-ui/core';
+import { Avatar, Grid, IconButton } from '@material-ui/core';
 import {Heart, Play, Plus} from 'react-feather';
 
 import { makeStyles } from '@material-ui/core/styles'
@@ -132,11 +132,27 @@ const columns = [
     
   ];
 
+const SongRow = ({row}) => {
+  const [like,setLike] = React.useState(row['like']);
+  const handleLike = ()=>{
+    if(like) setLike(0)
+    else setLike(1)
+  }
+  return (
+      <TableRow tabIndex={-1} key={row.code}>
+            {columns.map((column) => {
+              const value = row[column.id];
+              return (
+                <TableCell key={column.id} align={column.align}>
+                  {column.id=="like"?<IconButton onClick={handleLike}><Heart style={like==0?{color:"#EF757D",fill:"#EF757D"}:{}}/></IconButton> :value}
+                </TableCell>
+              );
+            })}
+          </TableRow>
+  )
+}
 const SongList = () => {
     const classes = songListStyles();
-    const handleLike = (event)=>{
-      //need to make this flexible
-    }
     return (
         <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
@@ -156,18 +172,7 @@ const SongList = () => {
           <TableBody>
             {rows.map((row) => {
               return (
-                <TableRow tabIndex={-1} key={row.code}>
-                  {columns.map((column) => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.id=="like" && value==1 && <IconButton onClick={handleLike}><Heart style={{color:"#EF757D",fill:"#EF757D"}}/></IconButton>}
-                        {column.id=="like" && value==0 && <IconButton onClick={handleLike}><Heart /></IconButton>}
-                        {column.id!="like" && value}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
+                <SongRow row={row} />
               );
             })}
           </TableBody>
