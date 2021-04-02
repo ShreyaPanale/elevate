@@ -52,19 +52,16 @@ class APIServer:
                 desc=request.form['desc']
                 cover=request.files['cover']
                 mp3file=request.files['mp3file']
-                '''
-                if cover and allowed_extensions_cover(cover.filename):
+                if cover and fileUploader.allowed_file_cover(cover.filename):
                     pass
                 else:
                     raise Exception('Invalid file type for image!')
                 
-                if mp3file and allowed_extensions_track(track.filename):
+                if mp3file and fileUploader.allowed_file_track(mp3file.filename):
                     pass
                 else:
                     raise Exception('Invalid file type for track!')
-                '''
                 #Something happens here
-
                 uploader=fileUploader.FileUploader()
                 upload_folder ="app\\uploads"
                 cover.save(os.path.join(upload_folder,cover.filename))
@@ -78,7 +75,7 @@ class APIServer:
                 return response_msg 
             except Exception as e:
                 print(e)
-                response_msg=jsonify({"error":"400","message":"Bad request"}),400
+                response_msg=jsonify({"error":"400","message":str(e)}),400
                 return response_msg
 
     @app.route('/gettracks',methods=['GET'])
