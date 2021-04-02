@@ -1,5 +1,5 @@
 # elevate
-A web based music player to implement all of your music
+A web based music player to listen to the best music ever.
 
 # ENV config
 

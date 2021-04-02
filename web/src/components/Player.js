@@ -1,7 +1,9 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Avatar, Typography, IconButton} from '@material-ui/core';
-import { Heart, ChevronUp, Play, SkipForward, SkipBack, Plus } from 'react-feather'
+import { Grid, Avatar, Typography, IconButton } from '@material-ui/core';
+import { Heart, List, Play, SkipForward, SkipBack, Plus } from 'react-feather';
+import {useHistory,useLocation} from 'react-router-dom';
+import ROUTES from '../routes';
 const useStyles = makeStyles(()=>({
     root:{
         boxShadow: "0px 4px 4px 5px rgba(0, 0, 0, 0.25)",
@@ -46,6 +48,13 @@ const Player = (props) => {
         //call necessary endpoints
     }
    
+    const history = useHistory();
+    const location = useLocation();
+    const [isQueue,setQueue] = React.useState(location.pathname==ROUTES.queue);
+    React.useEffect(()=>{
+        if(location.pathname==ROUTES.queue) setQueue(true)
+        else if(isQueue) setQueue(false)
+    },[location])
     return (
         <Grid className={classes.root} container direction="row">
             <Grid item xs={1}>
@@ -124,9 +133,15 @@ const Player = (props) => {
                     </Grid>
             </Grid>
             <Grid item xs = {1} align="end">
-                <ChevronUp />
+                <List style={{color:isQueue?'#EF757D':'#ABABAB'}} onClick={()=>{
+                    if(isQueue){
+                        history.goBack();
+                    } else{
+                        history.push(ROUTES.queue)
+                    }
+                }} />
             </Grid>
-        </Grid>
+        </Grid> 
     );
 }
 

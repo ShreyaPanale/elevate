@@ -12,6 +12,7 @@ export default {
     songs:"/songs",
     history:"/history",
     playlist:"/playlist/:id",
+    queue:'/queue',
 
     // route generator functions
     genPlaylist:(id)=>`/playlist/${id}`,
