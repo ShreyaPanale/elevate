@@ -1,18 +1,24 @@
 from flask import Flask,request,jsonify
-
 #configurations and environment setup
 from dotenv import load_dotenv
 load_dotenv()
 from firebase import config
 from utils import fileUploader
+
+from app.users import UserManager
 from app.track import TrackManager
 from app.artist import ArtistManager
+from app.playlist import PlaylistManager
+
 import os
 app = Flask(__name__)
 trackManager=TrackManager()
 artistManager=ArtistManager()
+userManager = UserManager()
+playlistManager = PlaylistManager()
 
 class APIServer:
+    
     def __init__(self,port):
         self.port = port
 
@@ -26,22 +32,104 @@ class APIServer:
     # Users endpoints
 
     # create user api
-    @app.route('/createUser')
+    @app.route('/user/create',methods=['POST'])
     def createUser():
-        return "create user called"
+        if request.method == 'POST':
+            try:
+                print(request.json)
+                userManager.createUser( request.json['uid'], request.json['email'], request.json['displayName'])
+                return {"message":"success"},200
+            except Exception as e:
+                print(e)
+                response_msg=jsonify({"error":"400","message":"Bad request"}),400
+                return response_msg
     
     # update user endpoint
-    @app.route('/updateUser')
+    @app.route('/user/update')
     def updateUser():
-        return "update user called"
+        if request.method == 'POST':
+            try:
+                userManager.updateUser(request.json.uid, request.json.email, request.json.displayName)
+                return {"message":"success"},200
+            except Exception as e:
+                print(e)
+                response_msg=jsonify({"error":"400","message":"Bad request"}),400
+                return response_msg
     
     # get user endpoint
-    @app.route('/getUser')
+    @app.route('/user')
     def getUser():
-        return "get user called"
+        uid = request.args.get('uid')
+        return userManager.getUserData(uid)
 
+    # user recommendations endpoint
+    @app.route('/user/recommendations')
+    def getRecommendations():
+        return {"info":"to be implemented!"}
+
+    # manages user like/unlike a track
+    @app.route('/user/like',methods=['POST'])
+    def setLike():
+        try:
+            uid = request.json.get('uid')
+            trackId = request.json.get('trackId')
+            action = request.json.get('action')
+            user = userManager.getUser(uid)
+            if (action=='like'):
+                user.likeSong(trackId)
+            else:
+                user.unLikeSong(trackId)
+            return {"message":"success"},200
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
+        
+    # manages add/remove playlist for user
+    @app.route('/user/playlists',methods=['POST'])
+    def managePlaylist():
+        try:
+            uid = request.json.get('uid')
+            playlistId = request.json.get('playlistId')
+            action = request.json.get('action')
+            user = userManager.getUser(uid)
+            if (action=='addPlaylist'):
+                user.addPlaylist(playlistId)
+            else:
+                user.removePlaylist(playlistId)
+            return {"message":"success"},200
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
+
+    # updates user history
+    @app.route('/user/history',methods=['POST'])
+    def manageHistory():
+        try:
+            uid = request.json.get('uid')
+            trackId = request.json.get('trackId')
+            user = userManager.getUser(uid)
+            user.addToHistory(trackId)
+            return {"message":"success"},200
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
+
+    # delete user endpoint
+    @app.route('/user/delete')
+    def deleteUser():
+        if request.method == 'POST':
+            try:
+                userManager.deleteUser(request.json.get('uid'))
+                return {"message":"success"},200
+            except Exception as e:
+                print(e)
+                response_msg=jsonify({"error":"400","message":"Bad request"}),400
+                return response_msg
+    
     # track endpoints
-
     @app.route('/addtrack',methods=['POST'])
     def addTrack():
         if request.method == 'POST':
@@ -166,6 +254,58 @@ class APIServer:
             response_msg=jsonify({"error":"400","message":"Bad request"}),400
             return response_msg
 
+    #playlist endpoints
+
+    @app.route('/playlist/create',methods=['POST'])
+    def createPlaylist():
+        if request.method == 'POST':
+            try:
+                print(request.json)
+                pid=playlistManager.createPlaylist(request.json['uid'], request.json['pname'])
+                return {"pid":pid},200
+            except Exception as e:
+                print(e)
+                response_msg=jsonify({"error":"400","message":"Bad request"}),400
+                return response_msg
+
+    @app.route('/playlist/delete',methods=['POST'])
+    def deletePlaylist():
+        try:
+            playlistManager.deletePlaylist(request.json.get('pid'))
+            return {"message":"success"},200
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
+
+    @app.route('/playlist',methods=['GET'])
+    def getPlaylist():
+        try:
+            pid=request.args.get('pid')
+            return playlistManager.getPlaylistData(pid),200
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
+
+    # manages add/remove playlist for user
+    @app.route('/user/playlist/tracks',methods=['POST'])
+    def managePlaylistTracks():
+        try:
+            tid = request.json.get('tid')
+            pid = request.json.get('pid')
+            action = request.json.get('action')
+            playlist = playlistManager.getPlaylist(pid)
+            if (action=='addTrack'):
+                playlist.addSong(pid,tid)
+            else:
+                print("im here")
+                playlist.removeSong(pid,tid)
+            return {"message":"success"},200
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
 
 server = APIServer(port = 5000)
 server.start()
