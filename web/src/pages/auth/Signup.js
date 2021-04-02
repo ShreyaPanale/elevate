@@ -62,7 +62,7 @@ const useStyles = makeStyles(()=>({
 
 const Signup = () => {
     const classes = useStyles();
-    const { signup, googleSignin } = useAuth();
+    const { signup, googleSignin, errors } = useAuth();
 
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
@@ -83,6 +83,9 @@ const Signup = () => {
                     <TextField variant="outlined" placeholder="email" className={classes.input} InputProps={{classes:{notchedOutline:classes.notchedOutline}}} onChange={(e)=>{setEmail(e.target.value)}} />
                     <TextField variant="outlined" type="password" placeholder="password" className={classes.input} InputProps={{classes:{notchedOutline:classes.notchedOutline}}} onChange={(e)=>{setPassword(e.target.value)}}  />
                 </Grid>
+                <span style={{fontFamily:"Poppins",fontWeight:400,color:"#EF757D", marginTop:8}}>
+                    {errors}
+                </span>
                 <Button className = {classes.btn} onClick = {() => {
                     if (email!='' && password!=''){
                         signup(email,password);
