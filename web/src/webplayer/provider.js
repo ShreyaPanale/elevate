@@ -9,7 +9,10 @@ export const usePlayer = () => {
 export const PlayerProvider = ({children}) => {
 
     const [queue, setQueue] = useState([]);
+    const [playlists, setPlaylists] = useState([]);
+    const [history, setHistory] = useState([]);
     const [currSong, setCurrSong] = useState();
+    const [likedSongs, setLikedSongs] = useState([]);
 
     const nextSong = () => {
 
@@ -23,6 +26,26 @@ export const PlayerProvider = ({children}) => {
         
     }
 
+    const seek = () => {
+
+    }
+
+    const setLike = () => {
+
+    }
+
+    const addToPlaylist = () => {
+
+    }
+
+    const removeFromPlaylist = () => {
+
+    }
+
+    const playNow = () => {
+
+    }
+    
     return (
         <PlayerContext.Provider>
             {children}
