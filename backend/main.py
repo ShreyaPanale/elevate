@@ -9,10 +9,13 @@ from app.users import UserManager
 from app.track import TrackManager
 from app.artist import ArtistManager
 from app.playlist import PlaylistManager
-
+from flask_cors import CORS
 import os
 from mutagen.mp3 import MP3
+
 app = Flask(__name__)
+CORS(app)
+
 trackManager=TrackManager()
 artistManager=ArtistManager()
 userManager = UserManager()
@@ -92,8 +95,9 @@ class APIServer:
     def managePlaylist():
         try:
             uid = request.json.get('uid')
-            playlistId = request.json.get('playlistId')
+            playlistId = request.json.get('pid')
             action = request.json.get('action')
+            print("hii",uid,playlistId,action)
             user = userManager.getUser(uid)
             if (action=='addPlaylist'):
                 user.addPlaylist(playlistId)

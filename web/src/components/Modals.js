@@ -2,6 +2,9 @@ import React from 'react'
 import { Modal, Typography, Grid,Button, FormControlLabel,TextField} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { FormLabel, FormControl, FormGroup,Checkbox} from '@material-ui/core';
+import API from '../api';
+import { useAuth } from "../firebase/provider";
+import { useHistory } from "react-router-dom";
 
 let playlists=[
     {
@@ -157,10 +160,28 @@ export const AddTrack = ({open,handleClose}) => {
     )
 }
 
-export const CreatePlaylist = ({open,handleClose}) => {
+export const CreatePlaylist = ({open,handleClose,setModal}) => {
     const classes = modalStyles();
-    const handleSubmit = () =>{
-        //will do
+    const { currentUser } = useAuth();
+    const history = useHistory();
+    const handleSubmit = async (e) =>{
+        const playlist = {
+            "pname" : pname,
+            "uid" : currentUser.uid
+        }
+        console.log(playlist)
+        API.createPlaylist(playlist).then(async res => {
+            console.log(res.pid)
+            const toAdd={
+                "pid":res.pid,
+                "uid":currentUser.uid,
+                "action":"addPlaylist"
+            }
+            console.log(toAdd)
+            await API.addPlaylistToUser(toAdd)
+            setModal(0)
+        })
+        setName('')
     }
     const [pname,setName] = React.useState('')
     return (
@@ -176,7 +197,14 @@ export const CreatePlaylist = ({open,handleClose}) => {
                     </Typography>
                 </div>
                 
-                <TextField variant="outlined" placeholder="Playlist Name" className={classes.input} InputProps={{classes:{notchedOutline:classes.notchedOutline}}} onChange={(e)=>{setName(e.target.value)}}/>
+                <TextField 
+                    variant="outlined" 
+                    placeholder="Playlist Name" 
+                    className={classes.input} 
+                    InputProps={{classes:{notchedOutline:classes.notchedOutline}}} 
+                    onChange={(e)=>{setName(e.target.value)}}
+                    value={pname}
+                />
                 
                 <Button className={classes.btn} onClick={handleSubmit}>Create Playlist</Button>
             </div>

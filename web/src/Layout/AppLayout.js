@@ -45,8 +45,8 @@ const AppLayout = ({children}) => {
                 className={classes.container}>
                 {children}
             </Grid>
-            <AddTrack handleClose={handleClose} open={modal===1} />
-            <CreatePlaylist handleClose={handleClose} open={modal===2} />
+            <AddTrack handleClose={handleClose} open={modal===1} setModal={setModal}/>
+            <CreatePlaylist handleClose={handleClose} open={modal===2} setModal={setModal} />
         </Grid>
         </Grid>
     );
