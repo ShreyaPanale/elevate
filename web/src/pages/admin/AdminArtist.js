@@ -90,7 +90,6 @@ const AdminPanel = ({children}) => {
         API.createArtist(artist).then(res => {
             setAname('')
             setPhoto('')
-            history.push(`/addartist`);
         })
   };
     return (
