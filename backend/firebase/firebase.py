@@ -31,13 +31,18 @@ class FirestoreController:
         })
         return doc_ref.id
 
-    def getTracks(self):
+    def getTracks(self,uid):
         tracks_ref = self.db.collection(u'tracks')
+        likedSongs=self.db.collection(u'users').document(uid).get().to_dict()['likedSongs']
         tracks = tracks_ref.stream()
         trackarr=[]
         for track in tracks:
-            print(f'{track.id} => {track.to_dict()}')
-            trackarr.append(track.to_dict())
+            t=track.to_dict()
+            if t['tid'] in likedSongs:
+                t['like']=1
+            else:
+                t['like']=0
+            trackarr.append(t)
         return {"data":trackarr}
         
     def getTracksByArtist(self,aid):

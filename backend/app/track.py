@@ -51,8 +51,8 @@ class TrackManager(object):
     def deleteTrack(self,tid):
         firestore.deleteTrack(tid)
         
-    def getTracks(self):
-        return firestore.getTracks()
+    def getTracks(self,uid):
+        return firestore.getTracks(uid)
 
     def getTracksByArtist(self,aid):
         return firestore.getTracksByArtist(aid)

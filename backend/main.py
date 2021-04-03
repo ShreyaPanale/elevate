@@ -77,7 +77,7 @@ class APIServer:
     def setLike():
         try:
             uid = request.json.get('uid')
-            trackId = request.json.get('trackId')
+            trackId = request.json.get('tid')
             action = request.json.get('action')
             user = userManager.getUser(uid)
             if (action=='like'):
@@ -177,7 +177,8 @@ class APIServer:
     @app.route('/gettracks',methods=['GET'])
     def getTracks():
         try:
-            return trackManager.getTracks(),200
+            uid=request.args.get('uid')
+            return trackManager.getTracks(uid),200
         except Exception as e:
             print(e)
             response_msg=jsonify({"error":"400","message":"Bad request"}),400
