@@ -7,7 +7,8 @@ const Playlists = {
 }
 
 const Users = {
-    createUser : async (params) => (await axios.post(URLS.createUser, params)).data
+    createUser : async (params) => (await axios.post(URLS.createUser, params)).data,
+    userAdminStatus : async (id) => (await axios.get(URLS.userAdminStatus(id))).data
 }
 
 let API;

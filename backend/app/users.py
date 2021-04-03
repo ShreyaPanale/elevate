@@ -30,6 +30,9 @@ class UserManager(object):
     def deleteUser(self,uid):
         firestore.deleteUser(uid)
 
+    def userAdminStatus(self,uid):
+        return firestore.userAdminStatus(uid)
+
 # class to handle user objects and related functions
 class User(object):
     def __init__(self,email,uid, displayName,likedSongs=[],playlists=[],recommendations = [], history = []):

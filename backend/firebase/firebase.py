@@ -13,7 +13,18 @@ class FirestoreController:
         self.db.collection('users').document(user.uid).set(user.data())
 
     def deleteUser(self, uid):
-        self.db.collection('users').document(user.uid).delete()
+        self.db.collection('users').document(uid).delete()
+
+    def userAdminStatus(self,uid):
+        user=self.db.collection('users').document(uid).get().to_dict()
+        if "superUser" in user:
+            if(user["superUser"]):
+                return True
+            else:
+                return False
+        else:
+            return False
+
 
     def addNewTrack(self,track):
         doc_ref = self.db.collection(u'tracks').document()

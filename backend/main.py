@@ -36,6 +36,15 @@ class APIServer:
 
     # Users endpoints
 
+    @app.route('/user/adminstat',methods=['GET'])
+    def userAdminStatus():
+        uid = request.args.get('uid')
+        admin=userManager.userAdminStatus(uid)
+        return {"admin":admin}
+        
+        
+        
+
     # create user api
     @app.route('/user/create',methods=['POST'])
     def createUser():

@@ -7,6 +7,7 @@ const playlistURL = {
 
 const userURL = {
     createUser: `${ENDPOINT}/user/create`,
+    userAdminStatus:(id)=>`${ENDPOINT}/user/adminstat?uid=${id}`
 }
 export default URLS = {
     ...playlistURL,

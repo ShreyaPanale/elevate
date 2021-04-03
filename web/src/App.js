@@ -21,9 +21,10 @@ import AdminPanel from './pages/admin/AdminPanel';
 import Queue from './pages/Queue';
 import AppLayout from './Layout/AppLayout';
 
+import API from './api'
+
 function App() {
-  let { currentUser } = useAuth();
-  let admin=false
+  let { currentUser,adminStat } = useAuth();
   let signedInRoutes = (
     <Switch>
       <Route exact path={ROUTES.dashboard} component={Dashboard} />
@@ -56,7 +57,7 @@ function App() {
   return (
     <BrowserRouter>
       {
-        admin? <> {adminRoutes} </> : 
+        adminStat? <> {adminRoutes} </> : 
         currentUser 
         ? <> <AppLayout>{signedInRoutes}</AppLayout> </>
         : <> {signedOutRoutes} </>
