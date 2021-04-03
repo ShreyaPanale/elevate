@@ -2,33 +2,7 @@ import React from 'react'
 import { Modal, Typography, Grid,Button, FormControlLabel,TextField} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { FormLabel, FormControl, FormGroup,Checkbox} from '@material-ui/core';
-
-let playlists=[
-    {
-        pid:1,
-        pname:"Pop Rock"
-    },
-    {
-        pid:2,
-        pname:"Pop Rock"
-    },
-    {
-        pid:3,
-        pname:"Pop Rock"
-    },
-    {
-        pid:4,
-        pname:"Pop Rock"
-    },
-    {
-        pid:5,
-        pname:"Pop Rock"
-    },
-    {
-        pid:6,
-        pname:"Pop Rock"
-    }
-]
+import { usePlayer } from '../webplayer/provider'; 
 
 const modalStyles = makeStyles((theme)=>({
     root:{
@@ -109,19 +83,24 @@ const modalStyles = makeStyles((theme)=>({
     },
 }))
 
-export const AddTrack = ({open,handleClose}) => {
+export const AddTrack = ({open,handleClose,tid}) => {
     const classes = modalStyles();
-    const handleAddTrack = () => {
+    const { addTrack, playlists } = usePlayer();
+    const handleAddTrack = (e) => {
+        e.preventDefault();
+        console.log(e.target.value)
         //add necessary endpoint calls
-
+        plist.map(pid => addTrack(tid,pid))
     }
     const [plist,setPlist] = React.useState([])
     const handleChange = (event) => {
         //doesn't work
-        console.log("im here")
-        console.log("plist",plist);
+        
         let temp=plist
-        temp.push(event.target.name)
+        if (event.target.checked)
+            temp.push(parseInt(event.target.value))
+        else
+            temp.splice(temp.indexOf(event.target.name),1)
         setPlist(temp)
         console.log("plist",plist)
     }
@@ -143,7 +122,7 @@ export const AddTrack = ({open,handleClose}) => {
                             {
                                 playlists.map((playlist) => (
                                     <FormControlLabel 
-                                    control={<Checkbox name={playlist.pid} onChange={handleChange} style ={{color: "#EF757D"}}/>}
+                                    control={<Checkbox value={playlist.pid} onChange={handleChange} style ={{color: "#EF757D"}}/>}
                                      label={<Typography className={classes.formControlLabel}>{playlist.pname}</Typography>}
                                      />
                                 ))
@@ -159,10 +138,16 @@ export const AddTrack = ({open,handleClose}) => {
 
 export const CreatePlaylist = ({open,handleClose}) => {
     const classes = modalStyles();
-    const handleSubmit = () =>{
-        //will do
-    }
+    const { addPlaylist, playlists } = usePlayer();
     const [pname,setName] = React.useState('')
+    const handleSubmit =async () =>{
+        //will do
+        await addPlaylist({
+            pid: playlists.length+1,
+            pname,
+            tracks:[]
+        })
+    }
     return (
         <Modal
             open={open}

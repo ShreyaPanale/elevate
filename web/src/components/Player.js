@@ -86,7 +86,7 @@ const Player = (props) => {
                         {like==0 && <Heart style={{color:"#EF757D",fill:"#EF757D"}}/>}
                         {like==1 && <Heart />}
                     </IconButton>
-                    <IconButton onClick={props.handleAddTrack}>
+                    <IconButton onClick={()=>props.handleAddTrack(3)}>
                        <Plus/>
                     </IconButton>
                 </Grid>

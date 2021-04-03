@@ -39,7 +39,7 @@ export const PlayerProvider = ({children}) => {
     }
 
     const getSongsForPlaylist = (playlist) => {
-        let t =  tracks.filter(track => track.tid in playlist.tracks)
+        let t =  tracks.filter(track => playlist.tracks.includes(track.tid))
         console.log(t)
         return t
     }
@@ -77,8 +77,21 @@ export const PlayerProvider = ({children}) => {
         })
     }
 
-    const addPlaylist = (playlistId) => {
-        playlists.push(playlistId)
+    const addPlaylist = (playlist) => {
+        playlists.push(playlist);
+        setPlaylists(playlists);
+    }
+
+    const addTrack = (tid, pid) => {
+        
+        let ps = playlists.map(playlist => {
+            if(playlist.pid == pid){
+                playlist.tracks.push(tid);
+            }
+            return playlist
+        })  
+        console.log('here',ps)
+        setPlaylists(ps);
     }
 
     const playNow = (trackId) => {
@@ -95,7 +108,6 @@ export const PlayerProvider = ({children}) => {
                 setPlay,
                 seek,
                 setLike,
-                addPlaylist,
                 playNow,
                 queue,
                 setQueue,
@@ -112,7 +124,9 @@ export const PlayerProvider = ({children}) => {
                 getSongsForPlaylist,
                 getFavouritesForUser,
                 getHistoryForUser,
-                getTopSongs
+                getTopSongs,
+                addPlaylist,
+                addTrack
             }}
         >
             {children}

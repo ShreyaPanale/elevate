@@ -62,6 +62,7 @@ const Indicator = ({active}) => {
 
 const ListGroup = ({title, tabs, index, setActive, active, indices,routes}) => {
     const classes = sidebarStyles();
+    const { playlists } = usePlayer();
     const history = useHistory();
     return (
         <>
@@ -73,19 +74,32 @@ const ListGroup = ({title, tabs, index, setActive, active, indices,routes}) => {
            {title}
         </ListItem>
         {
-            tabs.map((tab,idx) => 
+            title==="Playlists"? playlists.map((playlist,idx) => 
                 <ListItem 
                     alignItems={'start'}
                     className={classes.listItem} 
                     onClick = {()=>{
-                        setActive(indices[idx])
-                        history.push(routes[idx])
+                        setActive(idx+5)
+                        history.push(ROUTES.genPlaylist(playlist.pid))
                     }}
-                    style = {{fontWeight: indices[idx] == active? 700: 400}}
+                    style = {{fontWeight: idx+5 == active? 700: 400}}
                 >
-                        <Indicator active = {indices[idx] == active}/>
-                        {tab}
+                        <Indicator active = {idx+5 == active}/>
+                        {playlist.pname}
                 </ListItem>)
+            : tabs.map((tab,idx) => 
+            <ListItem 
+                alignItems={'start'}
+                className={classes.listItem} 
+                onClick = {()=>{
+                    setActive(indices[idx])
+                    history.push(routes[idx])
+                }}
+                style = {{fontWeight: indices[idx] == active? 700: 400}}
+            >
+                    <Indicator active = {indices[idx] == active}/>
+                    {tab}
+            </ListItem>)
         }
         </>
     )
@@ -103,7 +117,7 @@ const Sidebar = (props) => {
     }
     const location = useLocation();
     const [active, setActive] = React.useState(indexToRoute[location.pathname]);
-    const sidebarGroups = {
+    const sidebarGroups= {
         "Browse Music" : {
             "tabs" : ["Discover", "Artists", "Songs"],
             "indices": [0,1,2],
@@ -115,9 +129,7 @@ const Sidebar = (props) => {
             "routes": [ROUTES.favourites,ROUTES.history]
         },
         "Playlists" : {
-            "tabs": playlists.map(playlist => playlist.pname),
-            "indices": playlists.map((playlist,i) => (i+5)),
-            "routes": playlists.map(playlist => ROUTES.genPlaylist(playlist.pid)) //playlist ids = [1,2]
+             //playlist ids = [1,2]
         }
     }
     return (

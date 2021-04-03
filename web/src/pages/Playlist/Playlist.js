@@ -36,14 +36,16 @@ const Playlist = () => {
     const classes = useStyles();
     const [loading, setLoading] = useState(false);
     const { playlists, getSongsForPlaylist } = usePlayer();
+    
     const playlist = playlists.filter(playlist => playlist.pid == id)[0];
+    
     let [ songs, setSongs ] = useState();
     useEffect(() => {
         setLoading(true);
         songs = getSongsForPlaylist(playlist);
         setSongs(songs);
         setLoading(false);
-    }, [])
+    }, [id,playlists])
     return (
         <Grid container direction="row">
             <Grid item container xs={12} >

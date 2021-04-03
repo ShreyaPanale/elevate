@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{cloneElement} from 'react';
 import {useHistory} from 'react-router-dom';
 import {
     Grid,
@@ -27,8 +27,10 @@ const useStyles = makeStyles(() => ({
 const AppLayout = ({children}) => {
     const classes = useStyles();
     const [modal, setModal] = React.useState(0);
+    const [tid, setTid] = React.useState();
     const handleClose = () => setModal(0);
-    const handleAddTrack = (event) => {
+    const handleAddTrack = (tid) => {
+        setTid(tid)
         setModal(1)
     }
     const handleCreatePlaylist = (event) => {
@@ -37,7 +39,7 @@ const AppLayout = ({children}) => {
     return (
         <PlayerProvider>
             <Grid container>
-            <Player handleAddTrack={handleAddTrack}/>
+            <Player handleAddTrack={handleAddTrack} />
             <Grid container className={classes.fullHeight}>
                 <Grid item xs = {2}>
                     <Sidebar handleCreatePlaylist={handleCreatePlaylist}/>
@@ -46,9 +48,9 @@ const AppLayout = ({children}) => {
                     item
                     xs = {10}
                     className={classes.container}>
-                    {children}
+                    {cloneElement(children,{handleAddTrack})}
                 </Grid>
-                <AddTrack handleClose={handleClose} open={modal===1} />
+                <AddTrack handleClose={handleClose} open={modal===1} tid={tid} />
                 <CreatePlaylist handleClose={handleClose} open={modal===2} />
             </Grid>
             </Grid>
