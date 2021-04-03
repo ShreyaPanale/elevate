@@ -143,7 +143,7 @@ const SongRow = ({row}) => {
             {columns.map((column) => {
               const value = row[column.id];
               return (
-                <TableCell key={column.id} align={column.align}>
+                <TableCell key={column.id} align={column.align} style={{fontFamily:"Poppins"}}>
                   {column.id=="like"?<IconButton onClick={handleLike}><Heart style={like==1?{color:"#EF757D",fill:"#EF757D"}:{}}/></IconButton> :value}
                 </TableCell>
               );

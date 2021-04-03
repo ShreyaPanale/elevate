@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import SongList from '../components/SongList';
 import SongCard from '../components/SongCard';
 
+import {usePlayer} from '../webplayer/provider';
 const useStyles = makeStyles(()=>({
     root:{
         padding:'4%',
@@ -31,6 +32,11 @@ const useStyles = makeStyles(()=>({
 
 const Dashboard = () => {
     const classes = useStyles();
+    const [top, setTop] = React.useState([])
+    const { getTopSongs } = usePlayer();
+    React.useEffect(()=>{
+        getTopSongs().then(songs => setTop(songs));
+    },[])
     return (
         <div style = {{display:"flex",flexDirection:'column', maxWidth:'100%'}} direction="row">
             <Grid item container >
@@ -58,7 +64,7 @@ const Dashboard = () => {
                         </h2>
                     </Grid>
                     <Grid item className={classes.horizontal}>
-                        <SongList />
+                        <SongList tracks={top}/>
                     </Grid>
                 </Grid>
             </Grid>

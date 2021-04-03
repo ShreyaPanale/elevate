@@ -66,6 +66,17 @@ export const PlayerProvider = ({children}) => {
         })
     }
 
+    const getTopSongs = () => {
+        return new Promise((res,rej) => {
+            try{
+                let t = tracks.sort((a,b) => a.plays<b.plays?1:-1)
+                res(t)
+            }catch(err){
+                rej(err)
+            }
+        })
+    }
+
     const addPlaylist = (playlistId) => {
         playlists.push(playlistId)
     }
@@ -100,7 +111,8 @@ export const PlayerProvider = ({children}) => {
                 setCurrIndex,
                 getSongsForPlaylist,
                 getFavouritesForUser,
-                getHistoryForUser
+                getHistoryForUser,
+                getTopSongs
             }}
         >
             {children}

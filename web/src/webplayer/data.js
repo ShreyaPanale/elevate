@@ -42,7 +42,8 @@ const tracks = [
         aid:2,
         time: 300,
         plays:3,
-        coverUrl: "https://www.youtube.com/watch?v=lY2yjAdbvdQ"
+        coverUrl: "https://images.genius.com/bf004d7c1ba188cb06c28e8966788a6d.1000x1000x1.jpg",
+        link: "https://www.youtube.com/watch?v=lY2yjAdbvdQ"
     },
 ]
 
