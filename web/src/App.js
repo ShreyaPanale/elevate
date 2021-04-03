@@ -17,10 +17,11 @@ import Songs from './pages/Songs';
 import History from './pages/History';
 import Favourites from './pages/Favourites';
 import Playlist from './pages/Playlist/Playlist';
-import AdminPanel from './pages/admin/AdminPanel';
+import AdminTrack from './pages/admin/AdminTrack';
+import AdminArtist from './pages/admin/AdminArtist';
 import Queue from './pages/Queue';
 import AppLayout from './Layout/AppLayout';
-
+import AdminLayout from './Layout/AdminLayout';
 import API from './api'
 
 function App() {
@@ -50,16 +51,16 @@ function App() {
   );
   let adminRoutes = (
     <Switch>
-      <Route exact path={ROUTES.admin} component={AdminPanel} />
-      <Redirect to={ROUTES.admin} />
+      <Route exact path={ROUTES.admintrack} component={AdminTrack} />
+      <Route exact path={ROUTES.adminartist} component={AdminArtist} />
+      <Redirect to={ROUTES.admintrack} />
     </Switch>
   )
   return (
     <BrowserRouter>
-      {
-        adminStat? <> {adminRoutes} </> : 
+      { 
         currentUser 
-        ? <> <AppLayout>{signedInRoutes}</AppLayout> </>
+        ? adminStat? <> <AdminLayout>{adminRoutes}</AdminLayout></>:<> <AppLayout>{signedInRoutes}</AppLayout> </>
         : <> {signedOutRoutes} </>
       }
     </BrowserRouter>

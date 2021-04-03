@@ -38,7 +38,7 @@ const useStyles = makeStyles(() => ({
         marginTop:"3%",
         '& input':{
             paddingLeft:"5%",
-            borderBottom:"2px solid black",
+            borderBottom:"4px solid black",
             fontFamily:"Poppins",
             fontWeight:500,
             fontSize:18
@@ -50,7 +50,7 @@ const useStyles = makeStyles(() => ({
     inputBox:{
         marginTop:"3%",
         '& textarea':{
-            border:"2px solid black",
+            border:"4px solid black",
             borderRadius:20,
             padding:"5%",
             fontFamily:"Poppins",
@@ -74,7 +74,7 @@ const useStyles = makeStyles(() => ({
         marginRight:'10%'
     },
     hr:{
-        height:'2px',
+        height:'3px',
         backgroundColor:'black',
         marginRight:"10%"
     },
@@ -120,7 +120,7 @@ const useStyles = makeStyles(() => ({
       marginTop:'3%',
       position:'relative',
       paddingLeft:"5%",
-      borderBottom:"2px solid black",
+      borderBottom:"4px solid black",
       fontSize: 18,
       transition: theme.transitions.create(['border-color', 'box-shadow']),
       fontFamily:"Poppins",
@@ -170,7 +170,7 @@ const AdminPanel = ({children}) => {
     return (
         <Grid container direction="column" className = {classes.container}>
             <Grid item className = {classes.nav} >
-                <h1 className = {classes.navText} onClick={()=>{history.push('/')}}>elevate.</h1>
+                <h1 className = {classes.navText}>Upload Track</h1>
             </Grid>
             <Grid item container direction="row" >
                 <Grid item container xs={6} direction="column" style={{paddingRight:"5%"}} className={classes.inputContainer}>
@@ -199,8 +199,9 @@ const AdminPanel = ({children}) => {
                             className={classes.inputBox}  
                             InputProps={{classes:{notchedOutline:classes.notchedOutline}}} 
                             multiline
-                            rows={4}
+                            rows={3}
                         />
+                        <Button className={classes.btn}>Upload Track</Button> 
                     </Grid>
                 <Grid item container xs={6} className={classes.inputContainer}>
                     <label htmlFor="img" style={{width:"100%",paddingTop:'3%'}}>
@@ -238,10 +239,9 @@ const AdminPanel = ({children}) => {
                     onChange={handleTrackUpload}
                     />    
                 </label>
-                
+                 
                 </Grid>               
-            </Grid>
-            <Button className={classes.btn}>Upload Track</Button>
+            </Grid> 
         </Grid>  
     );
 }
