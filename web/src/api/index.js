@@ -6,7 +6,12 @@ const Playlists = {
     addPlaylistToUser : async (params) => (await axios.post(URLS.addPlaylistToUser(),params)).data,
 }
 
+const Users = {
+    createUser : async (params) => (await axios.post(URLS.createUser, params)).data
+}
+
 let API;
 export default API = {
-    ...Playlists
+    ...Playlists,
+    ...Users
 }
