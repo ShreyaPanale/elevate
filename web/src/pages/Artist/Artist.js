@@ -3,8 +3,10 @@ import TopBar from '../../components/TopBar';
 
 import { Grid, Avatar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles'
+import { usePlayer } from '../../webplayer/provider';
+import { useParams } from 'react-router-dom';
 
-import SongList from '../../components/SongList'
+import ArtistSongList from '../../components/ArtistSongList'
 const useStyles = makeStyles(()=>({
     root:{
         padding:'4%',
@@ -16,14 +18,17 @@ const useStyles = makeStyles(()=>({
     }
 }))
 
-const artist = {
-    id: 123,
-    name: "NF",
-    imageUrl : "https://assetsds.cdnedge.bluemix.net/sites/default/files/styles/very_big_1/public/feature/images/nf.jpg?itok=ZSBlQuYh"
-}  
+
 
 const Artist = () => {
+    const {id} = useParams();
     const classes = useStyles();
+    const { getTracks } = usePlayer();
+    const trackList = getTracks()
+    const { getArtists } = usePlayer();
+    const artistList = getArtists()
+    const artist = artistList.filter(artist => artist.aid == id)[0];
+    console.log(artist);
     return (
         <Grid container direction="row">
             <Grid item xs={12} >
@@ -44,12 +49,12 @@ const Artist = () => {
                                     display:'inline-flex',
                                     marginRight:20
                                 }} 
-                                src={artist.imageUrl}
-                            /> {artist.name}
+                                src={artist.artistProfile}
+                            /> {artist.aname}
                         </h1>
                     </div>
                     <div item xs={12} style={{}}>
-                        <SongList />
+                        <ArtistSongList tracks={trackList}/>
                     </div>
             </div>
         </Grid>

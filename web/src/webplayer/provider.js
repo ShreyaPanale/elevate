@@ -10,7 +10,7 @@ export const usePlayer = () => {
 
 export const PlayerProvider = ({children}) => {
     // const { currentUser } = useAuth();
-    const { userData, tracks } = DATA;
+    const { userData, tracks, artists } = DATA;
 
     const [play, setPlay] = useState(false);
     const [queue, setQueue] = useState([]);
@@ -19,7 +19,9 @@ export const PlayerProvider = ({children}) => {
     const [currSong, setCurrSong] = useState();
     const [currIndex, setCurrIndex] = useState(0);
     const [likedSongs, setLikedSongs] = useState(userData.likedSongs);
-
+    const [artistList] = useState(artists);
+    const [trackList] = useState(tracks);
+    console.log(artistList)
     const nextSong = () => {
         if (queue.length == currIndex) return;
         setCurrIndex(currIndex+1);
@@ -85,7 +87,12 @@ export const PlayerProvider = ({children}) => {
         queue.splice(currIndex-1,0,trackId);
         setCurrSong(trackId);
     }
-
+    const getArtists = () => {
+        return artists
+    }
+    const getTracks = () => {
+        return tracks
+    }
     return (
         <PlayerContext.Provider
             value = {{
@@ -112,7 +119,11 @@ export const PlayerProvider = ({children}) => {
                 getSongsForPlaylist,
                 getFavouritesForUser,
                 getHistoryForUser,
-                getTopSongs
+                getTopSongs,
+                artistList,
+                getArtists,
+                trackList,
+                getTracks
             }}
         >
             {children}
