@@ -9,7 +9,14 @@ const userURL = {
     createUser: `${ENDPOINT}/user/create`,
     userAdminStatus:(id)=>`${ENDPOINT}/user/adminstat?uid=${id}`
 }
+
+const adminURL = {
+    createTrack:()=>`${ENDPOINT}/addtrack`,
+    createArtist:()=>`${ENDPOINT}/addartist`
+}
+
 export default URLS = {
     ...playlistURL,
-    ...userURL
+    ...userURL,
+    ...adminURL
 }

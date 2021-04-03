@@ -11,8 +11,14 @@ const Users = {
     userAdminStatus : async (id) => (await axios.get(URLS.userAdminStatus(id))).data
 }
 
+const Admin = {
+    createTrack : async (params) => (await axios.post(URLS.createTrack(),params)).data,
+    createArtist :  async (params) => (await axios.post(URLS.createArtist(),params)).data
+}
+
 let API;
 export default API = {
     ...Playlists,
-    ...Users
+    ...Users,
+    ...Admin
 }

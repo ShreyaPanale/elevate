@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles,withStyles } from "@material-ui/core/styles";
 import {ChevronDown,Camera,Upload} from 'react-feather'
+import API from "../../api"
 const useStyles = makeStyles(() => ({
     container: {
       display:"flex",
@@ -78,8 +79,19 @@ const AdminPanel = ({children}) => {
     
     const classes = useStyles();
     const history = useHistory();
+    const [aname,setAname]=React.useState('')
+    const [photo,setPhoto]=React.useState('')
     const handleChange = (event) => {
-    //
+        event.preventDefault();
+        const artist ={
+            "aname" : aname,
+            "photo" : photo
+        }
+        API.createArtist(artist).then(res => {
+            setAname('')
+            setPhoto('')
+            history.push(`/addartist`);
+        })
   };
     return (
         <Grid container direction="column" className = {classes.container}>
@@ -89,10 +101,16 @@ const AdminPanel = ({children}) => {
             <Grid item container direction="row" >
                 <Grid item container xs={12} direction="column" style={{paddingRight:"5%"}} className={classes.inputContainer}>
                         <TextField  placeholder="Artist Name" className={classes.input}  
-                        InputProps={{classes:{notchedOutline:classes.notchedOutline}}} />
+                        InputProps={{classes:{notchedOutline:classes.notchedOutline}}} 
+                        value={aname}
+                        onChange={e => setAname(e.target.value)}
+                        />
                         <TextField  placeholder="Artist Photo URL" className={classes.input}  
-                        InputProps={{classes:{notchedOutline:classes.notchedOutline}}} />
-                        <Button className={classes.btn}>Add Artist</Button> 
+                        InputProps={{classes:{notchedOutline:classes.notchedOutline}}}
+                        value={photo}
+                        onChange={e => setPhoto(e.target.value)}
+                        />
+                        <Button className={classes.btn} onClick={handleChange}>Add Artist</Button> 
                     </Grid>
         </Grid>  
         </Grid>
