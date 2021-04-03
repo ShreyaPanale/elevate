@@ -23,10 +23,9 @@ const Favourites = () => {
     const { getFavouritesForUser,likedSongs } = usePlayer();
     const [ loading, setLoading ] = React.useState(true);
     React.useEffect(()=>{
-        getFavouritesForUser().then(favourites => {
+            let favourites = getFavouritesForUser();
             setFavourites(favourites)
             setLoading(false);
-        });
     },[likedSongs])
     return (
         <Grid container direction="row">

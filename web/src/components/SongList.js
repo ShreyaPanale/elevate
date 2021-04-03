@@ -133,10 +133,18 @@ const columns = [
   ];
 
 const SongRow = ({row}) => {
+  const { setLike:modifyLike } = usePlayer();
   const [like,setLike] = React.useState(row['like']);
-  const handleLike = ()=>{
-    if(like) setLike(0)
-    else setLike(1)
+  const handleLike = (tid)=>{
+    console.log("LIKES", tid)
+    if(like) {
+      setLike(0)
+      modifyLike(tid,0)
+    }
+    else{
+      setLike(1)
+      modifyLike(tid,1)
+    } 
   }
   return (
       <TableRow tabIndex={-1} key={row.code}>
@@ -144,7 +152,7 @@ const SongRow = ({row}) => {
               const value = row[column.id];
               return (
                 <TableCell key={column.id} align={column.align} style={{fontFamily:"Poppins"}}>
-                  {column.id=="like"?<IconButton onClick={handleLike}><Heart style={like==1?{color:"#EF757D",fill:"#EF757D"}:{}}/></IconButton> :value}
+                  {column.id=="like"?<IconButton onClick={()=>handleLike(row['tid'])}><Heart style={like==1?{color:"#EF757D",fill:"#EF757D"}:{}}/></IconButton> :value}
                 </TableCell>
               );
             })}
@@ -153,19 +161,11 @@ const SongRow = ({row}) => {
 }
 const SongList = ({tracks}) => {
     const classes = songListStyles();
-    const { likedSongs } = usePlayer();
-    let rowsForSong = tracks && tracks.map(
-      (track,idx) => ({
-        play: <Play />,
-        place: idx+1,
-        title: <TrackItem track={track} />,
-        artist:track.aname,
-        plays: track.plays,
-        time: track.time,
-        like: likedSongs.includes(track.tid)?1:0,
-        plus: <Plus />
-      })
-    )
+    const [likes, setLikes] = React.useState()
+    const { likedSongs, handleAddTrack } = usePlayer();
+    const [loading,setLoading] = React.useState(true);
+    React.useEffect(()=>{ setLikes(likedSongs);setLoading(false)},[likedSongs])
+    console.log(likes)
     return (
         <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
@@ -183,9 +183,19 @@ const SongList = ({tracks}) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rowsForSong && rowsForSong.map((row) => {
+            {loading?<p>loading...</p>:tracks && tracks.map((track,idx) => {
               return (
-                <SongRow row={row} />
+                <SongRow row={{
+                  play: <Play />,
+                  place: idx+1,
+                  title: <TrackItem track={track} />,
+                  artist:track.aname,
+                  plays: track.plays,
+                  time: track.time,
+                  like: likes.includes(track.tid)?1:0,
+                  plus: <IconButton onClick={()=>handleAddTrack(track.tid)}><Plus  /></IconButton>,
+                  tid: track.tid
+                }} />
               );
             })}
           </TableBody>

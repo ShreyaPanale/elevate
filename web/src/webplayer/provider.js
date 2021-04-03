@@ -46,8 +46,15 @@ export const PlayerProvider = ({children}) => {
 
     }
 
-    const setLike = (tid) => {
-        
+    const setLike = (tid,action) => {
+        if(action==1){
+            likedSongs.push(tid);
+            
+        }else{
+            likedSongs.splice(likedSongs.indexOf(tid),1);
+        }
+        console.log('liked',likedSongs)
+        setLikedSongs(likedSongs)
     }
 
     const getSongsForPlaylist = (playlist) => {
@@ -57,14 +64,7 @@ export const PlayerProvider = ({children}) => {
     }
 
     const getFavouritesForUser = () => {
-        return new Promise((res,rej) => {
-            try{
-                let t = tracks.filter(track => likedSongs.includes(track.tid))
-                res(t)
-            }catch(err){
-                rej(err)
-            }
-        })
+        return tracks.filter(track => likedSongs.includes(track.tid))
     }
 
     const getHistoryForUser = () => {
