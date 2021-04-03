@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Avatar, Grid, IconButton } from '@material-ui/core';
 import {Heart, Play, Plus} from 'react-feather';
-
+import { usePlayer } from '../webplayer/provider';
 import { makeStyles } from '@material-ui/core/styles'
 
 import Table from '@material-ui/core/Table';
@@ -50,7 +50,7 @@ const columns = [
     }
   ];
 
-  const TrackItem = () => {
+  const TrackItem = ({track}) => {
     return (
         <Grid container direction="row" alignItems="center">
             <Avatar style={{
@@ -58,11 +58,11 @@ const columns = [
                 height:50,
                 borderRadius:10,
                 marginRight:12
-            }} alt="nf" src="https://i.ytimg.com/vi/glNleDYUPu4/maxresdefault.jpg" />
+            }} alt="nf" src={track.coverUrl} />
             <text style={{
                 fontFamily:"Poppins"
             }}>
-                Dreams
+                {track.tname}
             </text>
         </Grid>
     )
@@ -151,8 +151,21 @@ const SongRow = ({row}) => {
           </TableRow>
   )
 }
-const SongList = () => {
+const SongList = ({tracks}) => {
     const classes = songListStyles();
+    const { likedSongs } = usePlayer();
+    let rowsForSong = tracks && tracks.map(
+      track => ({
+        play: <Play />,
+        place: 6,
+        title: <TrackItem track={track} />,
+        artist:track.aname,
+        plays: track.plays,
+        time: track.time,
+        like: (track.id in likedSongs)?1:0,
+        plus: <Plus />
+      })
+    )
     return (
         <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
@@ -170,7 +183,7 @@ const SongList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => {
+            {rowsForSong && rowsForSong.map((row) => {
               return (
                 <SongRow row={row} />
               );

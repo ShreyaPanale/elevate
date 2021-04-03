@@ -6,7 +6,9 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import Sidebar from '../components/Sidebar';
 import Player from '../components/Player';
-import {AddTrack,CreatePlaylist} from '../components/Modals'
+import {AddTrack,CreatePlaylist} from '../components/Modals';
+import {PlayerProvider} from '../webplayer/provider';
+
 const useStyles = makeStyles(() => ({
     container: {
         height: "100%",
@@ -33,22 +35,24 @@ const AppLayout = ({children}) => {
         setModal(2)
     }
     return (
-        <Grid container>
-        <Player handleAddTrack={handleAddTrack}/>
-        <Grid container className={classes.fullHeight}>
-            <Grid item xs = {2}>
-                <Sidebar handleCreatePlaylist={handleCreatePlaylist}/>
+        <PlayerProvider>
+            <Grid container>
+            <Player handleAddTrack={handleAddTrack}/>
+            <Grid container className={classes.fullHeight}>
+                <Grid item xs = {2}>
+                    <Sidebar handleCreatePlaylist={handleCreatePlaylist}/>
+                </Grid>
+                <Grid
+                    item
+                    xs = {10}
+                    className={classes.container}>
+                    {children}
+                </Grid>
+                <AddTrack handleClose={handleClose} open={modal===1} />
+                <CreatePlaylist handleClose={handleClose} open={modal===2} />
             </Grid>
-            <Grid
-                item
-                xs = {10}
-                className={classes.container}>
-                {children}
             </Grid>
-            <AddTrack handleClose={handleClose} open={modal===1} />
-            <CreatePlaylist handleClose={handleClose} open={modal===2} />
-        </Grid>
-        </Grid>
+        </PlayerProvider>
     );
 }
 

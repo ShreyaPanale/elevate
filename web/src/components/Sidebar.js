@@ -4,6 +4,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useHistory, useLocation } from 'react-router-dom';
 import ROUTES from '../routes';
 import { Plus } from 'react-feather'
+import {usePlayer} from '../webplayer/provider';
+
 const Logo = () => {
     return (
         <div style = {{display:"flex", color:"#EF757D",  width:"100%", marginLeft:30}}>
@@ -90,6 +92,7 @@ const ListGroup = ({title, tabs, index, setActive, active, indices,routes}) => {
 }
 
 const Sidebar = (props) => {
+    const { playlists } = usePlayer();
     const classes = sidebarStyles();
     const indexToRoute= {
         [ROUTES.dashboard]:0,
@@ -112,9 +115,9 @@ const Sidebar = (props) => {
             "routes": [ROUTES.favourites,ROUTES.history]
         },
         "Playlists" : {
-            "tabs": ["Pop time", "Punk Rock"],
-            "indices": [5,6],
-            "routes": [1,2].map(id => ROUTES.genPlaylist(id)) //playlist ids = [1,2]
+            "tabs": playlists.map(playlist => playlist.pname),
+            "indices": playlists.map((playlist,i) => (i+5)),
+            "routes": playlists.map(playlist => ROUTES.genPlaylist(playlist.pid)) //playlist ids = [1,2]
         }
     }
     return (

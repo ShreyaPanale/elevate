@@ -1,4 +1,6 @@
 import React,{useContext,useEffect, useState} from 'react';
+import {useAuth} from '../firebase/provider';
+import DATA from './data';
 
 export const PlayerContext = React.createContext();
 
@@ -7,47 +9,76 @@ export const usePlayer = () => {
 }
 
 export const PlayerProvider = ({children}) => {
+    // const { currentUser } = useAuth();
+    const { userData, tracks } = DATA;
 
+    const [play, setPlay] = useState(false);
     const [queue, setQueue] = useState([]);
-    const [playlists, setPlaylists] = useState([]);
-    const [history, setHistory] = useState([]);
+    const [playlists, setPlaylists] = useState(userData.playlists);
+    const [history, setHistory] = useState(userData.history);
     const [currSong, setCurrSong] = useState();
-    const [likedSongs, setLikedSongs] = useState([]);
+    const [currIndex, setCurrIndex] = useState(0);
+    const [likedSongs, setLikedSongs] = useState(userData.likedSongs);
 
     const nextSong = () => {
-
+        if (queue.length == currIndex) return;
+        setCurrIndex(currIndex+1);
     }
 
     const prevSong = () => {
-
-    }
-
-    const play = () => {
-        
+        if (currIndex == 1) return;
+        setCurrIndex(currIndex-1);
     }
 
     const seek = () => {
 
     }
 
-    const setLike = () => {
-
+    const setLike = (tid) => {
+        
     }
 
-    const addToPlaylist = () => {
-
+    const getSongsForPlaylist = (playlist) => {
+        let t =  tracks.filter(track => track.tid in playlist.tracks)
+        console.log(t)
+        return t
     }
 
-    const removeFromPlaylist = () => {
-
+    const addPlaylist = (playlistId) => {
+        playlists.push(playlistId)
     }
 
-    const playNow = () => {
-
+    const playNow = (trackId) => {
+        queue.splice(currIndex-1,0,trackId);
+        setCurrSong(trackId);
     }
-    
+
     return (
-        <PlayerContext.Provider>
+        <PlayerContext.Provider
+            value = {{
+                nextSong,
+                prevSong,
+                play,
+                setPlay,
+                seek,
+                setLike,
+                addPlaylist,
+                playNow,
+                queue,
+                setQueue,
+                playlists, 
+                setPlaylists,
+                history,
+                setHistory,
+                currSong, 
+                setCurrSong,
+                likedSongs, 
+                setLikedSongs,
+                currIndex, 
+                setCurrIndex,
+                getSongsForPlaylist
+            }}
+        >
             {children}
         </PlayerContext.Provider>
     );
