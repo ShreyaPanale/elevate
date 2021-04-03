@@ -121,6 +121,36 @@ class FirestoreController:
         else:
             return {'error':'Document not found,Missing playlist'}
 
+    def getPlaylistTracks(self,pid):
+        playlist_ref = self.db.collection(u'playlists').document(pid).get()
+        if playlist_ref.exists:
+            playlist_ref=playlist_ref.to_dict()
+            tids=playlist_ref['tracks']
+            tracks=[]
+            i=0
+            while(1):
+                if i+10<=len(tids):
+                    temp_ref=self.db.collection(u'tracks').where(u'tid','in',tids[i:i+10])
+                    temp=temp_ref.stream()
+                    for t in temp:
+                        print(temp.to_dict())
+                        tracks.append(t.to_dict())
+                else:
+                    temp_ref=self.db.collection(u'tracks').where(u'tid','in',tids[i:len(tids)])
+                    temp=temp_ref.stream()
+                    for t in temp:
+                        tracks.append(t.to_dict())
+                    break
+                i=i+10
+            res = {
+                "pname":playlist_ref['pname'],
+                "pid":pid,
+                "tracks":tracks
+            }
+            return {"data":res}
+        else:
+            return {'error':'Document not found,Missing Playlist'}
+
     def savePlaylist(self,playlist):
         doc_ref = self.db.collection('playlists').document()
         pd=playlist.data()

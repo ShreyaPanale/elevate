@@ -304,6 +304,16 @@ class APIServer:
             response_msg=jsonify({"error":"400","message":"Bad request"}),400
             return response_msg
 
+    @app.route('/playlist/tracks',methods=['GET'])
+    def getPlaylistTracks():
+        try:
+            pid=request.args.get('pid')
+            return playlistManager.getPlaylistTracks(pid),200
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
+
     # manages add/remove playlist for user
     @app.route('/user/playlist/tracks',methods=['POST'])
     def managePlaylistTracks():
@@ -322,6 +332,7 @@ class APIServer:
             print(e)
             response_msg=jsonify({"error":"400","message":"Bad request"}),400
             return response_msg
+
 
 server = APIServer(port = 5000)
 server.start()

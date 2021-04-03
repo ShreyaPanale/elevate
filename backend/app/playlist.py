@@ -52,5 +52,8 @@ class PlaylistManager(object):
         print("Playlist Data",playlist.data())
         return playlist.data()
 
+    def getPlaylistTracks(self,pid):
+        return firestore.getPlaylistTracks(pid)
+
     def deletePlaylist(self,pid):
         firestore.deletePlaylist(pid)
