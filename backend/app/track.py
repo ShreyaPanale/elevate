@@ -53,3 +53,6 @@ class TrackManager(object):
         
     def getTracks(self):
         return firestore.getTracks()
+
+    def getTracksByArtist(self,aid):
+        return firestore.getTracksByArtist(aid)

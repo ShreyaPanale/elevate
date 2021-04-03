@@ -183,6 +183,16 @@ class APIServer:
             response_msg=jsonify({"error":"400","message":"Bad request"}),400
             return response_msg
 
+    @app.route('/tracks/artist',methods=['GET'])
+    def getTracksByArtist():
+        try:
+            aid = request.args.get('aid')
+            return trackManager.getTracksByArtist(aid),200
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
+
     @app.route('/track',methods=['GET'])
     def getTrack():
         try:

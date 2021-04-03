@@ -20,9 +20,6 @@ class Artist(object):
     def data(self):
         return {'aname':self.aname,'aid':self.aid,'photo':self.photo}
 
-    def getTracks(self):
-        #return tracks by this artist 
-        pass
 
 class ArtistManager(object):
     def __init__(self):

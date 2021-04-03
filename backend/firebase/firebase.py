@@ -40,6 +40,16 @@ class FirestoreController:
             trackarr.append(track.to_dict())
         return {"data":trackarr}
         
+    def getTracksByArtist(self,aid):
+        tracks_ref = self.db.collection(u'tracks')
+        tracks_ref=tracks_ref.where(u'artist',u'==',aid)
+        tracks = tracks_ref.stream()
+        trackarr=[]
+        for track in tracks:
+            print(f'{track.id} => {track.to_dict()}')
+            trackarr.append(track.to_dict())
+        return {"data":trackarr}
+
     def deleteTrack(self,id):
         doc_ref=self.db.collection(u'tracks').document(id)
         print(doc_ref)
