@@ -1,12 +1,10 @@
-import React,{cloneElement} from 'react';
-import {useHistory} from 'react-router-dom';
+import React from 'react';
 import {
     Grid,
 } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import Sidebar from '../components/Sidebar';
 import Player from '../components/Player';
-import {AddTrack,CreatePlaylist} from '../components/Modals';
 import {PlayerProvider} from '../webplayer/provider';
 
 const useStyles = makeStyles(() => ({
@@ -26,32 +24,21 @@ const useStyles = makeStyles(() => ({
   
 const AppLayout = ({children}) => {
     const classes = useStyles();
-    const [modal, setModal] = React.useState(0);
-    const [tid, setTid] = React.useState();
-    const handleClose = () => setModal(0);
-    const handleAddTrack = (tid) => {
-        setTid(tid)
-        setModal(1)
-    }
-    const handleCreatePlaylist = (event) => {
-        setModal(2)
-    }
+    
     return (
         <PlayerProvider>
             <Grid container>
-            <Player handleAddTrack={handleAddTrack} />
+            <Player />
             <Grid container className={classes.fullHeight}>
                 <Grid item xs = {2}>
-                    <Sidebar handleCreatePlaylist={handleCreatePlaylist}/>
+                    <Sidebar />
                 </Grid>
                 <Grid
                     item
                     xs = {10}
                     className={classes.container}>
-                    {cloneElement(children,{handleAddTrack})}
+                    {children}
                 </Grid>
-                <AddTrack handleClose={handleClose} open={modal===1} tid={tid} />
-                <CreatePlaylist handleClose={handleClose} open={modal===2} />
             </Grid>
             </Grid>
         </PlayerProvider>

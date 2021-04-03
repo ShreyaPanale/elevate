@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Avatar, Typography, IconButton } from '@material-ui/core';
 import { Heart, List, Play, SkipForward, SkipBack, Plus } from 'react-feather';
+import { usePlayer } from '../webplayer/provider';
 import {useHistory,useLocation} from 'react-router-dom';
 import ROUTES from '../routes';
 const useStyles = makeStyles(()=>({
@@ -47,7 +48,7 @@ const Player = (props) => {
             setLike(0)
         //call necessary endpoints
     }
-   
+    const { handleAddTrack } = usePlayer();
     const history = useHistory();
     const location = useLocation();
     const [isQueue,setQueue] = React.useState(location.pathname==ROUTES.queue);
@@ -86,7 +87,7 @@ const Player = (props) => {
                         {like==0 && <Heart style={{color:"#EF757D",fill:"#EF757D"}}/>}
                         {like==1 && <Heart />}
                     </IconButton>
-                    <IconButton onClick={()=>props.handleAddTrack(3)}>
+                    <IconButton onClick={()=>handleAddTrack(3)}>
                        <Plus/>
                     </IconButton>
                 </Grid>

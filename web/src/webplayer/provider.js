@@ -2,6 +2,7 @@ import React,{useContext,useEffect, useState} from 'react';
 import {useAuth} from '../firebase/provider';
 import DATA from './data';
 
+import {AddTrack,CreatePlaylist} from '../components/Modals';
 export const PlayerContext = React.createContext();
 
 export const usePlayer = () => {
@@ -19,6 +20,17 @@ export const PlayerProvider = ({children}) => {
     const [currSong, setCurrSong] = useState();
     const [currIndex, setCurrIndex] = useState(0);
     const [likedSongs, setLikedSongs] = useState(userData.likedSongs);
+
+    const [modal, setModal] = React.useState(0);
+    const [tid, setTid] = React.useState();
+    const handleClose = () => setModal(0);
+    const handleAddTrack = (tid) => {
+        setTid(tid)
+        setModal(1)
+    }
+    const handleCreatePlaylist = (event) => {
+        setModal(2)
+    }
 
     const nextSong = () => {
         if (queue.length == currIndex) return;
@@ -126,10 +138,14 @@ export const PlayerProvider = ({children}) => {
                 getHistoryForUser,
                 getTopSongs,
                 addPlaylist,
-                addTrack
+                addTrack,
+                handleAddTrack,
+                handleCreatePlaylist
             }}
         >
             {children}
+            <AddTrack handleClose={handleClose} open={modal===1} tid={tid} />
+            <CreatePlaylist handleClose={handleClose} open={modal===2} />
         </PlayerContext.Provider>
     );
 }

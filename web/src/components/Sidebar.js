@@ -106,7 +106,7 @@ const ListGroup = ({title, tabs, index, setActive, active, indices,routes}) => {
 }
 
 const Sidebar = (props) => {
-    const { playlists } = usePlayer();
+    const { handleCreatePlaylist } = usePlayer();
     const classes = sidebarStyles();
     const indexToRoute= {
         [ROUTES.dashboard]:0,
@@ -158,7 +158,7 @@ const Sidebar = (props) => {
                         />
                     )
                 }
-            <span className={classes.hover} onClick={props.handleCreatePlaylist} style={{paddingLeft:30,color:"#EF757D",fontSize:12}}><IconButton ><Plus size={15} color="#EF757D"/></IconButton> New Playlist</span>
+            <span className={classes.hover} onClick={handleCreatePlaylist} style={{paddingLeft:30,color:"#EF757D",fontSize:12}}><IconButton ><Plus size={15} color="#EF757D"/></IconButton> New Playlist</span>
             </List>
             
         </div>
