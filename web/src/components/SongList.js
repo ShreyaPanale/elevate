@@ -144,7 +144,7 @@ const SongRow = ({row}) => {
               const value = row[column.id];
               return (
                 <TableCell key={column.id} align={column.align}>
-                  {column.id=="like"?<IconButton onClick={handleLike}><Heart style={like==0?{color:"#EF757D",fill:"#EF757D"}:{}}/></IconButton> :value}
+                  {column.id=="like"?<IconButton onClick={handleLike}><Heart style={like==1?{color:"#EF757D",fill:"#EF757D"}:{}}/></IconButton> :value}
                 </TableCell>
               );
             })}
@@ -155,14 +155,14 @@ const SongList = ({tracks}) => {
     const classes = songListStyles();
     const { likedSongs } = usePlayer();
     let rowsForSong = tracks && tracks.map(
-      track => ({
+      (track,idx) => ({
         play: <Play />,
-        place: 6,
+        place: idx+1,
         title: <TrackItem track={track} />,
         artist:track.aname,
         plays: track.plays,
         time: track.time,
-        like: (track.id in likedSongs)?1:0,
+        like: likedSongs.includes(track.tid)?1:0,
         plus: <Plus />
       })
     )

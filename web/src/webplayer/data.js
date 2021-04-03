@@ -2,7 +2,7 @@ const userData = {
     uid:'tgsiMMRg2Ed4zcsJOrkHj9L8z8l1',
     email:'avinash2000vk@gmail.com',
     displayName:'avinash vk',
-    likedSongs:[],
+    likedSongs:[ 1 ],
     recommendations:[],
     playlists:[
         {
@@ -11,7 +11,7 @@ const userData = {
             pname:'Hype',
         }
     ],
-    history:[]
+    history:[2]
 }
 
 const tracks = [

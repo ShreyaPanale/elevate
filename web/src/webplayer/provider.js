@@ -44,6 +44,28 @@ export const PlayerProvider = ({children}) => {
         return t
     }
 
+    const getFavouritesForUser = () => {
+        return new Promise((res,rej) => {
+            try{
+                let t = tracks.filter(track => likedSongs.includes(track.tid))
+                res(t)
+            }catch(err){
+                rej(err)
+            }
+        })
+    }
+
+    const getHistoryForUser = () => {
+        return new Promise((res,rej) => {
+            try{
+                let t = tracks.filter(track => history.includes(track.tid))
+                res(t)
+            }catch(err){
+                rej(err)
+            }
+        })
+    }
+
     const addPlaylist = (playlistId) => {
         playlists.push(playlistId)
     }
@@ -76,7 +98,9 @@ export const PlayerProvider = ({children}) => {
                 setLikedSongs,
                 currIndex, 
                 setCurrIndex,
-                getSongsForPlaylist
+                getSongsForPlaylist,
+                getFavouritesForUser,
+                getHistoryForUser
             }}
         >
             {children}
