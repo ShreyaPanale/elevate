@@ -4,16 +4,17 @@ from firebase import firebase
 firestore = firebase.FirestoreController()
 
 class Playlist(object):
-    def __init__(self,uid,name,tracks=[]):
+    def __init__(self,uid,name,tracks=[],pid=""):
         self.uid=uid
         self.pname=name
         self.tracks=tracks
+        self.pid=pid
     
     @classmethod
     def fromDB(cls,pid):
         playlistData=firestore.getPlaylist(pid)
         print(playlistData)
-        return cls(playlistData['uid'],playlistData['pname'],playlistData['tracks'])
+        return cls(playlistData['uid'],playlistData['pname'],playlistData['tracks'],playlistData['pid'])
     
     def save(self):
         return firestore.savePlaylist(self)
@@ -22,7 +23,9 @@ class Playlist(object):
         return firestore.updatePlaylist(self,pid)
 
     def data(self):
-        return {'uid':self.uid,'pname':self.pname,'tracks':self.tracks}
+        return {'uid':self.uid,'pname':self.pname,'tracks':self.tracks,'pid':self.pid}
+
+
 
     def addSong(self,pid,trackID):
         self.tracks.append(trackID)

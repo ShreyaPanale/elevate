@@ -17,6 +17,7 @@ class FirestoreController:
 
     def addNewTrack(self,track):
         doc_ref = self.db.collection(u'tracks').document()
+        tid=doc_ref.id
         doc_ref.set({
             u'tname': track.tname,
             u'artist': track.artist,
@@ -25,8 +26,10 @@ class FirestoreController:
             u'coverurl': track.coverurl,
             u'mp3fileurl': track.mp3fileurl,
             u'duration':track.duration,
-            u'plays':track.plays
+            u'plays':track.plays,
+            u'tid':tid
         })
+        return doc_ref.id
 
     def getTracks(self):
         tracks_ref = self.db.collection(u'tracks')
@@ -63,10 +66,15 @@ class FirestoreController:
     #Artist controller functions
 
     def addNewArtist(self,artist):
+        print("am here")
         doc_ref = self.db.collection(u'artists').document()
+        aid=doc_ref.id
         doc_ref.set({
             u'aname': artist.aname,
+            u'photo': artist.photo,
+            u'aid':aid
         })
+        return aid
 
     def getArtist(self,aid):
         doc_ref = self.db.collection(u'artists').document(aid)
@@ -105,7 +113,9 @@ class FirestoreController:
 
     def savePlaylist(self,playlist):
         doc_ref = self.db.collection('playlists').document()
-        doc_ref.set(playlist.data())
+        pd=playlist.data()
+        pd['pid']=doc_ref.id
+        doc_ref.set(pd)
         return doc_ref.id
 
     def updatePlaylist(self,playlist,pid):

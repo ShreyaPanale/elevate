@@ -166,8 +166,8 @@ class APIServer:
                 audio = MP3(filepath)
                 audio_info = audio.info    
                 duration = int(audio_info.length)
-                trackManager.addNewTrack(tnm=tnm,artist=artist,genre=genre,desc=desc,coverurl=coverurl,mp3fileurl=mp3fileurl,duration=duration)
-                response_msg=jsonify({"status":"200 ok","message":"success"}),200
+                tid=trackManager.addNewTrack(tnm=tnm,artist=artist,genre=genre,desc=desc,coverurl=coverurl,mp3fileurl=mp3fileurl,duration=duration)
+                response_msg=jsonify({"status":"200 ok","message":"successfully added track","tid":str(tid)}),200
                 return response_msg 
             except Exception as e:
                 print(e)
@@ -225,9 +225,10 @@ class APIServer:
     @app.route('/addartist',methods=['POST'])
     def addArtist():
         try:
-            anm=request.form['aname']
-            artistManager.addNewArtist(anm=anm)
-            response_msg=jsonify({"status":"200 ok","message":"success"}),200
+            anm=request.json.get('aname')
+            photo=request.json.get('photo')
+            aid=artistManager.addNewArtist(anm=anm,photo=photo)
+            response_msg=jsonify({"status":"200 ok","message":"successfully created artist","aid":str(aid)}),200
             return response_msg
         except Exception as e:
             print(e)
