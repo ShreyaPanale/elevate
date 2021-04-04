@@ -162,11 +162,11 @@ const AdminPanel = ({children}) => {
             setTname('')
             setDesc('')
             setGenre('')
-            setSelectedFileName('')
-            setSelectedTrackName('')
+            setSelectedFileName('Track Cover Image')
+            setSelectedTrackName('Track mp3 File')
             setSelectedFile(null)
             setSelectedTrack(null)
-            
+            setPrevImg('https://customercare.igloosoftware.com/.api2/api/v1/communities/10068556/previews/thumbnails/4fc20722-5368-e911-80d5-b82a72db46f2?width=680&height=680&crop=False')
         })
     }
     const handleChange = (event) => {
@@ -200,7 +200,7 @@ const AdminPanel = ({children}) => {
             </Grid>
             <Grid item container direction="row" >
                 <Grid item container xs={6} direction="column" style={{paddingRight:"5%"}} className={classes.inputContainer}>
-                        <TextField  placeholder="Track Name" className={classes.input} onChange={e=>setTname(e.target.value)} />
+                        <TextField  placeholder="Track Name" className={classes.input} onChange={e=>setTname(e.target.value)} value={tname} />
                         <Select
                         value={artist}
                         onChange={handleChange}
@@ -220,7 +220,7 @@ const AdminPanel = ({children}) => {
                                 </MenuItem>
                             ))}
                         </Select>
-                        <TextField  placeholder="Genre" className={classes.input} onChange={e=>setGenre(e.target.value)} />
+                        <TextField  placeholder="Genre" className={classes.input} onChange={e=>setGenre(e.target.value)} value={genre}/>
                         <TextField  
                             variant="outlined" 
                             placeholder="Description" 
@@ -228,6 +228,7 @@ const AdminPanel = ({children}) => {
                             InputProps={{classes:{notchedOutline:classes.notchedOutline}}} 
                             multiline
                             rows={3}
+                            value={desc}
                             onChange={e=>setDesc(e.target.value)}
                         />
                         <Button className={classes.btn} onClick={handleSubmit}>Upload Track</Button> 
