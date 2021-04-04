@@ -3,14 +3,9 @@ import {useHistory} from 'react-router-dom';
 import {
     Grid,
     TextField,
-    Select,
-    InputBase,
-    MenuItem,
     Button,
-    Typography
 } from '@material-ui/core';
 import { makeStyles,withStyles } from "@material-ui/core/styles";
-import {ChevronDown,Camera,Upload} from 'react-feather'
 import API from "../../api"
 const useStyles = makeStyles(() => ({
     container: {

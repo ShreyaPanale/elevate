@@ -12,13 +12,22 @@ const Users = {
 }
 
 const Admin = {
-    createTrack : async (params) => (await axios.post(URLS.createTrack(),params)).data,
+    createTrack : async (params) => (await axios.post(URLS.createTrack(),params,{
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+    })).data,
     createArtist :  async (params) => (await axios.post(URLS.createArtist(),params)).data
+}
+
+const Artist = {
+    getArtists : async (params) => (await axios.get(URLS.getArtists(),params)).data
 }
 
 let API;
 export default API = {
     ...Playlists,
     ...Users,
-    ...Admin
+    ...Admin,
+    ...Artist
 }

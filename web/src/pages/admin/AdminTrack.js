@@ -7,8 +7,8 @@ import {
     InputBase,
     MenuItem,
     Button,
-    Typography
 } from '@material-ui/core';
+import API from "../../api"
 import { makeStyles,withStyles } from "@material-ui/core/styles";
 import {ChevronDown,Camera,Upload} from 'react-feather'
 const useStyles = makeStyles(() => ({
@@ -130,20 +130,45 @@ const useStyles = makeStyles(() => ({
     },
   }))(InputBase);
 const AdminPanel = ({children}) => {
-    
+    const [artists,setArtists] = React.useState([])
+    React.useEffect(()=>{
+            API.getArtists().then(data=>{
+                setArtists(data.data);
+            })
+    },[])
     const classes = useStyles();
     const history = useHistory();
+    const [tname,setTname] = React.useState('')
+    const [genre,setGenre] = React.useState('')
+    const [desc,setDesc] = React.useState('')
     const [artist, setArtist] = React.useState(0);
-    const [selectedFile,setSelectedFile] = React.useState('https://customercare.igloosoftware.com/.api2/api/v1/communities/10068556/previews/thumbnails/4fc20722-5368-e911-80d5-b82a72db46f2?width=680&height=680&crop=False');
+    const [selectedFile,setSelectedFile] = React.useState(null);
     const [selectedFileName,setSelectedFileName] = React.useState('Track Cover Image');
     const [selectedTrack,setSelectedTrack] = React.useState(null);
     const [selectedTrackName,setSelectedTrackName] = React.useState('Track mp3 File');
-    let data =[
-        0,
-        'item 1',
-        'item 2',
-        'item 3'
-    ]
+    const [prevImg,setPrevImg] = React.useState('https://customercare.igloosoftware.com/.api2/api/v1/communities/10068556/previews/thumbnails/4fc20722-5368-e911-80d5-b82a72db46f2?width=680&height=680&crop=False');
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        var formData = new FormData();
+        formData.append("tname",tname)
+        formData.append("artist",artist)
+        formData.append("genre",genre)
+        formData.append("desc",desc)
+        formData.append("mp3file",selectedTrack)
+        formData.append("cover",selectedFile)
+        
+        API.createTrack(formData).then(res =>{
+            setArtist('')
+            setTname('')
+            setDesc('')
+            setGenre('')
+            setSelectedFileName('')
+            setSelectedTrackName('')
+            setSelectedFile(null)
+            setSelectedTrack(null)
+            
+        })
+    }
     const handleChange = (event) => {
     setArtist(event.target.value);
   };
@@ -152,7 +177,8 @@ const AdminPanel = ({children}) => {
         const reader = new FileReader();
         var url = reader.readAsDataURL(file);
         reader.onloadend = async function(e) {
-            setSelectedFile([reader.result]);
+            setSelectedFile(file);
+            setPrevImg([reader.result])
             setSelectedFileName(file.name)
         }
         console.log(url);
@@ -162,7 +188,7 @@ const AdminPanel = ({children}) => {
         const reader = new FileReader();
         var url = reader.readAsDataURL(file);
         reader.onloadend = async function(e) {
-            setSelectedTrack([reader.result]);
+            setSelectedTrack(file);
             setSelectedTrackName(file.name)
         }
         console.log(url);
@@ -174,25 +200,27 @@ const AdminPanel = ({children}) => {
             </Grid>
             <Grid item container direction="row" >
                 <Grid item container xs={6} direction="column" style={{paddingRight:"5%"}} className={classes.inputContainer}>
-                        <TextField  placeholder="Track Name" className={classes.input}  />
+                        <TextField  placeholder="Track Name" className={classes.input} onChange={e=>setTname(e.target.value)} />
                         <Select
                         value={artist}
                         onChange={handleChange}
                         input={<BootstrapInput/>}
                         IconComponent={ChevronDown}
                         >
-                            {data.map((value) => (
+                            <MenuItem value={0} disabled>
+                                    <span className={classes.placeholder}>Artist</span>
+                            </MenuItem>
+                            {artists.map((value) => (
                                 (value === 0)?
                                 <MenuItem value={value} disabled>
                                     <span className={classes.placeholder}>Artist</span>
                                 </MenuItem>:
-                                <MenuItem value={value}>
-                                    {value}
+                                <MenuItem value={value.aid}>
+                                    {value.aname}
                                 </MenuItem>
                             ))}
                         </Select>
-                        <TextField  placeholder="Artist Name" className={classes.input}  />
-                        <TextField  placeholder="Genre" className={classes.input}  />
+                        <TextField  placeholder="Genre" className={classes.input} onChange={e=>setGenre(e.target.value)} />
                         <TextField  
                             variant="outlined" 
                             placeholder="Description" 
@@ -200,8 +228,9 @@ const AdminPanel = ({children}) => {
                             InputProps={{classes:{notchedOutline:classes.notchedOutline}}} 
                             multiline
                             rows={3}
+                            onChange={e=>setDesc(e.target.value)}
                         />
-                        <Button className={classes.btn}>Upload Track</Button> 
+                        <Button className={classes.btn} onClick={handleSubmit}>Upload Track</Button> 
                     </Grid>
                 <Grid item container xs={6} className={classes.inputContainer}>
                     <label htmlFor="img" style={{width:"100%",paddingTop:'3%'}}>
@@ -221,7 +250,7 @@ const AdminPanel = ({children}) => {
                 <Grid item container xs={4}>
                     <img
                         className={classes.previmg}
-                        src={selectedFile}
+                        src={prevImg}
                     />
                     </Grid>
                 <Grid item container xs={2} style={{justifyContent:"center",alignItems:"center"}}>

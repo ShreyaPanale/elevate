@@ -15,8 +15,13 @@ const adminURL = {
     createArtist:()=>`${ENDPOINT}/addartist`
 }
 
+const artistURL = {
+    getArtists:()=>`${ENDPOINT}/getartists`
+}
+
 export default URLS = {
     ...playlistURL,
     ...userURL,
-    ...adminURL
+    ...adminURL,
+    ...artistURL
 }
