@@ -185,6 +185,7 @@ export const PlayerProvider = ({children}) => {
             return playlist
         })
         setPlaylists(ps);
+        setModal(0);
     }
 
     const playNow = (track) => {

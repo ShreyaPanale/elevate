@@ -123,7 +123,7 @@ const SongList = ({tracks}) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {loading?<p>loading...</p>:tracks && tracks.map((track,idx) => {
+            {loading?<p>loading...</p>:tracks.length && tracks.map((track,idx) => {
               return (
                 <SongRow row={{
                   play: songQueue[currIndex] === track? playing?<Pause style={{color:'#E7576D'}} onClick={()=>toggle()} />: <Play style={{color:'#E7576D'}} onClick={()=>toggle()} />: <Play onClick={()=>{

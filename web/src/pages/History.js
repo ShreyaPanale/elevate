@@ -26,7 +26,7 @@ const History = () => {
     const { getHistoryForUser,history } = usePlayer();
     const [ loading, setLoading ] = React.useState(true);
     React.useEffect(()=>{
-        setLoading(true);
+        
         getHistoryForUser().then(res => {
             setHistory(res)
             setLoading(false);
