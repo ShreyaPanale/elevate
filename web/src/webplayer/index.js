@@ -4,29 +4,38 @@
 
 import React,{useContext,useEffect, useState} from 'react';
 import DATA from './data';
+import API from "../api"
 import {useAuth} from '../firebase/provider'
 import {AddTrack,CreatePlaylist} from '../components/Modals';
-export const PlayerContext = React.createContext();
 
+export const PlayerContext = React.createContext();
 export const usePlayer = () => {
     return useContext(PlayerContext);
 }
 
 export const PlayerProvider = ({children}) => {
+    const {currentUser} = useAuth()
+    useEffect(()=>{
+        API.getUserData(currentUser.uid).then(data =>{
+            setPlaylists(data.playlists)
+            setHistory(data.history)
+            setLikedSongs(data.likedSongs)
+          })
+    })
+
     //const { userData, tracks ,artists} = useAuth();
-    const { userData, tracks, artists } = DATA;
+    //const { userData, tracks, artists } = DATA;
 
     const [play, setPlay] = useState(false);
     const [songQueue, setSongQueue] = useState([
     ]);
     
-    const [playlists, setPlaylists] = useState(userData.playlists);
-    const [history, setHistory] = useState(userData.history);
+    const [playlists, setPlaylists] = useState([]);
+    const [history, setHistory] = useState([]);
     const [currSong, setCurrSong] = useState();
     const [currIndex, setCurrIndex] = useState(-1);
-    const [likedSongs, setLikedSongs] = useState(userData.likedSongs);
-    const [artistList] = useState(artists);
-    const [trackList] = useState(tracks);
+    //const [artistList,setArtistList] = useState([]);
+    //const [trackList,setTrackList] = useState([]);
 
     const [modal, setModal] = React.useState(0);
     const [tid, setTid] = React.useState();
@@ -91,10 +100,12 @@ export const PlayerProvider = ({children}) => {
         let newLikedSongs = [...likedSongs]
         setLikedSongs(newLikedSongs)
     }
-
+    
+    //EP added
     const getSongsForPlaylist = (playlist) => {
-        let t =  tracks.filter(track => playlist.tracks.includes(track.tid))
-        return t
+        API.getPlaylistTracks(playlist.pid).then(res => {
+            return res.data.tracks
+        })
     }
 
     const getFavouritesForUser = () => {
@@ -122,15 +133,34 @@ export const PlayerProvider = ({children}) => {
             }
         })
     }
-
+    //EP added
     const addPlaylist = (playlist) => {
-        playlists.push(playlist);
-        let newPlaylists = playlists;
-        setPlaylists(newPlaylists);
-    }
-
-    const addTrack = (tid, pid) => {
+        API.createPlaylist(playlist).then(async res => {
+            //console.log(res.pid)
+            playlist['pid']=res.pid
+            playlist['tracks']=[]
+            const toAdd={
+                "pid":res.pid,
+                "uid":currentUser.uid,
+                "action":"addPlaylist"
+            }
+            //console.log(toAdd)
+            await API.addPlaylistToUser(toAdd)
+            playlists.push(playlist);
+            let newPlaylists = playlists;
+            setPlaylists(newPlaylists);
+            setModal(0)
+        })
         
+    }
+    //EP added
+    const addTrack = (tid, pid) => {
+        temptrack = {
+            "tid" : tid,
+            "pid" : pid,
+            "action" : "addTrack"
+        }
+        API.addTrackToPlaylist(temptrack)
         let ps = playlists.map(playlist => {
             if(playlist.pid == pid){
                 playlist.tracks.push(tid);
@@ -152,16 +182,24 @@ export const PlayerProvider = ({children}) => {
         }
         setSongQueue([...songQueue])
     }   
-
+    //EP added
     const getArtists = () => {
-        return artists
+        API.getArtists().then(data => {
+            return data.data
+          })
     }
+    //EP added
     const getTracks = () => {
-        return tracks
+        API.getTracks(user.uid).then(data =>{
+            return data.data
+          })
     }
-
+    //EP added
     const getTracksForArtist = (aid) => {
-        return tracks.filter(track => track.aid == aid);
+        API.getTracksByArtist(aid).then(data =>{
+            return data.data
+          })
+        //return trackList.filter(track => track.aid == aid);
     }
 
     return (

@@ -4,6 +4,8 @@ import URLS from './urls';
 const Playlists = {
     createPlaylist : async (params) => (await axios.post(URLS.createPlaylist(),params)).data,
     addPlaylistToUser : async (params) => (await axios.post(URLS.addPlaylistToUser(),params)).data,
+    addTrackToPlaylist : async (params) => (await axios.post(URLS.addTrackToPlaylist(),params)).data,
+    getPlaylistTracks : async (id) => (await axios.get(URLS.getPlaylistTracks(id))).data
 }
 
 const Users = {
@@ -28,6 +30,7 @@ const Artist = {
 
 const Tracks = {
     getTracks :  async (id) => (await axios.get(URLS.getTracks(id))).data,
+    getTracksByArtist : async (id) => (await axios.get(URLS.getTracksByArtist(id))).data
 }
 
 let API;

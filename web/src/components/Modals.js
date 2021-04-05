@@ -181,17 +181,7 @@ export const CreatePlaylist = ({open,handleClose,setModal}) => {
             "uid" : currentUser.uid
         }
         console.log(playlist)
-        API.createPlaylist(playlist).then(async res => {
-            console.log(res.pid)
-            const toAdd={
-                "pid":res.pid,
-                "uid":currentUser.uid,
-                "action":"addPlaylist"
-            }
-            console.log(toAdd)
-            await API.addPlaylistToUser(toAdd)
-            setModal(0)
-        })
+        addPlaylist(playlist)
         setName('')
 
     }

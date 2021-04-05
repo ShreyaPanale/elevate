@@ -2,7 +2,9 @@ const ENDPOINT = "http://localhost:5000"
 let URLS;
 const playlistURL = {
     createPlaylist:()=>`${ENDPOINT}/playlist/create`,
-    addPlaylistToUser:()=>`${ENDPOINT}/user/playlists`
+    addPlaylistToUser:()=>`${ENDPOINT}/user/playlists`,
+    addTrackToPlaylist:()=>`${ENDPOINT}/user/playlist/tracks`,
+    getPlaylistTracks:(id)=>`${ENDPOINT}/playlist/tracks?pid=${id}`
 }
 
 const userURL = {
@@ -21,7 +23,8 @@ const artistURL = {
 }
 
 const tracksURL = {
-    getTracks:(id)=>`${ENDPOINT}/gettracks?uid=${id}`
+    getTracks:(id)=>`${ENDPOINT}/gettracks?uid=${id}`,
+    getTracksByArtist:(aid)=>`${ENDPOINT}/tracks/artist?aid=${aid}`
 }
 
 export default URLS = {

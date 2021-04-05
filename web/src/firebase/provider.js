@@ -70,25 +70,19 @@ export const AuthProvider = ({children}) => {
 
       useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
+          setLoading(true)
           setCurrentUser(user)
-          API.userAdminStatus(user.uid).then(data => {
-            console.log(data.admin)
-            if(data.admin)
-              setAdminStat(true);
-            else
-              setAdminStat(false)
-          API.getUserData(user.uid).then(data =>{
-            setUserData(data)
-          })
-          API.getTracks(user.uid).then(data =>{
-            setTracks(data.data)
-          })
-          API.getArtists().then(data => {
-            setArtists(data.data)
-          })
-            setLoading(false)
-          });
-          
+          if(user){
+            API.userAdminStatus(user.uid).then(data => {
+              console.log(data.admin)
+              if(data.admin)
+                setAdminStat(true);
+              else
+                setAdminStat(false)
+              setLoading(false)
+            });
+          }
+          else setLoading(false)
         })
     
         return unsubscribe
