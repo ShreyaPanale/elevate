@@ -29,8 +29,19 @@ const Artist = () => {
     const [loading, setLoading] = useState(false);
     const { getArtists, getTracksForArtist } = usePlayer();
     const artistList = getArtists()
-    const artist = artistList.filter(artist => artist.aid == id)[0];
-    const trackList = getTracksForArtist(id);
+    //const artist = artistList.filter(artist => artist.aid == id)[0];
+    //const trackList = getTracksForArtist(id);
+
+    const [artist,setArtist]=React.useState({})
+    const [trackList,setTrackList]=React.useState([])
+    useEffect(()=>{
+        getArtists().then(res => {
+            setArtist(res.filter(artist => artist.aid == id)[0])
+        })
+        getTracksForArtist(id).then(res => {
+            setTrackList(res)
+        })
+    },[])
 
     const history = useHistory();
     const goBack = () => {
@@ -58,7 +69,7 @@ const Artist = () => {
                                             display:'inline-flex',
                                             marginRight:20
                                         }} 
-                                        src={artist.artistProfile}
+                                        src={artist.photo}
                                 />
                                 {artist.aname}</h1>
                             </Grid>

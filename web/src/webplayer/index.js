@@ -106,14 +106,14 @@ export const PlayerProvider = ({children}) => {
 
     //EP added
     const getSongsForPlaylist = (playlist) => {
-        API.getPlaylistTracks(playlist.pid).then(res => {
+        return API.getPlaylistTracks(playlist.pid).then(res => {
             return res.data.tracks
         })
     }
 
     //EP added
     const getFavouritesForUser = () => {
-        API.getUserFavourites(currentUser.uid).then(res =>{
+        return API.getUserFavourites(currentUser.uid).then(res =>{
             return res.data
         })
         //return tracks.filter(track => likedSongs.includes(track.tid))
@@ -197,7 +197,7 @@ export const PlayerProvider = ({children}) => {
 
     //EP added
     const getArtists = () => {
-        API.getArtists().then(data => {
+        return API.getArtists().then(data => {
             console.log(data.data)
             return data.data
           })
@@ -205,13 +205,13 @@ export const PlayerProvider = ({children}) => {
     }
     //EP added
     const getTracks = () => {
-        API.getTracks(currentUser.uid).then(data =>{
+        return API.getTracks(currentUser.uid).then(data =>{
             return data.data
           })
     }
     //EP added
     const getTracksForArtist = (aid) => {
-        API.getTracksByArtist(aid).then(data =>{
+        return API.getTracksByArtist(aid).then(data =>{
             return data.data
           })
         //return trackList.filter(track => track.aid == aid);

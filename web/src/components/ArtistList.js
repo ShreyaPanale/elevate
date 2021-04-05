@@ -44,7 +44,7 @@ const ArtistList = () => {
                                     height:200,
                                     borderRadius:100,
                                 }} 
-                                src={artist.artistProfile}
+                                src={artist.photo}
                             />
                         </Grid>
                         <Grid item style={{
