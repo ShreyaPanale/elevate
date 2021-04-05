@@ -136,8 +136,7 @@ export const PlayerProvider = ({children}) => {
     }
 
     const playNow = (track) => {
-        songQueue.splice(currIndex-1,0,track);
-        setSongQueue([...songQueue]);
+        setCurrIndex(songQueue.indexOf(track));
         setCurrSong(track);
     }
 

@@ -69,8 +69,11 @@ const columns = [
   }
 
 const SongRow = ({row}) => {
-  const { setLike:modifyLike } = usePlayer();
+  const { setLike:modifyLike, likedSongs } = usePlayer();
   const [like,setLike] = React.useState(row['like']);
+  React.useEffect(()=>{
+    likedSongs.includes(row['tid'])?setLike(1):setLike(0);
+  },[likedSongs])
   const handleLike = (tid)=>{
     console.log("LIKES", tid)
     if(like) {
@@ -98,7 +101,7 @@ const SongRow = ({row}) => {
 const SongList = ({tracks}) => {
     const classes = songListStyles();
     const [likes, setLikes] = React.useState()
-    const { likedSongs, handleAddTrack, addToQueue, songQueue, playing, currIndex, toggle } = usePlayer();
+    const { likedSongs, handleAddTrack, addToQueue, songQueue, playing, currIndex, toggle, playNow } = usePlayer();
     const [loading,setLoading] = React.useState(true);
     React.useEffect(()=>{ setLikes(likedSongs);setLoading(false)},[likedSongs])
     console.log(likes)
@@ -122,7 +125,10 @@ const SongList = ({tracks}) => {
             {loading?<p>loading...</p>:tracks && tracks.map((track,idx) => {
               return (
                 <SongRow row={{
-                  play: songQueue[currIndex] === track? playing?<Pause style={{color:'#E7576D'}} onClick={()=>toggle()} />: <Play style={{color:'#E7576D'}} onClick={()=>toggle()} />: <Play onClick={()=>addToQueue(track)} />,
+                  play: songQueue[currIndex] === track? playing?<Pause style={{color:'#E7576D'}} onClick={()=>toggle()} />: <Play style={{color:'#E7576D'}} onClick={()=>toggle()} />: <Play onClick={()=>{
+                    if(songQueue.includes(track)) playNow(track)  
+                    else addToQueue(track)
+                    }} />,
                   place: idx+1,
                   title: <TrackItem track={track} />,
                   artist:track.aname,

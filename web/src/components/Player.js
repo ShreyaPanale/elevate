@@ -48,7 +48,7 @@ const Player = () => {
 
     useEffect(()=>{
         (songQueue[currIndex] && likedSongs.includes(songQueue[currIndex].tid))?setLike(1):setLike(0)
-    },[likedSongs])
+    },[likedSongs,currIndex])
 
     const [isQueue,setQueue] = React.useState(location.pathname==ROUTES.queue);
 
@@ -79,7 +79,7 @@ const Player = () => {
                     marginLeft:20
                 }} alt="nf" src={songQueue[currIndex] ? songQueue[currIndex].coverUrl : null} />
             </Grid>
-            <Grid item container xs={2} spacing={1} direction="row" style={{alignItems:'center'}}>
+            <Grid item container xs={2} spacing={1} direction="row" style={{alignItems:'center' }}>
                 <Grid item>
                     <Typography style = {{
                         fontFamily: "Poppins",

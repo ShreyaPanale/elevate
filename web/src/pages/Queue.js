@@ -4,6 +4,7 @@ import { Button, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles'
 import { useHistory } from 'react-router-dom';
 import SongList from '../components/SongList';
+import {usePlayer} from '../webplayer/provider';
 
 const useStyles = makeStyles(()=>({
     root:{
@@ -17,6 +18,7 @@ const useStyles = makeStyles(()=>({
 const Queue = () => {
     const history = useHistory();
     const classes = useStyles();
+    const { songQueue } = usePlayer();
     const goBack = () => {
         history.goBack()
       }
@@ -31,7 +33,7 @@ const Queue = () => {
                         <Button onClick={goBack}><h2  style = {{color:"#EF757D", textTransform:'none'}}>Close</h2></Button>
                     </Grid>
                     <Grid item style={{width:'100%'}}>
-                        <SongList />
+                        <SongList tracks={songQueue}/>
                     </Grid>
                 </Grid>
             </Grid>
