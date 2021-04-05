@@ -1,7 +1,8 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Avatar, Typography, IconButton } from '@material-ui/core';
-import { Heart, List, Play, SkipForward, SkipBack, Plus } from 'react-feather';
+import { Heart, List, Play, Pause, SkipForward, SkipBack, Plus } from 'react-feather';
+import { usePlayer } from '../webplayer';
 import {useHistory,useLocation} from 'react-router-dom';
 import ROUTES from '../routes';
 const useStyles = makeStyles(()=>({
@@ -36,25 +37,38 @@ const useStyles = makeStyles(()=>({
     }
 }))
 
-const Player = (props) => {
+
+const Player = () => {
     const classes = useStyles();
     let curPercentage = 80; // will handle progress
-    const [like,setLike] = React.useState(0);
-    const handleLike = (event) => {
-        if(like==0)
-            setLike(1)
-        else
-            setLike(0)
-        //call necessary endpoints
-    }
-   
+    const { handleAddTrack, likedSongs, songQueue, currIndex, setLike:modifyLike,playing, toggle, nextSong, prevSong } = usePlayer();
     const history = useHistory();
     const location = useLocation();
+    const [like,setLike] = React.useState(0);
+
+    useEffect(()=>{
+        (songQueue[currIndex] && likedSongs.includes(songQueue[currIndex].tid))?setLike(1):setLike(0)
+    },[likedSongs,currIndex])
+
     const [isQueue,setQueue] = React.useState(location.pathname==ROUTES.queue);
+
     React.useEffect(()=>{
         if(location.pathname==ROUTES.queue) setQueue(true)
         else if(isQueue) setQueue(false)
     },[location])
+
+    const handleLike = () => {
+        if(like==0){
+            modifyLike(songQueue[currIndex].tid,1);
+            setLike(1)
+        }
+        else{
+            modifyLike(songQueue[currIndex].tid,0);
+            setLike(0)
+        }
+            
+        //call necessary endpoints
+    }
     return (
         <Grid className={classes.root} container direction="row">
             <Grid item xs={1}>
@@ -63,30 +77,30 @@ const Player = (props) => {
                     height:80,
                     borderRadius:10,
                     marginLeft:20
-                }} alt="nf" src="https://i.ytimg.com/vi/glNleDYUPu4/maxresdefault.jpg" />
+                }} alt="nf" src={songQueue[currIndex] ? songQueue[currIndex].coverUrl : null} />
             </Grid>
-            <Grid item container xs={2} spacing={1} direction="row" style={{alignItems:'center'}}>
+            <Grid item container xs={2} spacing={1} direction="row" style={{alignItems:'center' }}>
                 <Grid item>
                     <Typography style = {{
                         fontFamily: "Poppins",
                         fontSize: 20,
                         fontWeight: 600
                     }}>
-                        Dreams
+                        {songQueue[currIndex] ? songQueue[currIndex].tname:null}
                     </Typography>
                     <Typography style = {{
                         color: "#ABABAB",
                         fontSize:14
                     }}>
-                        NF
+                        {songQueue[currIndex] ? songQueue[currIndex].aname:null}
                     </Typography>
                 </Grid>
                 <Grid item>
                     <IconButton onClick={handleLike}>
-                        {like==0 && <Heart style={{color:"#EF757D",fill:"#EF757D"}}/>}
-                        {like==1 && <Heart />}
+                        {like==1 && <Heart style={{color:"#EF757D",fill:"#EF757D"}}/>}
+                        {like==0 && <Heart />}
                     </IconButton>
-                    <IconButton onClick={props.handleAddTrack}>
+                    <IconButton onClick={()=>handleAddTrack(songQueue[currIndex].tid)}>
                        <Plus/>
                     </IconButton>
                 </Grid>
@@ -94,26 +108,37 @@ const Player = (props) => {
             <Grid item container xs={8} style={{alignItems:'center'}} direction="column">
                     <Grid item container spacing={4} style={{alignItems:'center',justifyContent:'center'}}>
                         <Grid item>
-                            <SkipBack />
+                            <SkipBack onClick={prevSong} style={{color:currIndex<=0?'#ABABAB':'#000'}} />
                         </Grid>
+                        
                         <Grid item>
-                            <div style = {{
+                            <div 
+                            onClick={currIndex<0?()=>{}:toggle}
+                            style = {{
                                 height:50,
                                 width:50,
-                                backgroundColor:"#EF757D",
+                                backgroundColor:currIndex<0?'#ABABAB':"#EF757D",
                                 borderRadius:100,
                                 display:'inline-flex',
                                 alignItems:'center',
                                 justifyContent:'center',
                             }}>
-                                <Play style= {{
-                                    color:"#FFF",
-                                    marginLeft:4
-                                }}/>
+                                {
+                                    playing? 
+                                    <Pause style= {{
+                                        color:"#FFF",
+                                    }}/>
+                                    :<Play style= {{
+                                        color:"#FFF",
+                                        marginLeft:4
+                                    }}/>
+                                    
+                                }
+                                
                             </div>
                         </Grid>
                         <Grid item>
-                            <SkipForward />
+                            <SkipForward onClick={nextSong} style={{color:currIndex==songQueue.length-1?'#ABABAB':'#000'}} />
                         </Grid>
                     </Grid>
                     <Grid item container style={{width:'100%'}}>

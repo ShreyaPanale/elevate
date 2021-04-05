@@ -1,9 +1,10 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import TopBar from '../../components/TopBar';
 
 import { Grid, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles'
-
+import { usePlayer } from '../../webplayer';
+import { useParams } from 'react-router-dom';
 import SongList from '../../components/SongList';
 
 const useStyles = makeStyles(()=>({
@@ -12,6 +13,7 @@ const useStyles = makeStyles(()=>({
         paddingTop:"2%",
         paddingBottom:'1%',
         marginTop:0,   
+        height:'100%'
     },
     btn:{
         backgroundColor: "#EF757D",
@@ -30,27 +32,42 @@ const useStyles = makeStyles(()=>({
 }))
 
 const Playlist = () => {
+    const {id} = useParams();
     const classes = useStyles();
+    const [loading, setLoading] = useState(false);
+    const { playlists, getSongsForPlaylist } = usePlayer();
+    
+    const playlist = playlists.filter(playlist => playlist.pid == id)[0];
+    
+    let [ songs, setSongs ] = useState();
+    useEffect(() => {
+        setLoading(true);
+        songs = getSongsForPlaylist(playlist);
+        setSongs(songs);
+        setLoading(false);
+    }, [id,playlists])
     return (
         <Grid container direction="row">
             <Grid item container xs={12} >
                 <TopBar placeholder = {"Search for songs or artists"} />
             </Grid>
             <Grid item container direction="row" className={classes.root}>
-            <Grid item container direction="row" justify="center">
-                    <Grid item xs={11}>
-                        <h1>
-                        🎧 Playlist name
-                        </h1>
-                    </Grid>
-                    <Grid item xs={1} justify='center'>
-                            <Button className = {classes.btn}>
-                                Play
-                            </Button>
+                    <Grid item xs={12} container direction="row">
+                        <Grid item xs={11}>
+                            <h1>
+                            🎧 {playlist.pname}
+                            </h1>
                         </Grid>
+                        <Grid item xs={1} justify='center'>
+                                <Button className = {classes.btn}>
+                                    Play
+                                </Button>
+                            </Grid>
                     </Grid>
-                    <Grid item xs={12} style={{width:"100%"}}>
-                        <SongList />
+                    <Grid item xs={12} style={{width:"100%", height:'100%'}} >
+                        {
+                            loading? <p>Loading...</p>:<SongList tracks={songs} />
+                        }
                     </Grid>
             </Grid>
         </Grid>

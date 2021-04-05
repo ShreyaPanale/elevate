@@ -2,6 +2,9 @@ import React from 'react'
 import { Modal, Typography, Grid,Button, FormControlLabel,TextField} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { FormLabel, FormControl, FormGroup,Checkbox} from '@material-ui/core';
+
+import { usePlayer } from '../webplayer'; 
+
 import API from '../api';
 import { useAuth } from "../firebase/provider";
 import { useHistory } from "react-router-dom";
@@ -112,19 +115,23 @@ const modalStyles = makeStyles((theme)=>({
     },
 }))
 
-export const AddTrack = ({open,handleClose}) => {
+export const AddTrack = ({open,handleClose,tid}) => {
     const classes = modalStyles();
-    const handleAddTrack = () => {
+    const { addTrack, playlists } = usePlayer();
+    const handleAddTrack = (e) => {
+        e.preventDefault();
         //add necessary endpoint calls
-
+        plist.map(pid => addTrack(tid,pid))
     }
     const [plist,setPlist] = React.useState([])
     const handleChange = (event) => {
         //doesn't work
-        console.log("im here")
-        console.log("plist",plist);
+        
         let temp=plist
-        temp.push(event.target.name)
+        if (event.target.checked)
+            temp.push(parseInt(event.target.value))
+        else
+            temp.splice(temp.indexOf(event.target.name),1)
         setPlist(temp)
         console.log("plist",plist)
     }
@@ -146,7 +153,7 @@ export const AddTrack = ({open,handleClose}) => {
                             {
                                 playlists.map((playlist) => (
                                     <FormControlLabel 
-                                    control={<Checkbox name={playlist.pid} onChange={handleChange} style ={{color: "#EF757D"}}/>}
+                                    control={<Checkbox value={playlist.pid} onChange={handleChange} style ={{color: "#EF757D"}}/>}
                                      label={<Typography className={classes.formControlLabel}>{playlist.pname}</Typography>}
                                      />
                                 ))
@@ -162,6 +169,10 @@ export const AddTrack = ({open,handleClose}) => {
 
 export const CreatePlaylist = ({open,handleClose,setModal}) => {
     const classes = modalStyles();
+
+    const { addPlaylist, playlists } = usePlayer();
+    const [pname,setName] = React.useState('')
+
     const { currentUser } = useAuth();
     const history = useHistory();
     const handleSubmit = async (e) =>{
@@ -182,8 +193,8 @@ export const CreatePlaylist = ({open,handleClose,setModal}) => {
             setModal(0)
         })
         setName('')
+
     }
-    const [pname,setName] = React.useState('')
     return (
         <Modal
             open={open}
