@@ -15,27 +15,44 @@ export const PlayerProvider = ({children}) => {
 
     const [play, setPlay] = useState(false);
     const [songQueue, setSongQueue] = useState([
-        {
-            tid:2,
-            tname: "Layers",
-            aname: "NF",
-            aid:1,
-            time: 200,
-            plays:6,
-            coverUrl: "https://images.genius.com/c1d6d5b577205c6454f665dedee3f774.1000x563x1.png",
-            link: "https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3"
-        },
     ]);
     
     const [playlists, setPlaylists] = useState(userData.playlists);
     const [history, setHistory] = useState(userData.history);
     const [currSong, setCurrSong] = useState();
-    const [currIndex, setCurrIndex] = useState(0);
+    const [currIndex, setCurrIndex] = useState(-1);
     const [likedSongs, setLikedSongs] = useState(userData.likedSongs);
 
     const [modal, setModal] = React.useState(0);
     const [tid, setTid] = React.useState();
     const handleClose = () => setModal(0);
+    
+    const [audio,setAudio] = useState(new Audio());
+    const [playing, setPlaying] = useState(false);
+  
+    const toggle = () => setPlaying(!playing);
+  
+    useEffect(() => {
+        playing ? audio && audio.play() : audio && audio.pause();
+      },
+      [playing]
+    );
+      
+    useEffect(()=>{
+        if ( songQueue.length>0 && currIndex != -1 && songQueue[currIndex]){
+            audio.setAttribute('src', songQueue[currIndex].link)
+            setAudio(audio);
+        }
+    },[currIndex])
+
+    useEffect(() => {
+    if (audio){
+      audio.addEventListener('ended', () => setPlaying(false));
+      return () => {
+        audio.removeEventListener('ended', () => setPlaying(false));
+      };
+    }
+    }, [audio]);
     
     const handleAddTrack = (tid) => {
         setTid(tid)
@@ -46,12 +63,12 @@ export const PlayerProvider = ({children}) => {
     }
 
     const nextSong = () => {
-        if (songQueue.length == currIndex) return;
+        if (songQueue.length-1 === currIndex) return;
         setCurrIndex(currIndex+1);
     }
 
     const prevSong = () => {
-        if (currIndex == 1) return;
+        if (currIndex == 0) return;
         setCurrIndex(currIndex-1);
     }
 
@@ -118,11 +135,19 @@ export const PlayerProvider = ({children}) => {
         setPlaylists(ps);
     }
 
-    const playNow = (trackId) => {
-        songQueue.splice(currIndex-1,0,trackId);
-        setCurrSong(trackId);
+    const playNow = (track) => {
+        songQueue.splice(currIndex-1,0,track);
+        setSongQueue([...songQueue]);
+        setCurrSong(track);
     }
 
+    const addToQueue = (track) => {
+        songQueue.push(track);
+        if (currIndex === -1){
+            setCurrIndex(0);
+        }
+        setSongQueue([...songQueue])
+    }   
     return (
         <PlayerContext.Provider
             value = {{
@@ -134,6 +159,7 @@ export const PlayerProvider = ({children}) => {
                 setLike,
                 playNow,
                 songQueue,
+                addToQueue,
                 setSongQueue,
                 playlists, 
                 setPlaylists,
@@ -152,7 +178,12 @@ export const PlayerProvider = ({children}) => {
                 addPlaylist,
                 addTrack,
                 handleAddTrack,
-                handleCreatePlaylist
+                handleCreatePlaylist,
+                audio,
+                setAudio,
+                playing,
+                setPlaying,
+                toggle
             }}
         >
             {children}

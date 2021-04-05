@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Avatar, Grid, IconButton } from '@material-ui/core';
-import {Heart, Play, Plus} from 'react-feather';
+import {Heart, Play, Pause, Plus} from 'react-feather';
 import { usePlayer } from '../webplayer/provider';
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -98,7 +98,7 @@ const SongRow = ({row}) => {
 const SongList = ({tracks}) => {
     const classes = songListStyles();
     const [likes, setLikes] = React.useState()
-    const { likedSongs, handleAddTrack } = usePlayer();
+    const { likedSongs, handleAddTrack, addToQueue, songQueue, playing, currIndex, toggle } = usePlayer();
     const [loading,setLoading] = React.useState(true);
     React.useEffect(()=>{ setLikes(likedSongs);setLoading(false)},[likedSongs])
     console.log(likes)
@@ -122,7 +122,7 @@ const SongList = ({tracks}) => {
             {loading?<p>loading...</p>:tracks && tracks.map((track,idx) => {
               return (
                 <SongRow row={{
-                  play: <Play />,
+                  play: songQueue[currIndex] === track? playing?<Pause style={{color:'#E7576D'}} onClick={()=>toggle()} />: <Play style={{color:'#E7576D'}} onClick={()=>toggle()} />: <Play onClick={()=>addToQueue(track)} />,
                   place: idx+1,
                   title: <TrackItem track={track} />,
                   artist:track.aname,

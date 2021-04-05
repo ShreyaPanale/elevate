@@ -37,41 +37,17 @@ const useStyles = makeStyles(()=>({
     }
 }))
 
-const useAudio = (queue, index) => {
-    const [audio,setAudio] = useState(new Audio(queue[index].link));
-    const [playing, setPlaying] = useState(false);
-  
-    const toggle = () => setPlaying(!playing);
-  
-    useEffect(() => {
-        playing ? audio && audio.play() : audio && audio.pause();
-      },
-      [playing]
-    );
-  
-    useEffect(() => {
-    if (audio){
-      audio.addEventListener('ended', () => setPlaying(false));
-      return () => {
-        audio.removeEventListener('ended', () => setPlaying(false));
-      };
-    }
-    }, [audio]);
-        
-    return [playing, toggle];
-};
 
 const Player = () => {
     const classes = useStyles();
     let curPercentage = 80; // will handle progress
-    const { handleAddTrack, likedSongs, songQueue, currIndex, setLike:modifyLike } = usePlayer();
+    const { handleAddTrack, likedSongs, songQueue, currIndex, setLike:modifyLike,playing, toggle, nextSong, prevSong } = usePlayer();
     const history = useHistory();
     const location = useLocation();
-    const [playing, toggle] = useAudio(songQueue, currIndex);
     const [like,setLike] = React.useState(0);
 
     useEffect(()=>{
-        likedSongs.includes(songQueue[currIndex].tid)?setLike(1):setLike(0)
+        (songQueue[currIndex] && likedSongs.includes(songQueue[currIndex].tid))?setLike(1):setLike(0)
     },[likedSongs])
 
     const [isQueue,setQueue] = React.useState(location.pathname==ROUTES.queue);
@@ -101,7 +77,7 @@ const Player = () => {
                     height:80,
                     borderRadius:10,
                     marginLeft:20
-                }} alt="nf" src={songQueue[currIndex].coverUrl} />
+                }} alt="nf" src={songQueue[currIndex] ? songQueue[currIndex].coverUrl : null} />
             </Grid>
             <Grid item container xs={2} spacing={1} direction="row" style={{alignItems:'center'}}>
                 <Grid item>
@@ -110,13 +86,13 @@ const Player = () => {
                         fontSize: 20,
                         fontWeight: 600
                     }}>
-                        {songQueue[currIndex].tname}
+                        {songQueue[currIndex] ? songQueue[currIndex].tname:null}
                     </Typography>
                     <Typography style = {{
                         color: "#ABABAB",
                         fontSize:14
                     }}>
-                        {songQueue[currIndex].aname}
+                        {songQueue[currIndex] ? songQueue[currIndex].aname:null}
                     </Typography>
                 </Grid>
                 <Grid item>
@@ -132,16 +108,16 @@ const Player = () => {
             <Grid item container xs={8} style={{alignItems:'center'}} direction="column">
                     <Grid item container spacing={4} style={{alignItems:'center',justifyContent:'center'}}>
                         <Grid item>
-                            <SkipBack />
+                            <SkipBack onClick={prevSong} style={{color:currIndex<=0?'#ABABAB':'#000'}} />
                         </Grid>
                         
                         <Grid item>
                             <div 
-                            onClick={toggle}
+                            onClick={currIndex<0?()=>{}:toggle}
                             style = {{
                                 height:50,
                                 width:50,
-                                backgroundColor:"#EF757D",
+                                backgroundColor:currIndex<0?'#ABABAB':"#EF757D",
                                 borderRadius:100,
                                 display:'inline-flex',
                                 alignItems:'center',
@@ -162,7 +138,7 @@ const Player = () => {
                             </div>
                         </Grid>
                         <Grid item>
-                            <SkipForward />
+                            <SkipForward onClick={nextSong} style={{color:currIndex==songQueue.length-1?'#ABABAB':'#000'}} />
                         </Grid>
                     </Grid>
                     <Grid item container style={{width:'100%'}}>
