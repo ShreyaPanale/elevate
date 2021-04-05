@@ -14,7 +14,18 @@ export const PlayerProvider = ({children}) => {
     const { userData, tracks } = DATA;
 
     const [play, setPlay] = useState(false);
-    const [queue, setQueue] = useState([]);
+    const [songQueue, setSongQueue] = useState([
+        {
+            tid:2,
+            tname: "Layers",
+            aname: "NF",
+            aid:1,
+            time: 200,
+            plays:6,
+            coverUrl: "https://images.genius.com/c1d6d5b577205c6454f665dedee3f774.1000x563x1.png",
+            link: "https://www.youtube.com/watch?v=g4tCJtfCV8Y"
+        },
+    ]);
     const [playlists, setPlaylists] = useState(userData.playlists);
     const [history, setHistory] = useState(userData.history);
     const [currSong, setCurrSong] = useState();
@@ -33,7 +44,7 @@ export const PlayerProvider = ({children}) => {
     }
 
     const nextSong = () => {
-        if (queue.length == currIndex) return;
+        if (songQueue.length == currIndex) return;
         setCurrIndex(currIndex+1);
     }
 
@@ -53,13 +64,12 @@ export const PlayerProvider = ({children}) => {
         }else{
             likedSongs.splice(likedSongs.indexOf(tid),1);
         }
-        console.log('liked',likedSongs)
-        setLikedSongs(likedSongs)
+        let newLikedSongs = [...likedSongs]
+        setLikedSongs(newLikedSongs)
     }
 
     const getSongsForPlaylist = (playlist) => {
         let t =  tracks.filter(track => playlist.tracks.includes(track.tid))
-        console.log(t)
         return t
     }
 
@@ -91,7 +101,8 @@ export const PlayerProvider = ({children}) => {
 
     const addPlaylist = (playlist) => {
         playlists.push(playlist);
-        setPlaylists(playlists);
+        let newPlaylists = playlists;
+        setPlaylists(newPlaylists);
     }
 
     const addTrack = (tid, pid) => {
@@ -101,13 +112,12 @@ export const PlayerProvider = ({children}) => {
                 playlist.tracks.push(tid);
             }
             return playlist
-        })  
-        console.log('here',ps)
+        })
         setPlaylists(ps);
     }
 
     const playNow = (trackId) => {
-        queue.splice(currIndex-1,0,trackId);
+        songQueue.splice(currIndex-1,0,trackId);
         setCurrSong(trackId);
     }
 
@@ -121,8 +131,8 @@ export const PlayerProvider = ({children}) => {
                 seek,
                 setLike,
                 playNow,
-                queue,
-                setQueue,
+                songQueue,
+                setSongQueue,
                 playlists, 
                 setPlaylists,
                 history,
