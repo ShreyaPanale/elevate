@@ -121,6 +121,10 @@ export const PlayerProvider = ({children}) => {
 
     //EP added
     const getHistoryForUser = () => {
+        return API.getUserHistory(currentUser.uid).then(res =>{
+            return res.data
+        })
+        /*
         return new Promise((res,rej) => {
             try{
                 API.getUserFavourites(currentUser.uid).then(data =>{
@@ -132,6 +136,7 @@ export const PlayerProvider = ({children}) => {
                 rej(err)
             }
         })
+        */
     }
 
     const getTopSongs = () => {

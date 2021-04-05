@@ -23,6 +23,7 @@ const Favourites = () => {
     const { getFavouritesForUser,likedSongs } = usePlayer();
     const [ loading, setLoading ] = React.useState(true);
     React.useEffect(()=>{
+            setLoading(true);
             let favourites = getFavouritesForUser();
             setFavourites(favourites)
             setLoading(false);

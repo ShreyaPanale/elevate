@@ -105,6 +105,7 @@ const SongList = ({tracks}) => {
     const [loading,setLoading] = React.useState(true);
     React.useEffect(()=>{ setLikes(likedSongs);setLoading(false)},[likedSongs])
     console.log(likes)
+    console.log(tracks)
     return (
         <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">

@@ -91,8 +91,10 @@ const SongRow = ({row}) => {
 const SongList = ({tracks}) => {
     const {id} = useParams();
     const { getArtists } = usePlayer();
+
     const artistList = getArtists()
     const artist = artistList.filter(artist => artist.aid == id)[0];
+    
     const classes = songListStyles();
     const { likedSongs } = usePlayer();
     const trackList = tracks.filter(track => track.aid == artist.aid);
@@ -105,7 +107,7 @@ const SongList = ({tracks}) => {
         title: <TrackItem track={track} />,
         artist:track.aname,
         plays: track.plays,
-        time: track.time,
+        time: track.duration,
         like: likedSongs.includes(track.tid)?1:0,
         plus: <Plus />
       })
