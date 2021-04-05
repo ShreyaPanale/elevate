@@ -13,7 +13,9 @@ export const AuthProvider = ({children}) => {
     const [loading, setLoading] = useState(true)
     const [errors, setErrors] = useState("");
     const [adminStat, setAdminStat] = React.useState(false)
-
+    const [userData,setUserData] = React.useState({})
+    const [tracks,setTracks] = React.useState([])
+    const [artists,setArtists] = React.useState([])
      async function signup(email, password) {
         try {
           auth.createUserWithEmailAndPassword(email, password).then(async user => {
@@ -75,6 +77,15 @@ export const AuthProvider = ({children}) => {
               setAdminStat(true);
             else
               setAdminStat(false)
+          API.getUserData(user.uid).then(data =>{
+            setUserData(data)
+          })
+          API.getTracks(user.uid).then(data =>{
+            setTracks(data.data)
+          })
+          API.getArtists().then(data => {
+            setArtists(data.data)
+          })
             setLoading(false)
           });
           
@@ -94,7 +105,10 @@ export const AuthProvider = ({children}) => {
                 googleSignin,
                 errors,
                 setErrors,
-                adminStat
+                adminStat,
+                userData,
+                tracks,
+                artists
             }} 
         >
             {!loading && children}

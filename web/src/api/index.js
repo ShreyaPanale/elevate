@@ -8,7 +8,8 @@ const Playlists = {
 
 const Users = {
     createUser : async (params) => (await axios.post(URLS.createUser, params)).data,
-    userAdminStatus : async (id) => (await axios.get(URLS.userAdminStatus(id))).data
+    userAdminStatus : async (id) => (await axios.get(URLS.userAdminStatus(id))).data,
+    getUserData : async (id) => (await axios.get(URLS.getUserData(id))).data
 }
 
 const Admin = {
@@ -24,10 +25,16 @@ const Artist = {
     getArtists : async (params) => (await axios.get(URLS.getArtists(),params)).data
 }
 
+
+const Tracks = {
+    getTracks :  async (id) => (await axios.get(URLS.getTracks(id))).data,
+}
+
 let API;
 export default API = {
     ...Playlists,
     ...Users,
     ...Admin,
-    ...Artist
+    ...Artist,
+    ...Tracks
 }

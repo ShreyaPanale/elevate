@@ -4,7 +4,7 @@
 
 import React,{useContext,useEffect, useState} from 'react';
 import DATA from './data';
-
+import {useAuth} from '../firebase/provider'
 import {AddTrack,CreatePlaylist} from '../components/Modals';
 export const PlayerContext = React.createContext();
 
@@ -13,7 +13,7 @@ export const usePlayer = () => {
 }
 
 export const PlayerProvider = ({children}) => {
-    // const { currentUser } = useAuth();
+    //const { userData, tracks ,artists} = useAuth();
     const { userData, tracks, artists } = DATA;
 
     const [play, setPlay] = useState(false);

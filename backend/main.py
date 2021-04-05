@@ -74,7 +74,9 @@ class APIServer:
     @app.route('/user')
     def getUser():
         uid = request.args.get('uid')
-        return userManager.getUserData(uid)
+        res = userManager.getUserData(uid)
+        print(res)
+        return res
 
     # user recommendations endpoint
     @app.route('/user/recommendations')
