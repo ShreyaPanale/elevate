@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { Avatar, Grid, IconButton } from '@material-ui/core';
-import {Heart, Play, Plus} from 'react-feather';
-import { usePlayer } from '../webplayer/provider';
+import {Heart, Play, Pause, Plus} from 'react-feather';
+import { usePlayer } from '../webplayer';
 import { makeStyles } from '@material-ui/core/styles'
 
 import Table from '@material-ui/core/Table';
@@ -68,75 +68,22 @@ const columns = [
     )
   }
 
-  let rows = [
-    {
-        play: <Play />,
-        place: 1,
-        title: <TrackItem />,
-        artist:"NF",
-        plays: 200,
-        time: "02:40",
-        like: 1,
-        plus: <Plus />
-    },
-    {
-        play: <Play />,
-        place: 2,
-        title: <TrackItem />,
-        artist:"NF",
-        plays: 200,
-        time: "02:40",
-        like: 0,
-        plus: <Plus />
-    },
-    {
-        play: <Play />,
-        place: 3,
-        title: <TrackItem />,
-        artist:"NF",
-        plays: 200,
-        time: "02:40",
-        like: 1,
-        plus: <Plus />
-    },
-    {
-        play: <Play />,
-        place: 4,
-        title: <TrackItem />,
-        artist:"NF",
-        plays: 200,
-        time: "02:40",
-        like: 0,
-        plus: <Plus />
-    },
-    {
-        play: <Play />,
-        place: 5,
-        title: <TrackItem />,
-        artist:"NF",
-        plays: 200,
-        time: "02:40",
-        like: 1,
-        plus: <Plus />
-    },
-    {
-        play: <Play />,
-        place: 6,
-        title: <TrackItem />,
-        artist:"NF",
-        plays: 200,
-        time: "02:40",
-        like: 1,
-        plus: <Plus />
-    },
-    
-  ];
-
 const SongRow = ({row}) => {
+  const { setLike:modifyLike, likedSongs } = usePlayer();
   const [like,setLike] = React.useState(row['like']);
-  const handleLike = ()=>{
-    if(like) setLike(0)
-    else setLike(1)
+  React.useEffect(()=>{
+    likedSongs.includes(row['tid'])?setLike(1):setLike(0);
+  },[likedSongs])
+  const handleLike = (tid)=>{
+    console.log("LIKES", tid)
+    if(like) {
+      setLike(0)
+      modifyLike(tid,0)
+    }
+    else{
+      setLike(1)
+      modifyLike(tid,1)
+    } 
   }
   return (
       <TableRow tabIndex={-1} key={row.code}>
@@ -144,7 +91,7 @@ const SongRow = ({row}) => {
               const value = row[column.id];
               return (
                 <TableCell key={column.id} align={column.align} style={{fontFamily:"Poppins"}}>
-                  {column.id=="like"?<IconButton onClick={handleLike}><Heart style={like==1?{color:"#EF757D",fill:"#EF757D"}:{}}/></IconButton> :value}
+                  {column.id=="like"?<IconButton onClick={()=>handleLike(row['tid'])}><Heart style={like==1?{color:"#EF757D",fill:"#EF757D"}:{}}/></IconButton> :value}
                 </TableCell>
               );
             })}
@@ -153,19 +100,11 @@ const SongRow = ({row}) => {
 }
 const SongList = ({tracks}) => {
     const classes = songListStyles();
-    const { likedSongs } = usePlayer();
-    let rowsForSong = tracks && tracks.map(
-      (track,idx) => ({
-        play: <Play />,
-        place: idx+1,
-        title: <TrackItem track={track} />,
-        artist:track.aname,
-        plays: track.plays,
-        time: track.time,
-        like: likedSongs.includes(track.tid)?1:0,
-        plus: <Plus />
-      })
-    )
+    const [likes, setLikes] = React.useState()
+    const { likedSongs, handleAddTrack, addToQueue, songQueue, playing, currIndex, toggle, playNow } = usePlayer();
+    const [loading,setLoading] = React.useState(true);
+    React.useEffect(()=>{ setLikes(likedSongs);setLoading(false)},[likedSongs])
+    console.log(likes)
     return (
         <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
@@ -183,9 +122,22 @@ const SongList = ({tracks}) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rowsForSong && rowsForSong.map((row) => {
+            {loading?<p>loading...</p>:tracks && tracks.map((track,idx) => {
               return (
-                <SongRow row={row} />
+                <SongRow row={{
+                  play: songQueue[currIndex] === track? playing?<Pause style={{color:'#E7576D'}} onClick={()=>toggle()} />: <Play style={{color:'#E7576D'}} onClick={()=>toggle()} />: <Play onClick={()=>{
+                    if(songQueue.includes(track)) playNow(track)  
+                    else addToQueue(track)
+                    }} />,
+                  place: idx+1,
+                  title: <TrackItem track={track} />,
+                  artist:track.aname,
+                  plays: track.plays,
+                  time: track.time,
+                  like: likes.includes(track.tid)?1:0,
+                  plus: <IconButton onClick={()=>handleAddTrack(track.tid)}><Plus  /></IconButton>,
+                  tid: track.tid
+                }} />
               );
             })}
           </TableBody>

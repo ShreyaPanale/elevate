@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import SongList from '../components/SongList';
 import SongCard from '../components/SongCard';
 
-import {usePlayer} from '../webplayer/provider';
+import {usePlayer} from '../webplayer';
 const useStyles = makeStyles(()=>({
     root:{
         padding:'4%',
