@@ -14,7 +14,7 @@ export const usePlayer = () => {
 
 export const PlayerProvider = ({children}) => {
     // const { currentUser } = useAuth();
-    const { userData, tracks } = DATA;
+    const { userData, tracks, artists } = DATA;
 
     const [play, setPlay] = useState(false);
     const [songQueue, setSongQueue] = useState([
@@ -25,6 +25,8 @@ export const PlayerProvider = ({children}) => {
     const [currSong, setCurrSong] = useState();
     const [currIndex, setCurrIndex] = useState(-1);
     const [likedSongs, setLikedSongs] = useState(userData.likedSongs);
+    const [artistList] = useState(artists);
+    const [trackList] = useState(tracks);
 
     const [modal, setModal] = React.useState(0);
     const [tid, setTid] = React.useState();
@@ -150,6 +152,18 @@ export const PlayerProvider = ({children}) => {
         }
         setSongQueue([...songQueue])
     }   
+
+    const getArtists = () => {
+        return artists
+    }
+    const getTracks = () => {
+        return tracks
+    }
+
+    const getTracksForArtist = (aid) => {
+        return tracks.filter(track => track.aid == aid);
+    }
+
     return (
         <PlayerContext.Provider
             value = {{
@@ -185,7 +199,12 @@ export const PlayerProvider = ({children}) => {
                 setAudio,
                 playing,
                 setPlaying,
-                toggle
+                toggle,
+                artistList,
+                getArtists,
+                trackList,
+                getTracks,
+                getTracksForArtist
             }}
         >
             {children}
