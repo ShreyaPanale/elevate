@@ -13,10 +13,22 @@ class FirestoreController:
         self.db.collection('users').document(user.uid).set(user.data())
 
     def deleteUser(self, uid):
-        self.db.collection('users').document(user.uid).delete()
+        self.db.collection('users').document(uid).delete()
+
+    def userAdminStatus(self,uid):
+        user=self.db.collection('users').document(uid).get().to_dict()
+        if "superUser" in user:
+            if(user["superUser"]):
+                return True
+            else:
+                return False
+        else:
+            return False
+
 
     def addNewTrack(self,track):
         doc_ref = self.db.collection(u'tracks').document()
+        tid=doc_ref.id
         doc_ref.set({
             u'tname': track.tname,
             u'artist': track.artist,
@@ -25,18 +37,35 @@ class FirestoreController:
             u'coverurl': track.coverurl,
             u'mp3fileurl': track.mp3fileurl,
             u'duration':track.duration,
-            u'plays':track.plays
+            u'plays':track.plays,
+            u'tid':tid
         })
+        return doc_ref.id
 
-    def getTracks(self):
+    def getTracks(self,uid):
         tracks_ref = self.db.collection(u'tracks')
+        likedSongs=self.db.collection(u'users').document(uid).get().to_dict()['likedSongs']
+        tracks = tracks_ref.stream()
+        trackarr=[]
+        for track in tracks:
+            t=track.to_dict()
+            if t['tid'] in likedSongs:
+                t['like']=1
+            else:
+                t['like']=0
+            trackarr.append(t)
+        return {"data":trackarr}
+        
+    def getTracksByArtist(self,aid):
+        tracks_ref = self.db.collection(u'tracks')
+        tracks_ref=tracks_ref.where(u'artist',u'==',aid)
         tracks = tracks_ref.stream()
         trackarr=[]
         for track in tracks:
             print(f'{track.id} => {track.to_dict()}')
             trackarr.append(track.to_dict())
         return {"data":trackarr}
-        
+
     def deleteTrack(self,id):
         doc_ref=self.db.collection(u'tracks').document(id)
         print(doc_ref)
@@ -63,10 +92,15 @@ class FirestoreController:
     #Artist controller functions
 
     def addNewArtist(self,artist):
+        print("am here")
         doc_ref = self.db.collection(u'artists').document()
+        aid=doc_ref.id
         doc_ref.set({
             u'aname': artist.aname,
+            u'photo': artist.photo,
+            u'aid':aid
         })
+        return aid
 
     def getArtist(self,aid):
         doc_ref = self.db.collection(u'artists').document(aid)
@@ -103,9 +137,41 @@ class FirestoreController:
         else:
             return {'error':'Document not found,Missing playlist'}
 
+    def getPlaylistTracks(self,pid):
+        playlist_ref = self.db.collection(u'playlists').document(pid).get()
+        if playlist_ref.exists:
+            playlist_ref=playlist_ref.to_dict()
+            tids=playlist_ref['tracks']
+            tracks=[]
+            i=0
+            while(1):
+                if i+10<=len(tids):
+                    temp_ref=self.db.collection(u'tracks').where(u'tid','in',tids[i:i+10])
+                    temp=temp_ref.stream()
+                    for t in temp:
+                        print(temp.to_dict())
+                        tracks.append(t.to_dict())
+                else:
+                    temp_ref=self.db.collection(u'tracks').where(u'tid','in',tids[i:len(tids)])
+                    temp=temp_ref.stream()
+                    for t in temp:
+                        tracks.append(t.to_dict())
+                    break
+                i=i+10
+            res = {
+                "pname":playlist_ref['pname'],
+                "pid":pid,
+                "tracks":tracks
+            }
+            return {"data":res}
+        else:
+            return {'error':'Document not found,Missing Playlist'}
+
     def savePlaylist(self,playlist):
         doc_ref = self.db.collection('playlists').document()
-        doc_ref.set(playlist.data())
+        pd=playlist.data()
+        pd['pid']=doc_ref.id
+        doc_ref.set(pd)
         return doc_ref.id
 
     def updatePlaylist(self,playlist,pid):

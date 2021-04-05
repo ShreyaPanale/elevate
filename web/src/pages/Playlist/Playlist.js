@@ -3,7 +3,7 @@ import TopBar from '../../components/TopBar';
 
 import { Grid, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles'
-import { usePlayer } from '../../webplayer/provider';
+import { usePlayer } from '../../webplayer';
 import { useParams } from 'react-router-dom';
 import SongList from '../../components/SongList';
 
@@ -36,14 +36,16 @@ const Playlist = () => {
     const classes = useStyles();
     const [loading, setLoading] = useState(false);
     const { playlists, getSongsForPlaylist } = usePlayer();
+    
     const playlist = playlists.filter(playlist => playlist.pid == id)[0];
+    
     let [ songs, setSongs ] = useState();
     useEffect(() => {
         setLoading(true);
         songs = getSongsForPlaylist(playlist);
         setSongs(songs);
         setLoading(false);
-    }, [])
+    }, [id,playlists])
     return (
         <Grid container direction="row">
             <Grid item container xs={12} >

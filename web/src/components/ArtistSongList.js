@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Avatar, Grid, IconButton } from '@material-ui/core';
 import {Heart, Play, Plus} from 'react-feather';
-import { usePlayer } from '../webplayer/provider';
+import { usePlayer } from '../webplayer';
 import { makeStyles } from '@material-ui/core/styles'
 import { useParams } from 'react-router-dom';
 

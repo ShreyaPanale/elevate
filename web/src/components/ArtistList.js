@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import {makeStyles} from '@material-ui/core/styles';
 import { Avatar, Grid} from '@material-ui/core';
 import ROUTES from '../routes';
-import { usePlayer } from '../webplayer/provider';
+import { usePlayer } from '../webplayer';
 
 const useStyles = makeStyles(()=>({
     hover:{

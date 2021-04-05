@@ -1,7 +1,7 @@
 import React from 'react'
 import TopBar from '../components/TopBar';
 
-import { usePlayer } from "../webplayer/provider";
+import { usePlayer } from "../webplayer";
 
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles'

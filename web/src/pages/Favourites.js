@@ -1,6 +1,6 @@
 import React from 'react'
 import TopBar from '../components/TopBar';
-import { usePlayer } from "../webplayer/provider";
+import { usePlayer } from "../webplayer";
 
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles'
@@ -23,10 +23,9 @@ const Favourites = () => {
     const { getFavouritesForUser,likedSongs } = usePlayer();
     const [ loading, setLoading ] = React.useState(true);
     React.useEffect(()=>{
-        getFavouritesForUser().then(favourites => {
+            let favourites = getFavouritesForUser();
             setFavourites(favourites)
             setLoading(false);
-        });
     },[likedSongs])
     return (
         <Grid container direction="row">

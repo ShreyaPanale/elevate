@@ -3,12 +3,10 @@ import { List, ListItem, Typography,IconButton} from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory, useLocation } from 'react-router-dom';
 import ROUTES from '../routes';
-import { Plus } from 'react-feather'
-import {usePlayer} from '../webplayer';
-
+import { LogOut } from 'react-feather'
 const Logo = () => {
     return (
-        <div style = {{display:"flex", color:"#EF757D",  width:"100%", marginLeft:30}}>
+        <div style = {{display:"flex", color:"#342D71",  width:"100%", marginLeft:30}}>
             <h1>elevate.</h1>
         </div>
     )
@@ -41,14 +39,12 @@ const sidebarStyles = makeStyles(() => ({
         }
     }
 }))
-
-
 const Indicator = ({active}) => {
     return (
         <div style = {{
             minHeight:8,
             minWidth:8,
-            backgroundColor:active?"#EF757D":"transparent",
+            backgroundColor:active?"#342D71":"transparent",
             borderRadius:100,
             position:'absolute',
             marginLeft:-20,
@@ -59,10 +55,8 @@ const Indicator = ({active}) => {
         />
     )
 }
-
 const ListGroup = ({title, tabs, index, setActive, active, indices,routes}) => {
     const classes = sidebarStyles();
-    const { playlists } = usePlayer();
     const history = useHistory();
     return (
         <>
@@ -74,62 +68,36 @@ const ListGroup = ({title, tabs, index, setActive, active, indices,routes}) => {
            {title}
         </ListItem>
         {
-            title==="Playlists"? playlists.map((playlist,idx) => 
+            tabs.map((tab,idx) => 
                 <ListItem 
                     alignItems={'start'}
                     className={classes.listItem} 
                     onClick = {()=>{
-                        setActive(idx+5)
-                        history.push(ROUTES.genPlaylist(playlist.pid))
+                        setActive(indices[idx])
+                        history.push(routes[idx])
                     }}
-                    style = {{fontWeight: idx+5 == active? 700: 400}}
+                    style = {{fontWeight: indices[idx] == active? 700: 400}}
                 >
-                        <Indicator active = {idx+5 == active}/>
-                        {playlist.pname}
+                        <Indicator active = {indices[idx] == active}/>
+                        {tab}
                 </ListItem>)
-            : tabs.map((tab,idx) => 
-            <ListItem 
-                alignItems={'start'}
-                className={classes.listItem} 
-                onClick = {()=>{
-                    setActive(indices[idx])
-                    history.push(routes[idx])
-                }}
-                style = {{fontWeight: indices[idx] == active? 700: 400}}
-            >
-                    <Indicator active = {indices[idx] == active}/>
-                    {tab}
-            </ListItem>)
         }
         </>
     )
 }
-
 const Sidebar = (props) => {
-    const { handleCreatePlaylist } = usePlayer();
     const classes = sidebarStyles();
     const indexToRoute= {
-        [ROUTES.dashboard]:0,
-        [ROUTES.artists]:1,
-        [ROUTES.songs]:2,
-        [ROUTES.favourites]:3,
-        [ROUTES.history]:4
+        [ROUTES.admintrack]:0,
+        [ROUTES.adminartist]:1
     }
     const location = useLocation();
     const [active, setActive] = React.useState(indexToRoute[location.pathname]);
-    const sidebarGroups= {
-        "Browse Music" : {
-            "tabs" : ["Discover", "Artists", "Songs"],
-            "indices": [0,1,2],
-            "routes": [ROUTES.dashboard, ROUTES.artists, ROUTES.songs]
-        },
-        "Your Music" : {
-            "tabs": ["Favourites", "Play History"],
-            "indices": [3,4],
-            "routes": [ROUTES.favourites,ROUTES.history]
-        },
-        "Playlists" : {
-             //playlist ids = [1,2]
+    const sidebarGroups = {
+        "Manage Elevate" : {
+            "tabs" : ["Tracks","Artists"],
+            "indices": [0,1],
+            "routes": [ROUTES.admintrack,ROUTES.adminartist]
         }
     }
     return (
@@ -158,7 +126,7 @@ const Sidebar = (props) => {
                         />
                     )
                 }
-            <span className={classes.hover} onClick={handleCreatePlaylist} style={{paddingLeft:30,color:"#EF757D",fontSize:12}}><IconButton ><Plus size={15} color="#EF757D"/></IconButton> New Playlist</span>
+            <span className={classes.hover} style={{paddingLeft:30,color:"#342D71",fontSize:15}}><IconButton onClick={props.handleLogout}><LogOut size={20} color="#342D71"/></IconButton>Logout</span>
             </List>
             
         </div>

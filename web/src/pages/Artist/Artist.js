@@ -3,11 +3,11 @@ import TopBar from '../../components/TopBar';
 
 import { Button, Grid, Avatar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles'
-import { usePlayer } from '../../webplayer/provider';
+import { usePlayer } from '../../webplayer';
 import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
-
+import SongList from '../../components/SongList'
 import ArtistSongList from '../../components/ArtistSongList'
 const useStyles = makeStyles(()=>({
     root:{
@@ -25,12 +25,10 @@ const useStyles = makeStyles(()=>({
 const Artist = () => {
     const {id} = useParams();
     const classes = useStyles();
-    const { getTracks } = usePlayer();
-    const trackList = getTracks()
-    const { getArtists } = usePlayer();
+    const { getArtists, getTracksForArtist } = usePlayer();
     const artistList = getArtists()
     const artist = artistList.filter(artist => artist.aid == id)[0];
-    console.log(artist);
+    const trackList = getTracksForArtist(id);
 
     const history = useHistory();
     const goBack = () => {
@@ -69,7 +67,7 @@ const Artist = () => {
                     </Grid>
                 </div>
                 <div item xs={12} style={{}}>
-                    <ArtistSongList tracks={trackList}/>
+                    <SongList tracks={trackList}/>
                 </div>
             </div>
         </Grid>

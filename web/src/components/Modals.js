@@ -3,6 +3,12 @@ import { Modal, Typography, Grid,Button, FormControlLabel,TextField} from '@mate
 import { makeStyles } from '@material-ui/core/styles';
 import { FormLabel, FormControl, FormGroup,Checkbox} from '@material-ui/core';
 
+import { usePlayer } from '../webplayer'; 
+
+import API from '../api';
+import { useAuth } from "../firebase/provider";
+import { useHistory } from "react-router-dom";
+
 let playlists=[
     {
         pid:1,
@@ -109,19 +115,23 @@ const modalStyles = makeStyles((theme)=>({
     },
 }))
 
-export const AddTrack = ({open,handleClose}) => {
+export const AddTrack = ({open,handleClose,tid}) => {
     const classes = modalStyles();
-    const handleAddTrack = () => {
+    const { addTrack, playlists } = usePlayer();
+    const handleAddTrack = (e) => {
+        e.preventDefault();
         //add necessary endpoint calls
-
+        plist.map(pid => addTrack(tid,pid))
     }
     const [plist,setPlist] = React.useState([])
     const handleChange = (event) => {
         //doesn't work
-        console.log("im here")
-        console.log("plist",plist);
+        
         let temp=plist
-        temp.push(event.target.name)
+        if (event.target.checked)
+            temp.push(parseInt(event.target.value))
+        else
+            temp.splice(temp.indexOf(event.target.name),1)
         setPlist(temp)
         console.log("plist",plist)
     }
@@ -143,7 +153,7 @@ export const AddTrack = ({open,handleClose}) => {
                             {
                                 playlists.map((playlist) => (
                                     <FormControlLabel 
-                                    control={<Checkbox name={playlist.pid} onChange={handleChange} style ={{color: "#EF757D"}}/>}
+                                    control={<Checkbox value={playlist.pid} onChange={handleChange} style ={{color: "#EF757D"}}/>}
                                      label={<Typography className={classes.formControlLabel}>{playlist.pname}</Typography>}
                                      />
                                 ))
@@ -157,12 +167,34 @@ export const AddTrack = ({open,handleClose}) => {
     )
 }
 
-export const CreatePlaylist = ({open,handleClose}) => {
+export const CreatePlaylist = ({open,handleClose,setModal}) => {
     const classes = modalStyles();
-    const handleSubmit = () =>{
-        //will do
-    }
+
+    const { addPlaylist, playlists } = usePlayer();
     const [pname,setName] = React.useState('')
+
+    const { currentUser } = useAuth();
+    const history = useHistory();
+    const handleSubmit = async (e) =>{
+        const playlist = {
+            "pname" : pname,
+            "uid" : currentUser.uid
+        }
+        console.log(playlist)
+        API.createPlaylist(playlist).then(async res => {
+            console.log(res.pid)
+            const toAdd={
+                "pid":res.pid,
+                "uid":currentUser.uid,
+                "action":"addPlaylist"
+            }
+            console.log(toAdd)
+            await API.addPlaylistToUser(toAdd)
+            setModal(0)
+        })
+        setName('')
+
+    }
     return (
         <Modal
             open={open}
@@ -176,7 +208,14 @@ export const CreatePlaylist = ({open,handleClose}) => {
                     </Typography>
                 </div>
                 
-                <TextField variant="outlined" placeholder="Playlist Name" className={classes.input} InputProps={{classes:{notchedOutline:classes.notchedOutline}}} onChange={(e)=>{setName(e.target.value)}}/>
+                <TextField 
+                    variant="outlined" 
+                    placeholder="Playlist Name" 
+                    className={classes.input} 
+                    InputProps={{classes:{notchedOutline:classes.notchedOutline}}} 
+                    onChange={(e)=>{setName(e.target.value)}}
+                    value={pname}
+                />
                 
                 <Button className={classes.btn} onClick={handleSubmit}>Create Playlist</Button>
             </div>
