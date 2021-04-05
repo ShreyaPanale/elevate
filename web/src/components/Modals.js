@@ -88,7 +88,6 @@ export const AddTrack = ({open,handleClose,tid}) => {
     const { addTrack, playlists } = usePlayer();
     const handleAddTrack = (e) => {
         e.preventDefault();
-        console.log(e.target.value)
         //add necessary endpoint calls
         plist.map(pid => addTrack(tid,pid))
     }

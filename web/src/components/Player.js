@@ -1,7 +1,7 @@
-import React,{useEffect} from 'react';
+import React,{useEffect,useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Avatar, Typography, IconButton } from '@material-ui/core';
-import { Heart, List, Play, SkipForward, SkipBack, Plus } from 'react-feather';
+import { Heart, List, Play, Pause, SkipForward, SkipBack, Plus } from 'react-feather';
 import { usePlayer } from '../webplayer/provider';
 import {useHistory,useLocation} from 'react-router-dom';
 import ROUTES from '../routes';
@@ -37,17 +37,40 @@ const useStyles = makeStyles(()=>({
     }
 }))
 
+const useAudio = (queue, index) => {
+    const [audio,setAudio] = useState(new Audio(queue[index].link));
+    const [playing, setPlaying] = useState(false);
+  
+    const toggle = () => setPlaying(!playing);
+  
+    useEffect(() => {
+        playing ? audio && audio.play() : audio && audio.pause();
+      },
+      [playing]
+    );
+  
+    useEffect(() => {
+    if (audio){
+      audio.addEventListener('ended', () => setPlaying(false));
+      return () => {
+        audio.removeEventListener('ended', () => setPlaying(false));
+      };
+    }
+    }, [audio]);
+        
+    return [playing, toggle];
+};
+
 const Player = () => {
     const classes = useStyles();
     let curPercentage = 80; // will handle progress
     const { handleAddTrack, likedSongs, songQueue, currIndex, setLike:modifyLike } = usePlayer();
     const history = useHistory();
     const location = useLocation();
-
+    const [playing, toggle] = useAudio(songQueue, currIndex);
     const [like,setLike] = React.useState(0);
 
     useEffect(()=>{
-        console.log("triggering likedSongs")
         likedSongs.includes(songQueue[currIndex].tid)?setLike(1):setLike(0)
     },[likedSongs])
 
@@ -101,7 +124,7 @@ const Player = () => {
                         {like==1 && <Heart style={{color:"#EF757D",fill:"#EF757D"}}/>}
                         {like==0 && <Heart />}
                     </IconButton>
-                    <IconButton onClick={()=>handleAddTrack(3)}>
+                    <IconButton onClick={()=>handleAddTrack(songQueue[currIndex].tid)}>
                        <Plus/>
                     </IconButton>
                 </Grid>
@@ -111,8 +134,11 @@ const Player = () => {
                         <Grid item>
                             <SkipBack />
                         </Grid>
+                        
                         <Grid item>
-                            <div style = {{
+                            <div 
+                            onClick={toggle}
+                            style = {{
                                 height:50,
                                 width:50,
                                 backgroundColor:"#EF757D",
@@ -121,10 +147,18 @@ const Player = () => {
                                 alignItems:'center',
                                 justifyContent:'center',
                             }}>
-                                <Play style= {{
-                                    color:"#FFF",
-                                    marginLeft:4
-                                }}/>
+                                {
+                                    playing? 
+                                    <Pause style= {{
+                                        color:"#FFF",
+                                    }}/>
+                                    :<Play style= {{
+                                        color:"#FFF",
+                                        marginLeft:4
+                                    }}/>
+                                    
+                                }
+                                
                             </div>
                         </Grid>
                         <Grid item>

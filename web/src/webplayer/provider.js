@@ -23,9 +23,10 @@ export const PlayerProvider = ({children}) => {
             time: 200,
             plays:6,
             coverUrl: "https://images.genius.com/c1d6d5b577205c6454f665dedee3f774.1000x563x1.png",
-            link: "https://www.youtube.com/watch?v=g4tCJtfCV8Y"
+            link: "https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3"
         },
     ]);
+    
     const [playlists, setPlaylists] = useState(userData.playlists);
     const [history, setHistory] = useState(userData.history);
     const [currSong, setCurrSong] = useState();
@@ -35,6 +36,7 @@ export const PlayerProvider = ({children}) => {
     const [modal, setModal] = React.useState(0);
     const [tid, setTid] = React.useState();
     const handleClose = () => setModal(0);
+    
     const handleAddTrack = (tid) => {
         setTid(tid)
         setModal(1)
