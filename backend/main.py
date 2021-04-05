@@ -75,7 +75,6 @@ class APIServer:
     def getUser():
         uid = request.args.get('uid')
         res = userManager.getUserData(uid)
-        
         plist=[]
         for pid in res['playlists']:
             print(pid)

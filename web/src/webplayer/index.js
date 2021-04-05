@@ -21,7 +21,7 @@ export const PlayerProvider = ({children}) => {
             setHistory(data.history)
             setLikedSongs(data.likedSongs)
           })
-    })
+    },[])
 
     //const { userData, tracks ,artists} = useAuth();
     const {tracks } = DATA;
@@ -123,8 +123,8 @@ export const PlayerProvider = ({children}) => {
     const getHistoryForUser = () => {
         return new Promise((res,rej) => {
             try{
-                API.getUserFavourites(currentUser.uid).then(res =>{
-                    res(res.data)
+                API.getUserFavourites(currentUser.uid).then(data =>{
+                    res(data.data)
                 })
                 //let t = tracks.filter(track => history.includes(track.tid))
                 //res(t)
