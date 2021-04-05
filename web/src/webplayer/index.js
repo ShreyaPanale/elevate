@@ -106,7 +106,8 @@ export const PlayerProvider = ({children}) => {
 
     //EP added
     const getSongsForPlaylist = (playlist) => {
-        return API.getPlaylistTracks(playlist.pid).then(res => {
+        console.log(playlist);
+        return API.getPlaylistTracks(playlist).then(res => {
             return res.data.tracks
         })
     }
