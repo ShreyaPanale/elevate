@@ -14,6 +14,7 @@ export default {
     history:"/history",
     playlist:"/playlist/:id",
     queue:'/queue',
+    searchResult:'/searchResult',
 
     // route generator functions
     genPlaylist:(id)=>`/playlist/${id}`,
