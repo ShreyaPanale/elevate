@@ -68,16 +68,19 @@ export const AuthProvider = ({children}) => {
 
       useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
+          setLoading(true)
           setCurrentUser(user)
-          API.userAdminStatus(user.uid).then(data => {
-            console.log(data.admin)
-            if(data.admin)
-              setAdminStat(true);
-            else
-              setAdminStat(false)
-            setLoading(false)
-          });
-          
+          if(user){
+            API.userAdminStatus(user.uid).then(data => {
+              console.log(data.admin)
+              if(data.admin)
+                setAdminStat(true);
+              else
+                setAdminStat(false)
+              
+            });
+          }
+          else setLoading(false)
         })
     
         return unsubscribe
