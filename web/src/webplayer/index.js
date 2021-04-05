@@ -126,6 +126,8 @@ export const PlayerProvider = ({children}) => {
                 API.getUserFavourites(currentUser.uid).then(res =>{
                     res(res.data)
                 })
+                //let t = tracks.filter(track => history.includes(track.tid))
+                //res(t)
             }catch(err){
                 rej(err)
             }
@@ -192,6 +194,7 @@ export const PlayerProvider = ({children}) => {
         }
         setSongQueue([...songQueue])
     }   
+    
     //EP added
     const getArtists = () => {
         API.getArtists().then(data => {
