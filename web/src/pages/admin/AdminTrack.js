@@ -7,8 +7,8 @@ import {
     InputBase,
     MenuItem,
     Button,
-    Typography
 } from '@material-ui/core';
+import API from "../../api"
 import { makeStyles,withStyles } from "@material-ui/core/styles";
 import {ChevronDown,Camera,Upload} from 'react-feather'
 const useStyles = makeStyles(() => ({
@@ -38,7 +38,7 @@ const useStyles = makeStyles(() => ({
         marginTop:"3%",
         '& input':{
             paddingLeft:"5%",
-            borderBottom:"2px solid black",
+            borderBottom:"4px solid black",
             fontFamily:"Poppins",
             fontWeight:500,
             fontSize:18
@@ -50,7 +50,7 @@ const useStyles = makeStyles(() => ({
     inputBox:{
         marginTop:"3%",
         '& textarea':{
-            border:"2px solid black",
+            border:"4px solid black",
             borderRadius:20,
             padding:"5%",
             fontFamily:"Poppins",
@@ -74,7 +74,7 @@ const useStyles = makeStyles(() => ({
         marginRight:'10%'
     },
     hr:{
-        height:'2px',
+        height:'3px',
         backgroundColor:'black',
         marginRight:"10%"
     },
@@ -120,7 +120,7 @@ const useStyles = makeStyles(() => ({
       marginTop:'3%',
       position:'relative',
       paddingLeft:"5%",
-      borderBottom:"2px solid black",
+      borderBottom:"4px solid black",
       fontSize: 18,
       transition: theme.transitions.create(['border-color', 'box-shadow']),
       fontFamily:"Poppins",
@@ -130,20 +130,45 @@ const useStyles = makeStyles(() => ({
     },
   }))(InputBase);
 const AdminPanel = ({children}) => {
-    
+    const [artists,setArtists] = React.useState([])
+    React.useEffect(()=>{
+            API.getArtists().then(data=>{
+                setArtists(data.data);
+            })
+    },[])
     const classes = useStyles();
     const history = useHistory();
+    const [tname,setTname] = React.useState('')
+    const [genre,setGenre] = React.useState('')
+    const [desc,setDesc] = React.useState('')
     const [artist, setArtist] = React.useState(0);
-    const [selectedFile,setSelectedFile] = React.useState('https://customercare.igloosoftware.com/.api2/api/v1/communities/10068556/previews/thumbnails/4fc20722-5368-e911-80d5-b82a72db46f2?width=680&height=680&crop=False');
+    const [selectedFile,setSelectedFile] = React.useState(null);
     const [selectedFileName,setSelectedFileName] = React.useState('Track Cover Image');
     const [selectedTrack,setSelectedTrack] = React.useState(null);
     const [selectedTrackName,setSelectedTrackName] = React.useState('Track mp3 File');
-    let data =[
-        0,
-        'item 1',
-        'item 2',
-        'item 3'
-    ]
+    const [prevImg,setPrevImg] = React.useState('https://customercare.igloosoftware.com/.api2/api/v1/communities/10068556/previews/thumbnails/4fc20722-5368-e911-80d5-b82a72db46f2?width=680&height=680&crop=False');
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        var formData = new FormData();
+        formData.append("tname",tname)
+        formData.append("artist",artist)
+        formData.append("genre",genre)
+        formData.append("desc",desc)
+        formData.append("mp3file",selectedTrack)
+        formData.append("cover",selectedFile)
+        
+        API.createTrack(formData).then(res =>{
+            setArtist('')
+            setTname('')
+            setDesc('')
+            setGenre('')
+            setSelectedFileName('Track Cover Image')
+            setSelectedTrackName('Track mp3 File')
+            setSelectedFile(null)
+            setSelectedTrack(null)
+            setPrevImg('https://customercare.igloosoftware.com/.api2/api/v1/communities/10068556/previews/thumbnails/4fc20722-5368-e911-80d5-b82a72db46f2?width=680&height=680&crop=False')
+        })
+    }
     const handleChange = (event) => {
     setArtist(event.target.value);
   };
@@ -152,7 +177,8 @@ const AdminPanel = ({children}) => {
         const reader = new FileReader();
         var url = reader.readAsDataURL(file);
         reader.onloadend = async function(e) {
-            setSelectedFile([reader.result]);
+            setSelectedFile(file);
+            setPrevImg([reader.result])
             setSelectedFileName(file.name)
         }
         console.log(url);
@@ -162,7 +188,7 @@ const AdminPanel = ({children}) => {
         const reader = new FileReader();
         var url = reader.readAsDataURL(file);
         reader.onloadend = async function(e) {
-            setSelectedTrack([reader.result]);
+            setSelectedTrack(file);
             setSelectedTrackName(file.name)
         }
         console.log(url);
@@ -170,37 +196,42 @@ const AdminPanel = ({children}) => {
     return (
         <Grid container direction="column" className = {classes.container}>
             <Grid item className = {classes.nav} >
-                <h1 className = {classes.navText} onClick={()=>{history.push('/')}}>elevate.</h1>
+                <h1 className = {classes.navText}>Upload Track</h1>
             </Grid>
             <Grid item container direction="row" >
                 <Grid item container xs={6} direction="column" style={{paddingRight:"5%"}} className={classes.inputContainer}>
-                        <TextField  placeholder="Track Name" className={classes.input}  />
+                        <TextField  placeholder="Track Name" className={classes.input} onChange={e=>setTname(e.target.value)} value={tname} />
                         <Select
                         value={artist}
                         onChange={handleChange}
                         input={<BootstrapInput/>}
                         IconComponent={ChevronDown}
                         >
-                            {data.map((value) => (
+                            <MenuItem value={0} disabled>
+                                    <span className={classes.placeholder}>Artist</span>
+                            </MenuItem>
+                            {artists.map((value) => (
                                 (value === 0)?
                                 <MenuItem value={value} disabled>
                                     <span className={classes.placeholder}>Artist</span>
                                 </MenuItem>:
-                                <MenuItem value={value}>
-                                    {value}
+                                <MenuItem value={value.aid}>
+                                    {value.aname}
                                 </MenuItem>
                             ))}
                         </Select>
-                        <TextField  placeholder="Artist Name" className={classes.input}  />
-                        <TextField  placeholder="Genre" className={classes.input}  />
+                        <TextField  placeholder="Genre" className={classes.input} onChange={e=>setGenre(e.target.value)} value={genre}/>
                         <TextField  
                             variant="outlined" 
                             placeholder="Description" 
                             className={classes.inputBox}  
                             InputProps={{classes:{notchedOutline:classes.notchedOutline}}} 
                             multiline
-                            rows={4}
+                            rows={3}
+                            value={desc}
+                            onChange={e=>setDesc(e.target.value)}
                         />
+                        <Button className={classes.btn} onClick={handleSubmit}>Upload Track</Button> 
                     </Grid>
                 <Grid item container xs={6} className={classes.inputContainer}>
                     <label htmlFor="img" style={{width:"100%",paddingTop:'3%'}}>
@@ -220,7 +251,7 @@ const AdminPanel = ({children}) => {
                 <Grid item container xs={4}>
                     <img
                         className={classes.previmg}
-                        src={selectedFile}
+                        src={prevImg}
                     />
                     </Grid>
                 <Grid item container xs={2} style={{justifyContent:"center",alignItems:"center"}}>
@@ -238,10 +269,9 @@ const AdminPanel = ({children}) => {
                     onChange={handleTrackUpload}
                     />    
                 </label>
-                
+                 
                 </Grid>               
-            </Grid>
-            <Button className={classes.btn}>Upload Track</Button>
+            </Grid> 
         </Grid>  
     );
 }

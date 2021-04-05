@@ -42,6 +42,7 @@ const AppLayout = ({children}) => {
             </Grid>
             </Grid>
         </PlayerProvider>
+
     );
 }
 

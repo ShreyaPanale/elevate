@@ -2,7 +2,39 @@ import React from 'react'
 import { Modal, Typography, Grid,Button, FormControlLabel,TextField} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { FormLabel, FormControl, FormGroup,Checkbox} from '@material-ui/core';
+
 import { usePlayer } from '../webplayer'; 
+
+import API from '../api';
+import { useAuth } from "../firebase/provider";
+import { useHistory } from "react-router-dom";
+
+let playlists=[
+    {
+        pid:1,
+        pname:"Pop Rock"
+    },
+    {
+        pid:2,
+        pname:"Pop Rock"
+    },
+    {
+        pid:3,
+        pname:"Pop Rock"
+    },
+    {
+        pid:4,
+        pname:"Pop Rock"
+    },
+    {
+        pid:5,
+        pname:"Pop Rock"
+    },
+    {
+        pid:6,
+        pname:"Pop Rock"
+    }
+]
 
 const modalStyles = makeStyles((theme)=>({
     root:{
@@ -135,17 +167,33 @@ export const AddTrack = ({open,handleClose,tid}) => {
     )
 }
 
-export const CreatePlaylist = ({open,handleClose}) => {
+export const CreatePlaylist = ({open,handleClose,setModal}) => {
     const classes = modalStyles();
+
     const { addPlaylist, playlists } = usePlayer();
     const [pname,setName] = React.useState('')
-    const handleSubmit =async () =>{
-        //will do
-        await addPlaylist({
-            pid: playlists.length+1,
-            pname,
-            tracks:[]
+
+    const { currentUser } = useAuth();
+    const history = useHistory();
+    const handleSubmit = async (e) =>{
+        const playlist = {
+            "pname" : pname,
+            "uid" : currentUser.uid
+        }
+        console.log(playlist)
+        API.createPlaylist(playlist).then(async res => {
+            console.log(res.pid)
+            const toAdd={
+                "pid":res.pid,
+                "uid":currentUser.uid,
+                "action":"addPlaylist"
+            }
+            console.log(toAdd)
+            await API.addPlaylistToUser(toAdd)
+            setModal(0)
         })
+        setName('')
+
     }
     return (
         <Modal
@@ -160,7 +208,14 @@ export const CreatePlaylist = ({open,handleClose}) => {
                     </Typography>
                 </div>
                 
-                <TextField variant="outlined" placeholder="Playlist Name" className={classes.input} InputProps={{classes:{notchedOutline:classes.notchedOutline}}} onChange={(e)=>{setName(e.target.value)}}/>
+                <TextField 
+                    variant="outlined" 
+                    placeholder="Playlist Name" 
+                    className={classes.input} 
+                    InputProps={{classes:{notchedOutline:classes.notchedOutline}}} 
+                    onChange={(e)=>{setName(e.target.value)}}
+                    value={pname}
+                />
                 
                 <Button className={classes.btn} onClick={handleSubmit}>Create Playlist</Button>
             </div>
