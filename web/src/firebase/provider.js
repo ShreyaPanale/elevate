@@ -12,6 +12,7 @@ export const AuthProvider = ({children}) => {
     const [currentUser, setCurrentUser] = React.useState();
     const [loading, setLoading] = useState(true)
     const [errors, setErrors] = useState("");
+    const [adminStat, setAdminStat] = React.useState(false)
 
      async function signup(email, password) {
         try {
@@ -68,7 +69,15 @@ export const AuthProvider = ({children}) => {
       useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
           setCurrentUser(user)
-          setLoading(false)
+          API.userAdminStatus(user.uid).then(data => {
+            console.log(data.admin)
+            if(data.admin)
+              setAdminStat(true);
+            else
+              setAdminStat(false)
+            setLoading(false)
+          });
+          
         })
     
         return unsubscribe
@@ -84,7 +93,8 @@ export const AuthProvider = ({children}) => {
                 resetPassword,
                 googleSignin,
                 errors,
-                setErrors
+                setErrors,
+                adminStat
             }} 
         >
             {!loading && children}

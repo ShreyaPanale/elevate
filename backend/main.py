@@ -36,6 +36,15 @@ class APIServer:
 
     # Users endpoints
 
+    @app.route('/user/adminstat',methods=['GET'])
+    def userAdminStatus():
+        uid = request.args.get('uid')
+        admin=userManager.userAdminStatus(uid)
+        return {"admin":admin}
+        
+        
+        
+
     # create user api
     @app.route('/user/create',methods=['POST'])
     def createUser():
@@ -77,7 +86,7 @@ class APIServer:
     def setLike():
         try:
             uid = request.json.get('uid')
-            trackId = request.json.get('trackId')
+            trackId = request.json.get('tid')
             action = request.json.get('action')
             user = userManager.getUser(uid)
             if (action=='like'):
@@ -166,8 +175,8 @@ class APIServer:
                 audio = MP3(filepath)
                 audio_info = audio.info    
                 duration = int(audio_info.length)
-                trackManager.addNewTrack(tnm=tnm,artist=artist,genre=genre,desc=desc,coverurl=coverurl,mp3fileurl=mp3fileurl,duration=duration)
-                response_msg=jsonify({"status":"200 ok","message":"success"}),200
+                tid=trackManager.addNewTrack(tnm=tnm,artist=artist,genre=genre,desc=desc,coverurl=coverurl,mp3fileurl=mp3fileurl,duration=duration)
+                response_msg=jsonify({"status":"200 ok","message":"successfully added track","tid":str(tid)}),200
                 return response_msg 
             except Exception as e:
                 print(e)
@@ -177,7 +186,18 @@ class APIServer:
     @app.route('/gettracks',methods=['GET'])
     def getTracks():
         try:
-            return trackManager.getTracks(),200
+            uid=request.args.get('uid')
+            return trackManager.getTracks(uid),200
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
+
+    @app.route('/tracks/artist',methods=['GET'])
+    def getTracksByArtist():
+        try:
+            aid = request.args.get('aid')
+            return trackManager.getTracksByArtist(aid),200
         except Exception as e:
             print(e)
             response_msg=jsonify({"error":"400","message":"Bad request"}),400
@@ -225,9 +245,10 @@ class APIServer:
     @app.route('/addartist',methods=['POST'])
     def addArtist():
         try:
-            anm=request.form['aname']
-            artistManager.addNewArtist(anm=anm)
-            response_msg=jsonify({"status":"200 ok","message":"success"}),200
+            anm=request.json.get('aname')
+            photo=request.json.get('photo')
+            aid=artistManager.addNewArtist(anm=anm,photo=photo)
+            response_msg=jsonify({"status":"200 ok","message":"successfully created artist","aid":str(aid)}),200
             return response_msg
         except Exception as e:
             print(e)
@@ -293,6 +314,16 @@ class APIServer:
             response_msg=jsonify({"error":"400","message":"Bad request"}),400
             return response_msg
 
+    @app.route('/playlist/tracks',methods=['GET'])
+    def getPlaylistTracks():
+        try:
+            pid=request.args.get('pid')
+            return playlistManager.getPlaylistTracks(pid),200
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
+
     # manages add/remove playlist for user
     @app.route('/user/playlist/tracks',methods=['POST'])
     def managePlaylistTracks():
@@ -311,6 +342,7 @@ class APIServer:
             print(e)
             response_msg=jsonify({"error":"400","message":"Bad request"}),400
             return response_msg
+
 
 server = APIServer(port = 5000)
 server.start()
