@@ -2,7 +2,7 @@ import React,{useEffect,useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Avatar, Typography, IconButton } from '@material-ui/core';
 import { Heart, List, Play, Pause, SkipForward, SkipBack, Plus } from 'react-feather';
-import { usePlayer } from '../webplayer/provider';
+import { usePlayer } from '../webplayer';
 import {useHistory,useLocation} from 'react-router-dom';
 import ROUTES from '../routes';
 const useStyles = makeStyles(()=>({

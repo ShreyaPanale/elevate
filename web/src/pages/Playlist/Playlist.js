@@ -3,7 +3,7 @@ import TopBar from '../../components/TopBar';
 
 import { Grid, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles'
-import { usePlayer } from '../../webplayer/provider';
+import { usePlayer } from '../../webplayer';
 import { useParams } from 'react-router-dom';
 import SongList from '../../components/SongList';
 

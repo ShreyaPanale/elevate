@@ -5,7 +5,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import Sidebar from '../components/Sidebar';
 import Player from '../components/Player';
-import {PlayerProvider} from '../webplayer/provider';
+import {PlayerProvider} from '../webplayer';
 
 const useStyles = makeStyles(() => ({
     container: {

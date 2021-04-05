@@ -4,7 +4,7 @@ import { Button, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles'
 import { useHistory } from 'react-router-dom';
 import SongList from '../components/SongList';
-import {usePlayer} from '../webplayer/provider';
+import {usePlayer} from '../webplayer';
 
 const useStyles = makeStyles(()=>({
     root:{

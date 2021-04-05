@@ -2,7 +2,7 @@ import React from 'react'
 import { Modal, Typography, Grid,Button, FormControlLabel,TextField} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { FormLabel, FormControl, FormGroup,Checkbox} from '@material-ui/core';
-import { usePlayer } from '../webplayer/provider'; 
+import { usePlayer } from '../webplayer'; 
 
 const modalStyles = makeStyles((theme)=>({
     root:{

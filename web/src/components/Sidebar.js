@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useHistory, useLocation } from 'react-router-dom';
 import ROUTES from '../routes';
 import { Plus } from 'react-feather'
-import {usePlayer} from '../webplayer/provider';
+import {usePlayer} from '../webplayer';
 
 const Logo = () => {
     return (

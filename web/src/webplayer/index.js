@@ -1,5 +1,8 @@
+/*
+    Gotta clean this code up big time
+*/
+
 import React,{useContext,useEffect, useState} from 'react';
-import {useAuth} from '../firebase/provider';
 import DATA from './data';
 
 import {AddTrack,CreatePlaylist} from '../components/Modals';
