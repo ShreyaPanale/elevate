@@ -11,7 +11,8 @@ const Playlists = {
 const Users = {
     createUser : async (params) => (await axios.post(URLS.createUser, params)).data,
     userAdminStatus : async (id) => (await axios.get(URLS.userAdminStatus(id))).data,
-    getUserData : async (id) => (await axios.get(URLS.getUserData(id))).data
+    getUserData : async (id) => (await axios.get(URLS.getUserData(id))).data,
+    setLike : async (params) => (await axios.post(URLS.setLike(),params)).data
 }
 
 const Admin = {

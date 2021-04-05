@@ -10,7 +10,8 @@ const playlistURL = {
 const userURL = {
     createUser: `${ENDPOINT}/user/create`,
     userAdminStatus:(id)=>`${ENDPOINT}/user/adminstat?uid=${id}`,
-    getUserData : (id) => `${ENDPOINT}/user?uid=${id}`
+    getUserData : (id) => `${ENDPOINT}/user?uid=${id}`,
+    setLike : () => `${ENDPOINT}/user/like`
 }
 
 const adminURL = {

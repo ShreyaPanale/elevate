@@ -90,17 +90,20 @@ export const PlayerProvider = ({children}) => {
 
     }
 
+    //EP added
     const setLike = (tid,action) => {
         if(action==1){
+            API.setLike({"uid":currentUser.uid,"tid":tid,"action":"like"})
             likedSongs.push(tid);
             
         }else{
+            API.setLike({"uid":currentUser.uid,"tid":tid,"action":"unlike"})
             likedSongs.splice(likedSongs.indexOf(tid),1);
         }
         let newLikedSongs = [...likedSongs]
         setLikedSongs(newLikedSongs)
     }
-    
+
     //EP added
     const getSongsForPlaylist = (playlist) => {
         API.getPlaylistTracks(playlist.pid).then(res => {
