@@ -29,7 +29,7 @@ export const PlayerProvider = ({children}) => {
     const [play, setPlay] = useState(false);
     const [songQueue, setSongQueue] = useState([
     ]);
-    
+    const [likedSongs,setLikedSongs] = useState([])
     const [playlists, setPlaylists] = useState([]);
     const [history, setHistory] = useState([]);
     const [currSong, setCurrSong] = useState();
@@ -111,8 +111,12 @@ export const PlayerProvider = ({children}) => {
         })
     }
 
+    //EP added
     const getFavouritesForUser = () => {
-        return tracks.filter(track => likedSongs.includes(track.tid))
+        API.getUserFavourites(currentUser.uid).then(res =>{
+            return res.data
+        })
+        //return tracks.filter(track => likedSongs.includes(track.tid))
     }
 
     const getHistoryForUser = () => {
@@ -136,6 +140,7 @@ export const PlayerProvider = ({children}) => {
             }
         })
     }
+    
     //EP added
     const addPlaylist = (playlist) => {
         API.createPlaylist(playlist).then(async res => {

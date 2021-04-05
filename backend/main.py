@@ -146,6 +146,17 @@ class APIServer:
                 response_msg=jsonify({"error":"400","message":"Bad request"}),400
                 return response_msg
     
+
+    @app.route('/user/tracks/favourites',methods=['GET'])
+    def getUserFavourites():
+        try:
+            uid=request.args.get('uid')
+            return userManager.getUserFavourites(uid),200
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
+
     # track endpoints
     @app.route('/addtrack',methods=['POST'])
     def addTrack():
