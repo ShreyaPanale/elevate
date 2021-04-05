@@ -24,7 +24,7 @@ export const PlayerProvider = ({children}) => {
     })
 
     //const { userData, tracks ,artists} = useAuth();
-    //const { userData, tracks, artists } = DATA;
+    const {tracks } = DATA;
 
     const [play, setPlay] = useState(false);
     const [songQueue, setSongQueue] = useState([
@@ -167,7 +167,7 @@ export const PlayerProvider = ({children}) => {
     }
     //EP added
     const addTrack = (tid, pid) => {
-        temptrack = {
+        let temptrack = {
             "tid" : tid,
             "pid" : pid,
             "action" : "addTrack"
@@ -194,16 +194,18 @@ export const PlayerProvider = ({children}) => {
         }
         setSongQueue([...songQueue])
     }   
-    
+
     //EP added
     const getArtists = () => {
         API.getArtists().then(data => {
+            console.log(data.data)
             return data.data
           })
+        //return []
     }
     //EP added
     const getTracks = () => {
-        API.getTracks(user.uid).then(data =>{
+        API.getTracks(currentUser.uid).then(data =>{
             return data.data
           })
     }
@@ -251,9 +253,7 @@ export const PlayerProvider = ({children}) => {
                 playing,
                 setPlaying,
                 toggle,
-                artistList,
                 getArtists,
-                trackList,
                 getTracks,
                 getTracksForArtist
             }}

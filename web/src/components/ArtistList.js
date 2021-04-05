@@ -1,4 +1,5 @@
 import React from 'react';
+import {useState,useEffect} from 'react'
 import { useHistory } from 'react-router-dom'
 import {makeStyles} from '@material-ui/core/styles';
 import { Avatar, Grid} from '@material-ui/core';
@@ -16,8 +17,11 @@ const useStyles = makeStyles(()=>({
 const ArtistList = () => {
     const classes = useStyles();
     const history = useHistory();
+    const [loading, setLoading] = useState(false);
     const { getArtists } = usePlayer();
-    const artistList = getArtists()
+
+    let artistList = getArtists()
+
     console.log(artistList);
     return (
         <Grid container direction="row" spacing={10} style={{padding:20}}>

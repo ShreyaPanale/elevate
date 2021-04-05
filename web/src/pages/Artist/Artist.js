@@ -1,4 +1,5 @@
 import React from 'react'
+import {useState,useEffect} from 'react'
 import TopBar from '../../components/TopBar';
 
 import { Button, Grid, Avatar } from '@material-ui/core';
@@ -25,6 +26,7 @@ const useStyles = makeStyles(()=>({
 const Artist = () => {
     const {id} = useParams();
     const classes = useStyles();
+    const [loading, setLoading] = useState(false);
     const { getArtists, getTracksForArtist } = usePlayer();
     const artistList = getArtists()
     const artist = artistList.filter(artist => artist.aid == id)[0];
