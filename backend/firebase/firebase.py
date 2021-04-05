@@ -36,6 +36,17 @@ class FirestoreController:
                 trackarr.append(t)
         return {"data":trackarr}
 
+    def getUserHistory(self,uid):
+        tracks_ref = self.db.collection(u'tracks')
+        history=self.db.collection(u'users').document(uid).get().to_dict()['history']
+        tracks = tracks_ref.stream()
+        trackarr=[]
+        for track in tracks:
+            t=track.to_dict()
+            if t['tid'] in history:
+                trackarr.append(t)
+        return {"data":trackarr}
+
     def addNewTrack(self,track):
         doc_ref = self.db.collection(u'tracks').document()
         tid=doc_ref.id

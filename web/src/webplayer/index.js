@@ -119,11 +119,13 @@ export const PlayerProvider = ({children}) => {
         //return tracks.filter(track => likedSongs.includes(track.tid))
     }
 
+    //EP added
     const getHistoryForUser = () => {
         return new Promise((res,rej) => {
             try{
-                let t = tracks.filter(track => history.includes(track.tid))
-                res(t)
+                API.getUserFavourites(currentUser.uid).then(res =>{
+                    res(res.data)
+                })
             }catch(err){
                 rej(err)
             }
@@ -140,7 +142,7 @@ export const PlayerProvider = ({children}) => {
             }
         })
     }
-    
+
     //EP added
     const addPlaylist = (playlist) => {
         API.createPlaylist(playlist).then(async res => {

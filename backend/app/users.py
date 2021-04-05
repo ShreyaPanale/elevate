@@ -36,6 +36,9 @@ class UserManager(object):
     def getUserFavourites(self,uid):
         return firestore.getUserFavourites(uid)
 
+    def getUserHistory(self,uid):
+        return firestore.getUserHistory(uid)
+
 # class to handle user objects and related functions
 class User(object):
     def __init__(self,email,uid, displayName,likedSongs=[],playlists=[],recommendations = [], history = []):

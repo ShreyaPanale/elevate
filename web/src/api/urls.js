@@ -12,7 +12,8 @@ const userURL = {
     userAdminStatus:(id)=>`${ENDPOINT}/user/adminstat?uid=${id}`,
     getUserData : (id) => `${ENDPOINT}/user?uid=${id}`,
     setLike : () => `${ENDPOINT}/user/like`,
-    getUserFavourites : (uid) => `${ENDPOINT}/user/tracks/favourites?uid=${uid}`
+    getUserFavourites : (uid) => `${ENDPOINT}/user/tracks/favourites?uid=${uid}`,
+    getUserHistory : (uid) => `${ENDPOINT}/user/tracks/history?uid=${uid}`
 }
 
 const adminURL = {
