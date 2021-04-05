@@ -9,6 +9,7 @@ from app.users import UserManager
 from app.track import TrackManager
 from app.artist import ArtistManager
 from app.playlist import PlaylistManager
+from app.recommender import PopularityRecommender,UserRecommender
 from flask_cors import CORS
 import os
 from mutagen.mp3 import MP3
@@ -20,6 +21,8 @@ trackManager=TrackManager()
 artistManager=ArtistManager()
 userManager = UserManager()
 playlistManager = PlaylistManager()
+popularityRecommender = PopularityRecommender()
+userRecommender = UserRecommender()
 
 class APIServer:
     
@@ -77,9 +80,21 @@ class APIServer:
         return userManager.getUserData(uid)
 
     # user recommendations endpoint
-    @app.route('/user/recommendations')
-    def getRecommendations():
-        return {"info":"to be implemented!"}
+    @app.route('/user/top')
+    def getPopularityRecommendations():
+        uid = request.args.get('uid')
+        limit = int(request.args.get('limit'))
+        popularityRecommender.create(uid,limit)
+        recommendations = popularityRecommender.recommend(uid);
+        return {"data":recommendations}
+    
+    @app.route('/user/recommend')
+    def getUserRecommendations():
+        uid = request.args.get('uid')
+        limit = int(request.args.get('limit'))
+        userRecommender.create(uid)
+        recommendations = userRecommender.recommend(limit);
+        return {"data":recommendations}
 
     # manages user like/unlike a track
     @app.route('/user/like',methods=['POST'])

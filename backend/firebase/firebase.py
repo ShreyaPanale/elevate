@@ -184,3 +184,19 @@ class FirestoreController:
             doc_ref.delete()
         else:
             return {'error':"Playlist doesn't exist"}
+
+    def getTopSongs(self,limit):
+        tracks = self.db.collection('tracks').order_by('plays').limit(limit).stream()
+        return [track.to_dict() for track in tracks]
+    
+    def getAllSongs(self):
+        tracks = self.db.collection('tracks').stream()
+        return [track.to_dict() for track in tracks]
+    
+    def getAllUsers(self):
+        users = self.db.collection('users').stream()
+        return [user.to_dict() for user in users]
+    
+    def getMultipleSongs(self, trackIds):
+        tracks = self.db.collection('tracks').where('tid', 'in', trackIds).stream()
+        return [track.to_dict() for track in tracks]
