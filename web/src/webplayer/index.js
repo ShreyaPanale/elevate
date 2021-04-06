@@ -101,7 +101,6 @@ export const PlayerProvider = ({children}) => {
         }
     }, [audio]);
     
-
     const handleAddTrack = (tid) => {
         setTid(tid)
         setModal(1)
