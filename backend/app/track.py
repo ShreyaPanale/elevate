@@ -26,6 +26,9 @@ class Track(object):
     def data(self):
         return {'tname':self.tname,'artist':self.artist,'aname':self.aname,'genre':self.genre,'desc':self.desc,'coverurl':self.coverurl,'mp3fileurl':self.mp3fileurl,'plays':self.plays,'duration':self.duration,'tid':self.tid}
     
+    def addPlay(self):
+        return firestore.addPlay(self.tid)
+
     def modifyTrack(self):
         pass
 

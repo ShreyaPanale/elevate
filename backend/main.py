@@ -398,6 +398,19 @@ class APIServer:
             print(e)
             response_msg=jsonify({"error":"400","message":"Bad request"}),400
             return response_msg
-            
+    
+    @app.route('/tracks/updateplay', methods=['POST'])
+    def updatePlay():
+        try:
+            tid = request.args.get('tid')
+            track = trackManager.getTrack(tid)
+            track.addPlay()
+            return {"msg":"sucksless"}
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
+
+
 server = APIServer(port = 5000)
 server.start()

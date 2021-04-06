@@ -40,10 +40,9 @@ const useStyles = makeStyles(()=>({
 
 const Player = () => {
     const classes = useStyles();
-    const {audio} = usePlayer();
-    const { handleAddTrack, likedSongs, songQueue, currIndex, setLike:modifyLike,playing, toggle, nextSong, prevSong } = usePlayer();
-    let duration = songQueue[currIndex] && songQueue[currIndex].duration || 1
-    let durationstr = String(Math.floor(duration/60)).padStart(2, '0')+':'+ String(duration%60).padStart(2, '0')
+    const { handleAddTrack, likedSongs, songQueue, currIndex, setLike:modifyLike,playing, toggle, nextSong, prevSong, updateHistory,audio } = usePlayer();
+    const [ duration, setDuration] = React.useState(-1)
+    const [ durationstr, setDurationStr] = React.useState("00:00")
     const [curPercentage,setCurPercentage] = React.useState(0)
     const [currtimestr,setCurtimestr] = React.useState("00:00")
     const history = useHistory();
@@ -54,14 +53,32 @@ const Player = () => {
         (songQueue[currIndex] && likedSongs.includes(songQueue[currIndex].tid))?setLike(1):setLike(0)
     },[likedSongs,currIndex])
 
-    useEffect(() => {
+    audio.addEventListener('loadeddata', () => {
+        let duration = songQueue[currIndex] && songQueue[currIndex].duration
+        let durationstr = String(Math.floor(duration/60)).padStart(2, '0')+':'+ String(duration%60).padStart(2, '0')
+        setDuration(duration)
+        setDurationStr(durationstr)
+    })
+    audio.addEventListener('timeupdate', () => {
+        let sec = parseInt(audio.currentTime)
+        setCurPercentage(parseInt(sec/duration*100));
+        setCurtimestr(String(Math.floor(sec/60)).padStart(2, '0')+':'+ String(sec%60).padStart(2, '0'))
+    });
+    /*
+    audio.addEventListener('loadeddata', () => {
+        let duration = songQueue[currIndex] && songQueue[currIndex].duration
+            let durationstr = String(Math.floor(duration/60)).padStart(2, '0')+':'+ String(duration%60).padStart(2, '0')
+            setDuration(duration)
+            setDurationStr(durationstr)
         const interval = setInterval(() => {
             let sec = parseInt(audio.currentTime)
+            console.log(audio.currentTime, sec, duration, "hey bruh")
+            
             setCurPercentage(parseInt(sec/duration*100));
             setCurtimestr(String(Math.floor(sec/60)).padStart(2, '0')+':'+ String(sec%60).padStart(2, '0'))
         }, 1000);
         return () => clearInterval(interval);
-      }, []);
+    })*/
 
   function calcClickedTime(e) {
     const clickPositionInPage = e.pageX;
@@ -185,10 +202,6 @@ const Player = () => {
                             }}
                             onMouseDown={e => handleTimeDrag(e)}
                         >
-                            <span
-                                className={classes.progress}
-                                style={{ left: `${curPercentage - 2}%` }}
-                            />
                         </div>
                         <span className={classes.barTime}>{durationstr}</span>
                     </Grid>

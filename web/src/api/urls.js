@@ -28,7 +28,8 @@ const artistURL = {
 const tracksURL = {
     getTracks:(id)=>`${ENDPOINT}/gettracks?uid=${id}`,
     getTracksByArtist:(aid)=>`${ENDPOINT}/tracks/artist?aid=${aid}`,
-    getAllTracks:()=>`${ENDPOINT}/tracks/all`
+    getAllTracks:()=>`${ENDPOINT}/tracks/all`,
+    updatePlay:(tid)=>`${ENDPOINT}/tracks/updateplay?tid=${tid}`
 }
 
 const recommenderURL ={

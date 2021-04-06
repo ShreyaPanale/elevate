@@ -232,3 +232,6 @@ class FirestoreController:
     def getMultipleSongs(self, trackIds):
         tracks = self.db.collection('tracks').where('tid', 'in', trackIds).stream()
         return [track.to_dict() for track in tracks]
+    
+    def addPlay(self,tid):
+        self.db.collection('tracks').document(tid).update({'plays':firestore.Increment(1)})

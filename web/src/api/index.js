@@ -34,7 +34,8 @@ const Artist = {
 const Tracks = {
     getTracks :  async (id) => (await axios.get(URLS.getTracks(id))).data,
     getTracksByArtist : async (id) => (await axios.get(URLS.getTracksByArtist(id))).data,
-    getAllTracks : async () => (await axios.get(URLS.getAllTracks())).data
+    getAllTracks : async () => (await axios.get(URLS.getAllTracks())).data,
+    updatePlay: async (id) => (await axios.post(URLS.updatePlay(id))).data,
 }
 
 const Recommendations = {

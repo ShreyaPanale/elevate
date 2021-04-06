@@ -41,6 +41,7 @@ export const PlayerProvider = ({children}) => {
     const [playing, setPlaying] = useState(false);
     const toggle = () => setPlaying(!playing);
 
+    let trackLogs = [];
 
     // modal indicators for the addtrack and addplaylist
     const [modal, setModal] = React.useState(0);
@@ -88,12 +89,17 @@ export const PlayerProvider = ({children}) => {
         if ( songQueue.length>0 && currIndex != -1 && songQueue[currIndex]){
             audio.setAttribute('src', songQueue[currIndex].mp3fileurl)
             setAudio(audio);
+            if (!(songQueue[currIndex].tid in trackLogs)){
+                trackLogs.push(songQueue[currIndex].tid);
+                API.updatePlay(songQueue[currIndex].tid);
+            }
         }
     },[currIndex])
 
     // event to stop playing the music once the music ends.
     useEffect(() => {
         if (audio){
+            audio.addEventListener('loadeddata',()=>setPlaying(true));
             audio.addEventListener('ended', () => setPlaying(false));
             return () => {
                 audio.removeEventListener('ended', () => setPlaying(false));
@@ -112,11 +118,13 @@ export const PlayerProvider = ({children}) => {
     const nextSong = () => {
         if (songQueue.length-1 === currIndex) return;
         setCurrIndex(currIndex+1);
+        setPlaying(false);
     }
 
     const prevSong = () => {
         if (currIndex == 0) return;
         setCurrIndex(currIndex-1);
+        setPlaying(false);
     }
 
     const seek = () => {
@@ -172,7 +180,6 @@ export const PlayerProvider = ({children}) => {
         let newHistory = history.filter(currTrack => currTrack.tid!=track.tid);
         newHistory.push(track);
         setHistory(newHistory);
-        console.log("History",history)
     }
     const getTopSongs = () => {
         return new Promise((res,rej) => {
