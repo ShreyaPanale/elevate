@@ -32,11 +32,7 @@ const useStyles = makeStyles(()=>({
 
 const Dashboard = () => {
     const classes = useStyles();
-    const [top, setTop] = React.useState([])
-    const { getTopSongs } = usePlayer();
-    React.useEffect(()=>{
-        getTopSongs().then(songs => setTop(songs));
-    },[])
+    const { userRecommendations, popularityRecommendations } = usePlayer();
     return (
         <div style = {{display:"flex",flexDirection:'column', maxWidth:'100%'}} direction="row">
             <Grid item container >
@@ -52,7 +48,7 @@ const Dashboard = () => {
                     </Grid>
                     <Grid item className={classes.horizontal}>
                         {
-                            [1,2,3,4,5,6,7,8].map(idx =><SongCard />)
+                            userRecommendations.map((song,idx) =><SongCard key={idx} song={song} />)
                         }
                     </Grid>
                 </Grid>
@@ -64,7 +60,7 @@ const Dashboard = () => {
                         </h2>
                     </Grid>
                     <Grid item className={classes.horizontal}>
-                        <SongList tracks={top}/>
+                        <SongList tracks={popularityRecommendations}/>
                     </Grid>
                 </Grid>
             </Grid>

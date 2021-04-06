@@ -75,7 +75,6 @@ const SongRow = ({row}) => {
     likedSongs.includes(row['tid'])?setLike(1):setLike(0);
   },[likedSongs])
   const handleLike = (tid)=>{
-    console.log("LIKES", tid)
     if(like) {
       setLike(0)
       modifyLike(tid,0)
@@ -104,8 +103,6 @@ const SongList = ({tracks}) => {
     const { likedSongs, handleAddTrack, addToQueue, songQueue, playing, currIndex, toggle, playNow, updateHistory } = usePlayer();
     const [loading,setLoading] = React.useState(true);
     React.useEffect(()=>{ setLikes(likedSongs);setLoading(false)},[likedSongs])
-    console.log(likes)
-    console.log(tracks)
     return (
         <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">

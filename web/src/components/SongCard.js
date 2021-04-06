@@ -30,21 +30,21 @@ const useStyles = makeStyles(()=>({
       }
 }))
 
-const SongCard = () => {
+const SongCard = ({song}) => {
     const classes = useStyles();
     return (
         <Card className={classes.root}>
             <CardMedia
             className={classes.media}
-            image = "https://i.ytimg.com/vi/glNleDYUPu4/maxresdefault.jpg"
-            title="Contemplative Reptile"
+            image = {song.coverurl}
+            title={song.aname}
             />
             <CardContent>
             <Typography gutterBottom className={classes.title}>
-                Dreams
+                {song.tname}
             </Typography>
             <Typography className={classes.artist}>
-                NF
+                {song.aname}
             </Typography>
             </CardContent>
       </Card>

@@ -21,7 +21,7 @@ class PopularityRecommender():
         popularity_recommendations = self.popularity_recommendations
         
         # additional logic if any
-        return user_popularity
+        return popularity_recommendations
     
 
 #Class for Item similarity based Recommender System model
@@ -37,9 +37,9 @@ class UserRecommender():
         self.tracks = firestore.getAllSongs()
         user = firestore.getUser(self.uid)
 
-        genre_weight = 0.6
-        artist_weight = 0.2
-        plays_weight = 0.2
+        genre_weight = 75
+        artist_weight = 20
+        plays_weight = 5
 
         genre_scores = dict()
         artist_scores = dict()
@@ -72,6 +72,8 @@ class UserRecommender():
 
             track['score'] += plays_weight*track['plays']
             
+            if track['tid'] in user['likedSongs']:
+                track['score'] = -1
             tracksAll.append(track)
 
         tracksAll.sort(key= lambda x : x['score'], reverse=True)

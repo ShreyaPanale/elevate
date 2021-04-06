@@ -218,7 +218,7 @@ class FirestoreController:
             return {'error':"Playlist doesn't exist"}
 
     def getTopSongs(self,limit):
-        tracks = self.db.collection('tracks').order_by('plays').limit(limit).stream()
+        tracks = self.db.collection('tracks').order_by('plays',direction=firestore.Query.DESCENDING).limit(limit).stream()
         return [track.to_dict() for track in tracks]
     
     def getAllSongs(self):

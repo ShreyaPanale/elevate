@@ -49,6 +49,8 @@ export const PlayerProvider = ({children}) => {
 
     const [tracks, setTracks] = useState([]);
     const [artists, setArtists] = useState([]);
+    const [popularityRecommendations,setPopRecommendations]= useState([]);
+    const [userRecommendations,setUserRecommendations]=useState([]);
 
     const userInit = async () => {
         let data = await API.getUserData(currentUser.uid)
@@ -59,6 +61,10 @@ export const PlayerProvider = ({children}) => {
         setTracks(tracks);
         let artists = (await API.getArtists()).data
         setArtists(artists);
+        let popRecommendations = (await API.getPopularityRecommendations(currentUser.uid, 5)).data
+        setPopRecommendations(popRecommendations);
+        let userRecommendations = (await API.getUserRecommendations(currentUser.uid, 10)).data
+        setUserRecommendations(userRecommendations);
     }
     // Event to load all of the user data on the frontend on the first load.
     useEffect(()=>{
@@ -264,6 +270,7 @@ export const PlayerProvider = ({children}) => {
         //return trackList.filter(track => track.aid == aid);
     }
 
+    
     return (
         <PlayerContext.Provider
             value = {{
@@ -301,7 +308,9 @@ export const PlayerProvider = ({children}) => {
                 getTracks,
                 getTracksForArtist,
                 tracks,
-                artists
+                artists,
+                userRecommendations,
+                popularityRecommendations
             }}
         >
             {

@@ -37,11 +37,17 @@ const Tracks = {
     getAllTracks : async () => (await axios.get(URLS.getAllTracks())).data
 }
 
+const Recommendations = {
+    getPopularityRecommendations :  async (uid,limit=5) => (await axios.get(URLS.getPopularity(uid,limit))).data,
+    getUserRecommendations :  async (uid,limit=10) => (await axios.get(URLS.getUserRecommendations(uid,limit))).data,
+}
+
 let API;
 export default API = {
     ...Playlists,
     ...Users,
     ...Admin,
     ...Artist,
-    ...Tracks
+    ...Tracks,
+    ...Recommendations
 }
