@@ -20,6 +20,7 @@ import Playlist from './pages/Playlist/Playlist';
 import AdminTrack from './pages/admin/AdminTrack';
 import AdminArtist from './pages/admin/AdminArtist';
 import Queue from './pages/Queue';
+import SearchResult from './pages/SearchResult';
 import AppLayout from './Layout/AppLayout';
 import AdminLayout from './Layout/AdminLayout';
 import API from './api'
@@ -37,6 +38,7 @@ function App() {
       <Route exact path={ROUTES.history} component={History} />
       <Route exact path={ROUTES.favourites} component={Favourites} />
       <Route exact path={ROUTES.queue} component={Queue} />
+      <Route exact path={ROUTES.searchResult} component={SearchResult} />
       <Redirect to={ROUTES.dashboard} />
     </Switch>
   );

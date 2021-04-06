@@ -80,6 +80,7 @@ export const AuthProvider = ({children}) => {
               else
                 setAdminStat(false)
               setLoading(false)
+
             });
           }
           else setLoading(false)
