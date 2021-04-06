@@ -77,7 +77,7 @@ export const AuthProvider = ({children}) => {
                 setAdminStat(true);
               else
                 setAdminStat(false)
-              
+            setLoading(false);
             });
           }
           else setLoading(false)

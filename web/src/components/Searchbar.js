@@ -1,7 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react'
 import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import {Search} from 'react-feather';
+import ROUTES from '../routes';
+import {useHistory,useLocation} from 'react-router-dom';
+
 const useStyles = makeStyles((theme) => ({
   search: {
     position: 'relative',
@@ -36,6 +39,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function SearchBar({placeholder}) {
   const classes = useStyles();
+  const history = useHistory();
+  const location = useLocation();
+  const [ input, setInput ] = useState('');
+  const [isSearch,setSearchResult] = React.useState(location.pathname==ROUTES.SearchResult);
+
+  React.useEffect(()=>{
+    if(location.pathname==ROUTES.searchResult) setSearchResult(true)
+    else if(isSearch) setSearchResult(false)
+  },[location])  
+
   return (
           <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -47,8 +60,17 @@ export default function SearchBar({placeholder}) {
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
-              inputProps={{ 'aria-label': 'search' }}
+              inputProps={{ 'aria-label': 'search' ,onFocus:()=>history.push(ROUTES.searchResult)}}
+              input={input} onChange={()=>{
+                setInput(input);
+                if(isSearch){
+                    history.goBack();
+                } else{
+                    history.push(ROUTES.searchResult)
+                }
+            }}
             />
+            
           </div>
   );
 }
