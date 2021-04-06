@@ -77,7 +77,7 @@ const Player = () => {
                     height:80,
                     borderRadius:10,
                     marginLeft:20
-                }} alt="nf" src={songQueue[currIndex] ? songQueue[currIndex].coverUrl : null} />
+                }} alt="nf" src={songQueue[currIndex] ? songQueue[currIndex].coverurl : null} />
             </Grid>
             <Grid item container xs={2} spacing={1} direction="row" style={{alignItems:'center' }}>
                 <Grid item>

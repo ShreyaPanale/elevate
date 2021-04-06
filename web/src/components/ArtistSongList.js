@@ -59,7 +59,7 @@ const columns = [
                 height:50,
                 borderRadius:10,
                 marginRight:12
-            }} alt="nf" src={track.coverUrl} />
+            }} alt="nf" src={track.coverurl} />
             <text style={{
                 fontFamily:"Poppins"
             }}>
