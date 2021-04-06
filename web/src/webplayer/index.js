@@ -238,9 +238,21 @@ export const PlayerProvider = ({children}) => {
     }
     //EP added
     const getTracksForArtist = (aid) => {
+        /*
         return API.getTracksByArtist(aid).then(data =>{
             return data.data
           })
+        */
+          return new Promise((res,rej) => {
+            try{
+                let t = tracks.filter(track => track.artist === aid)
+                console.log(tracks)
+                console.log(t)
+                res(t)
+            }catch(err){
+                rej(err)
+            }
+        })
         //return trackList.filter(track => track.aid == aid);
     }
 

@@ -28,7 +28,7 @@ const Artist = () => {
     const classes = useStyles();
     const [loading, setLoading] = useState(false);
     const { getArtists, getTracksForArtist } = usePlayer();
-    const artistList = getArtists()
+    //const artistList = getArtists()
     //const artist = artistList.filter(artist => artist.aid == id)[0];
     //const trackList = getTracksForArtist(id);
 
@@ -39,8 +39,10 @@ const Artist = () => {
             setArtist(res.filter(artist => artist.aid == id)[0])
         })
         getTracksForArtist(id).then(res => {
+            console.log("artist tracks",res)
             setTrackList(res)
         })
+        setLoading(false)
     },[])
 
     const history = useHistory();
@@ -80,7 +82,7 @@ const Artist = () => {
                     </Grid>
                 </div>
                 <div item xs={12} style={{}}>
-                    <SongList tracks={trackList}/>
+                {loading? <p>Loading...</p>:<SongList tracks={trackList}/>}
                 </div>
             </div>
         </Grid>
