@@ -3,7 +3,7 @@ import TopBar from '../../components/TopBar';
 
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles'
-
+import {usePlayer} from '../../webplayer'
 import ArtistList from '../../components/ArtistList';
 
 const useStyles = makeStyles(()=>({
@@ -18,6 +18,7 @@ const useStyles = makeStyles(()=>({
 
 const Artists = () => {
     const classes = useStyles();
+    const { artists } = usePlayer();
     return (
         <Grid container direction="row">
             <Grid item xs={12} >
@@ -30,7 +31,7 @@ const Artists = () => {
                         </h1>
                     </div>
                     <div item xs={12} style={{}}>
-                        <ArtistList />
+                        <ArtistList artists={artists} />
                     </div>
             </div>
         </Grid>

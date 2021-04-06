@@ -9,7 +9,10 @@ import { useHistory } from 'react-router-dom';
 import SongList from '../components/SongList';
 import {usePlayer} from '../webplayer';
 import {Search} from 'react-feather';
-
+import {default as ArtistListComponent} from '../components/ArtistList';
+import {ReactComponent as SearchFail} from '../assets/searchFail.svg'
+import {ReactComponent as SearchFail2} from '../assets/searchFail2.svg'
+import {ReactComponent as StartSearch} from '../assets/startSearch.svg'
 const useStyles = makeStyles((theme) => ({
     profile :{
         '&:hover':{
@@ -63,27 +66,35 @@ const SearchResult = () => {
         history.goBack()
       }
       const [ input, setInput ] = useState('');
-      const { getTracks } = usePlayer();
-      const tracks = getTracks()
+      const { tracks, artists } = usePlayer();
+
       const [ TrackList, setTrackList ] = useState([]);
-    
+      const [ ArtistList, setArtistList ] = useState([]);
+
       const updateInput = async (event) => {
         setInput(event.target.value);
       };
 
       React.useEffect(() => {
-        let inputLower = input.toLowerCase();
-        const filtered = tracks.filter(track =>
-          track.aname.toLowerCase().includes(inputLower) ||
-          track.tname.toLowerCase().includes(inputLower)
-        );
-        setTrackList(filtered);
-        console.log(input,input.length,TrackList);
+        if (input.length > 1){
+          let inputLower = input.toLowerCase();
+          const filteredTracks = tracks.filter(track =>
+            track.tname.toLowerCase().includes(inputLower)
+          );
+          setTrackList(filteredTracks);
+          const filteredArtists = artists.filter(artist =>
+            artist.aname.toLowerCase().includes(inputLower)
+          );
+          setArtistList(filteredArtists);
+        }
       }, [input]);
         
-    
+    const [left,setLeft] = useState(false);
+    React.useEffect(()=>{
+        setLeft(!left)
+    },[input])
     return (
-        <div style = {{display:"flex",flexDirection:'column', maxWidth:'100%'}} direction="row">
+        <div style = {{display:"flex",flexDirection:'column', width:'100%'}} direction="row">
             <Grid item container >
                 <Grid container direction="row" style = {{marginTop:'2%',paddingLeft:'4%',marginBottom:0,paddingBottom:0}}>
                     <Grid item xs={8} style = {{paddingRight:'8%'}}>
@@ -118,16 +129,46 @@ const SearchResult = () => {
             <div style = {{display:"flex",flexDirection:'column', width:'100%'}} direction="row">
                 <Grid item container direction="row" className={classes.root}>
                 
-                    <Grid container>
+                    <Grid container style={{width:'100%'}}>
                     <Grid item xs={6}> 
                             <h2 style = {{color:"#EF757D"}}>Search Results</h2>
                     </Grid>
-                    <Grid item xs={6} style = {{textAlign: 'right'}}> 
+                    <Grid item xs={6} style = {{textAlign: 'right',width:'100%'}}> 
                             <Button onClick={goBack}><h2  style = {{color:"#EF757D", textTransform:'none'}}>Close</h2></Button>
                         </Grid>
+                        {
+                          input==''? <div style={{alignItems:'center',justifyContent:'center',display:'flex',width:'100%'}}> <StartSearch style={{height:400, width:400}} /></div>
+                          :(TrackList.length==0 && ArtistList.length==0) ?
+                            <div style={{alignItems:'center',justifyContent:'center',display:'flex',width:'100%'}}>
+                              {
+                                left?<SearchFail style={{height:400, width:400}} />:<SearchFail2 style={{height:400, width:400}} />
+                              }
+                            </div>
+                          :null
+                        }
+                        {
+                          TrackList.length==0 || input=='' ?null:<><span style={{
+                          fontWeight:'bold',
+                          fontSize:20,
+                          marginTop:'2%'
+                        }}>
+                          Songs
+                        </span>
                         <Grid item style={{width:'100%'}}>
                             <SongList tracks={TrackList}/>
-                        </Grid>
+                        </Grid></>}
+                        {
+                          ArtistList.length==0 || input==''?null:<><span style={{
+                            fontWeight:'bold',
+                            fontSize:20,
+                            marginTop:'4%'
+                          }}>
+                            Artists
+                          </span>
+                        
+                        <Grid item style={{width:'100%'}}>
+                            <ArtistListComponent artists={ArtistList} size={100} />
+                        </Grid></>}
                     </Grid>
                 </Grid>
             </div>

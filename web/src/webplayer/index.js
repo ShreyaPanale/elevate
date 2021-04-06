@@ -48,6 +48,7 @@ export const PlayerProvider = ({children}) => {
     const handleClose = () => setModal(0);
 
     const [tracks, setTracks] = useState([]);
+    const [artists, setArtists] = useState([]);
 
     const userInit = async () => {
         let data = await API.getUserData(currentUser.uid)
@@ -56,6 +57,8 @@ export const PlayerProvider = ({children}) => {
         setLikedSongs(data.likedSongs)
         let tracks = (await API.getAllTracks()).data
         setTracks(tracks);
+        let artists = (await API.getArtists()).data
+        setArtists(artists);
     }
     // Event to load all of the user data on the frontend on the first load.
     useEffect(()=>{
@@ -224,10 +227,10 @@ export const PlayerProvider = ({children}) => {
 
     //EP added
     const getArtists = () => {
-        return API.getArtists().then(data => {
+        return new Promise((res,rej) => res(artists))/*API.getArtists().then(data => {
             console.log(data.data)
             return data.data
-          })
+          })*/
         //return []
     }
     //EP added
@@ -290,7 +293,9 @@ export const PlayerProvider = ({children}) => {
                 toggle,
                 getArtists,
                 getTracks,
-                getTracksForArtist
+                getTracksForArtist,
+                tracks,
+                artists
             }}
         >
             {

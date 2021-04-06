@@ -14,25 +14,16 @@ const useStyles = makeStyles(()=>({
         },
     }
 }))
-const ArtistList = () => {
+const ArtistList = ({artists,size=200}) => {
     const classes = useStyles();
     const history = useHistory();
-    const [loading, setLoading] = useState(false);
-    const { getArtists } = usePlayer();
-    
-    const [artistList,setArtistList]=React.useState([])
-    useEffect(()=>{
-        getArtists().then(res => {
-            setArtistList(res)
-        })
-    },[])
     
     //const artistList = getArtists()
     //console.log(artistList);
     return (
         <Grid container direction="row" spacing={10} style={{padding:20}}>
             {
-                artistList && artistList.map(artist => 
+                artists && artists.map(artist => 
                     <Grid item direction="column" justify="center" align="center">
                         <Grid item onClick={()=>{
                             history.push(ROUTES.genArtist(artist.aid))
@@ -40,8 +31,8 @@ const ArtistList = () => {
                             <Avatar 
                                 className={classes.hover}
                                 style={{
-                                    width:200,
-                                    height:200,
+                                    width:size,
+                                    height:size,
                                     borderRadius:100,
                                 }} 
                                 src={artist.photo}
