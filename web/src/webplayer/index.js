@@ -150,10 +150,10 @@ export const PlayerProvider = ({children}) => {
 
     //EP added
     const getHistoryForUser = () => {
-        /*
+        return history;/*
         return API.getUserHistory(currentUser.uid).then(res =>{
             return res.data
-        })*/
+        })
         return new Promise((res,rej) => {
             try{
                 let t = tracks.filter(track => history.includes(track.tid))
@@ -161,9 +161,14 @@ export const PlayerProvider = ({children}) => {
             }catch(err){
                 rej(err)
             }
-        })
+        })*/
     }
-
+    const updateHistory = (track) => {
+        let newHistory = history.filter(currTrack => currTrack.tid!=track.tid);
+        newHistory.push(track);
+        setHistory(newHistory);
+        console.log("History",history)
+    }
     const getTopSongs = () => {
         return new Promise((res,rej) => {
             try{
@@ -281,6 +286,7 @@ export const PlayerProvider = ({children}) => {
                 getSongsForPlaylist,
                 getFavouritesForUser,
                 getHistoryForUser,
+                updateHistory,
                 getTopSongs,
                 addPlaylist,
                 addTrack,

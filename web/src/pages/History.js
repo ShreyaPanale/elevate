@@ -22,15 +22,14 @@ const useStyles = makeStyles(()=>({
 
 const History = () => {
     const classes = useStyles();
-    const [historySongs, setHistory] = React.useState([])
+    const [historySongs, setHistorySongs] = React.useState([])
     const { getHistoryForUser,history } = usePlayer();
     const [ loading, setLoading ] = React.useState(true);
     React.useEffect(()=>{
-        
-        getHistoryForUser().then(res => {
-            setHistory(res)
-            setLoading(false);
-        });
+        let Songs = getHistoryForUser();
+        setHistorySongs(Songs.reverse())
+        setLoading(false);
+        console.log("IN history page",historySongs);
     },[history])
     return (
         <Grid container direction="row">

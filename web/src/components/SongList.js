@@ -101,7 +101,7 @@ const SongRow = ({row}) => {
 const SongList = ({tracks}) => {
     const classes = songListStyles();
     const [likes, setLikes] = React.useState()
-    const { likedSongs, handleAddTrack, addToQueue, songQueue, playing, currIndex, toggle, playNow } = usePlayer();
+    const { likedSongs, handleAddTrack, addToQueue, songQueue, playing, currIndex, toggle, playNow, updateHistory } = usePlayer();
     const [loading,setLoading] = React.useState(true);
     React.useEffect(()=>{ setLikes(likedSongs);setLoading(false)},[likedSongs])
     console.log(likes)
@@ -127,6 +127,7 @@ const SongList = ({tracks}) => {
               return (
                 <SongRow row={{
                   play: songQueue[currIndex] === track? playing?<Pause style={{color:'#E7576D'}} onClick={()=>toggle()} />: <Play style={{color:'#E7576D'}} onClick={()=>toggle()} />: <Play onClick={()=>{
+                    updateHistory(track)
                     if(songQueue.includes(track)) playNow(track)  
                     else addToQueue(track)
                     }} />,

@@ -41,7 +41,7 @@ const useStyles = makeStyles(()=>({
 const Player = () => {
     const classes = useStyles();
     let curPercentage = 80; // will handle progress
-    const { handleAddTrack, likedSongs, songQueue, currIndex, setLike:modifyLike,playing, toggle, nextSong, prevSong } = usePlayer();
+    const { handleAddTrack, likedSongs, songQueue, currIndex, setLike:modifyLike,playing, toggle, nextSong, prevSong, updateHistory, playNow } = usePlayer();
     const history = useHistory();
     const location = useLocation();
     const [like,setLike] = React.useState(0);
@@ -128,7 +128,7 @@ const Player = () => {
                                     <Pause style= {{
                                         color:"#FFF",
                                     }}/>
-                                    :<Play style= {{
+                                    :<Play onClick={()=>{updateHistory(songQueue[currIndex])}} style= {{
                                         color:"#FFF",
                                         marginLeft:4
                                     }}/>
