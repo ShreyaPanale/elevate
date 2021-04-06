@@ -77,7 +77,7 @@ export const PlayerProvider = ({children}) => {
     // event to set songs source as the current index changes.
     useEffect(()=>{
         if ( songQueue.length>0 && currIndex != -1 && songQueue[currIndex]){
-            audio.setAttribute('src', songQueue[currIndex].link)
+            audio.setAttribute('src', songQueue[currIndex].mp3fileurl)
             setAudio(audio);
         }
     },[currIndex])
