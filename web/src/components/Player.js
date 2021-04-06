@@ -57,12 +57,35 @@ const Player = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             let sec = parseInt(audio.currentTime)
-            //console.log("Hello",sec/duration, sec, duration)
             setCurPercentage(parseInt(sec/duration*100));
             setCurtimestr(String(Math.floor(sec/60)).padStart(2, '0')+':'+ String(sec%60).padStart(2, '0'))
         }, 1000);
         return () => clearInterval(interval);
       }, []);
+
+  function calcClickedTime(e) {
+    const clickPositionInPage = e.pageX;
+    const bar = document.getElementById("progressBar");
+    const barStart = bar.getBoundingClientRect().left + window.scrollX;
+    const barWidth = bar.offsetWidth;
+    const clickPositionInBar = clickPositionInPage - barStart;
+    const timePerPixel = duration / barWidth;
+    return timePerPixel * clickPositionInBar;
+  }
+
+  function handleTimeDrag(e) {
+    audio.currentTime=calcClickedTime(e);
+
+    const updateTimeOnMove = eMove => {
+      audio.currentTime=calcClickedTime(eMove);
+    };
+
+    document.addEventListener("mousemove", updateTimeOnMove);
+
+    document.addEventListener("mouseup", () => {
+      document.removeEventListener("mousemove", updateTimeOnMove);
+    });
+  }
 
     const [isQueue,setQueue] = React.useState(location.pathname==ROUTES.queue);
 
@@ -80,8 +103,6 @@ const Player = () => {
             modifyLike(songQueue[currIndex].tid,0);
             setLike(0)
         }
-            
-        //call necessary endpoints
     }
     return (
         <Grid className={classes.root} container direction="row">
@@ -158,9 +179,11 @@ const Player = () => {
                         <span className={classes.barTime}>{currtimestr}</span>
                         <div
                             className={classes.progressBar}
+                            id="progressBar"
                             style={{
                                 background: `linear-gradient(to right, #EF757D ${curPercentage}%, #C4C4C4 0)`
                             }}
+                            onMouseDown={e => handleTimeDrag(e)}
                         >
                             <span
                                 className={classes.progress}
