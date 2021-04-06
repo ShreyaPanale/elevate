@@ -53,7 +53,6 @@ class APIServer:
     def createUser():
         if request.method == 'POST':
             try:
-                print(request.json)
                 userManager.createUser( request.json['uid'], request.json['email'], request.json['displayName'])
                 return {"message":"success"},200
             except Exception as e:
@@ -80,12 +79,9 @@ class APIServer:
         res = userManager.getUserData(uid)
         plist=[]
         for pid in res['playlists']:
-            print(pid)
             pdata=playlistManager.getPlaylistData(pid)
-            print(pdata)
             plist.append(pdata)
         res['playlists']=plist
-        print(res)
         return res
 
     # user recommendations endpoint
@@ -130,7 +126,6 @@ class APIServer:
             uid = request.json.get('uid')
             playlistId = request.json.get('pid')
             action = request.json.get('action')
-            print("hii",uid,playlistId,action)
             user = userManager.getUser(uid)
             if (action=='addPlaylist'):
                 user.addPlaylist(playlistId)
@@ -277,7 +272,6 @@ class APIServer:
     @app.route('/track/delete',methods=['POST'])
     def deleteTrack():
         try:
-            print(request.json)
             trackManager.deleteTrack(request.json.get('tid'))
             return {"message":"success"},200
         except Exception as e:
@@ -332,7 +326,6 @@ class APIServer:
     def createPlaylist():
         if request.method == 'POST':
             try:
-                print(request.json)
                 pid=playlistManager.createPlaylist(request.json['uid'], request.json['pname'])
                 return {"pid":pid},200
             except Exception as e:
@@ -381,7 +374,6 @@ class APIServer:
             if (action=='addTrack'):
                 playlist.addSong(pid,tid)
             else:
-                print("im here")
                 playlist.removeSong(pid,tid)
             return {"message":"success"},200
         except Exception as e:

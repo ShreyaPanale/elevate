@@ -11,7 +11,6 @@ class Artist(object):
     @classmethod
     def fromDB(cls,aid):
         artistData=firestore.getArtist(aid)
-        print(artistData)
         return cls(artistData['aname'],artistData['aid'],artistData['photo'])
 
     def save(self):

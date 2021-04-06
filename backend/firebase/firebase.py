@@ -97,7 +97,6 @@ class FirestoreController:
 
     def deleteTrack(self,id):
         doc_ref=self.db.collection(u'tracks').document(id)
-        print(doc_ref)
         if doc_ref.get().exists:
             doc_ref.delete()
         else:
@@ -107,8 +106,6 @@ class FirestoreController:
         doc_ref = self.db.collection(u'tracks').document(tid)
         doc = doc_ref.get()
         if doc.exists:
-            print("firebase controller")
-            print(doc.to_dict())
             return doc.to_dict()
         else:
             return {'error':'Document not found,Missing track'}
@@ -124,7 +121,6 @@ class FirestoreController:
     
     #Artist controller functions
     def addNewArtist(self,artist):
-        print("am here")
         doc_ref = self.db.collection(u'artists').document()
         aid=doc_ref.id
         doc_ref.set({
@@ -148,7 +144,6 @@ class FirestoreController:
         artists = artists_ref.stream()
         artistarr=[]
         for artist in artists:
-            print(f'{artist.id} => {artist.to_dict()}')
             artistarr.append(artist.to_dict())
         return {"data":artistarr}
         
@@ -181,7 +176,6 @@ class FirestoreController:
                     temp_ref=self.db.collection(u'tracks').where(u'tid','in',tids[i:i+10])
                     temp=temp_ref.stream()
                     for t in temp:
-                        print(temp.to_dict())
                         tracks.append(t.to_dict())
                 else:
                     temp_ref=self.db.collection(u'tracks').where(u'tid','in',tids[i:len(tids)])

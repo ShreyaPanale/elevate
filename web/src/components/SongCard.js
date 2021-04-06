@@ -1,5 +1,5 @@
 import React from 'react'
-import TopBar from '../components/TopBar';
+import { usePlayer } from '../webplayer'
 
 import { Grid, Card, CardContent, CardMedia, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles'
@@ -32,8 +32,14 @@ const useStyles = makeStyles(()=>({
 
 const SongCard = ({song}) => {
     const classes = useStyles();
+    const { addToQueue, playNow, updateHistory, songQueue } = usePlayer();
+    const handleSongClick = ()=>{
+      updateHistory(song)
+      if(songQueue.includes(song)) playNow(song)  
+      else addToQueue(song)
+    }
     return (
-        <Card className={classes.root}>
+        <Card className={classes.root} onClick={handleSongClick}>
             <CardMedia
             className={classes.media}
             image = {song.coverurl}

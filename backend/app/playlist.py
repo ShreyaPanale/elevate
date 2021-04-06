@@ -14,7 +14,6 @@ class Playlist(object):
     def fromDB(cls,pid):
         try:
             playlistData=firestore.getPlaylist(pid)
-            print(playlistData)
             return cls(playlistData['uid'],playlistData['pname'],playlistData['tracks'],playlistData['pid'])
         except Exception as e:
             print(e)
@@ -52,7 +51,6 @@ class PlaylistManager(object):
     
     def getPlaylistData(self,pid):
         playlist = Playlist.fromDB(pid)
-        print("Playlist Data",playlist.data())
         return playlist.data()
 
     def getPlaylistTracks(self,pid):

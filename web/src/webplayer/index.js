@@ -67,6 +67,7 @@ export const PlayerProvider = ({children}) => {
         let userRecommendations = (await API.getUserRecommendations(currentUser.uid, 10)).data
         setUserRecommendations(userRecommendations);
     }
+
     // Event to load all of the user data on the frontend on the first load.
     useEffect(()=>{
         userInit().then(()=>{
@@ -232,6 +233,7 @@ export const PlayerProvider = ({children}) => {
 
     const playNow = (track) => {
         setCurrIndex(songQueue.indexOf(track));
+        setPlaying(false);
     }
 
     const addToQueue = (track) => {

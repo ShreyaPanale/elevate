@@ -49,7 +49,6 @@ class UserRecommender():
             x = firestore.getMultipleSongs(user['likedSongs'][i:i+10])
             likedSongs.extend(x)
         
-        print(likedSongs, user['likedSongs'])
         for song in likedSongs:
             if song['genre'] not in genre_scores:
                 genre_scores[song['genre']] = 0
