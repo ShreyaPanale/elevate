@@ -27,7 +27,8 @@ const artistURL = {
 
 const tracksURL = {
     getTracks:(id)=>`${ENDPOINT}/gettracks?uid=${id}`,
-    getTracksByArtist:(aid)=>`${ENDPOINT}/tracks/artist?aid=${aid}`
+    getTracksByArtist:(aid)=>`${ENDPOINT}/tracks/artist?aid=${aid}`,
+    getAllTracks:()=>`${ENDPOINT}/tracks/all`
 }
 
 export default URLS = {

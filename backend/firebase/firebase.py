@@ -117,8 +117,11 @@ class FirestoreController:
         artist = self.db.collection(u'artists').document(track['artist']).get().to_dict()
         return artist['aname']
 
+    def getAllTracks(self):
+        tracks = self.db.collection('tracks').stream()
+        return [track.to_dict() for track in tracks]
+    
     #Artist controller functions
-
     def addNewArtist(self,artist):
         print("am here")
         doc_ref = self.db.collection(u'artists').document()

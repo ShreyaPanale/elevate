@@ -42,7 +42,7 @@ const Playlist = () => {
     useEffect(() => {
         setLoading(true);
         console.log("playlist",playlist)
-        getSongsForPlaylist(id).then(res => {
+        getSongsForPlaylist(playlist).then(res => {
             setSongs(res)
             setLoading(false);
         });

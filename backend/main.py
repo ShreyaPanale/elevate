@@ -373,6 +373,15 @@ class APIServer:
             response_msg=jsonify({"error":"400","message":"Bad request"}),400
             return response_msg
 
-
+    @app.route('/tracks/all')
+    def getAllTracks():
+        try:
+            tracks = trackManager.getAllTracks()
+            return {'data':tracks}
+        except Exception as e:
+            print(e)
+            response_msg=jsonify({"error":"400","message":"Bad request"}),400
+            return response_msg
+            
 server = APIServer(port = 5000)
 server.start()
