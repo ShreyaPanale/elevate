@@ -12,9 +12,12 @@ class Playlist(object):
     
     @classmethod
     def fromDB(cls,pid):
-        playlistData=firestore.getPlaylist(pid)
-        print(playlistData)
-        return cls(playlistData['uid'],playlistData['pname'],playlistData['tracks'],playlistData['pid'])
+        try:
+            playlistData=firestore.getPlaylist(pid)
+            print(playlistData)
+            return cls(playlistData['uid'],playlistData['pname'],playlistData['tracks'],playlistData['pid'])
+        except Exception as e:
+            print(e)
     
     def save(self):
         return firestore.savePlaylist(self)

@@ -26,8 +26,9 @@ const History = () => {
     const { getHistoryForUser,history } = usePlayer();
     const [ loading, setLoading ] = React.useState(true);
     React.useEffect(()=>{
-        getHistoryForUser().then(history => {
-            setHistory(history)
+        
+        getHistoryForUser().then(res => {
+            setHistory(res)
             setLoading(false);
         });
     },[history])
@@ -43,7 +44,7 @@ const History = () => {
                         </h1>
                     </Grid>
                     <Grid item xs={12} style={{width:"100%", height:'100%'}}>
-                        <SongList tracks = {historySongs} />
+                    {loading? <p>Loading...</p>:<SongList tracks = {historySongs} />}
                     </Grid>
             </Grid>
         </Grid>

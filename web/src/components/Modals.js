@@ -125,14 +125,15 @@ export const AddTrack = ({open,handleClose,tid}) => {
     }
     const [plist,setPlist] = React.useState([])
     const handleChange = (event) => {
-        //doesn't work
-        
         let temp=plist
+        console.log("temp",temp)
+        console.log("plist",plist)
         if (event.target.checked)
-            temp.push(parseInt(event.target.value))
+            temp.push(event.target.value)
         else
             temp.splice(temp.indexOf(event.target.name),1)
         setPlist(temp)
+        console.log("temp",temp)
         console.log("plist",plist)
     }
     return (
@@ -153,7 +154,7 @@ export const AddTrack = ({open,handleClose,tid}) => {
                             {
                                 playlists.map((playlist) => (
                                     <FormControlLabel 
-                                    control={<Checkbox value={playlist.pid} onChange={handleChange} style ={{color: "#EF757D"}}/>}
+                                    control={<Checkbox value={playlist.pid} name={playlist.pid} onChange={handleChange} style ={{color: "#EF757D"}}/>}
                                      label={<Typography className={classes.formControlLabel}>{playlist.pname}</Typography>}
                                      />
                                 ))
@@ -181,17 +182,7 @@ export const CreatePlaylist = ({open,handleClose,setModal}) => {
             "uid" : currentUser.uid
         }
         console.log(playlist)
-        API.createPlaylist(playlist).then(async res => {
-            console.log(res.pid)
-            const toAdd={
-                "pid":res.pid,
-                "uid":currentUser.uid,
-                "action":"addPlaylist"
-            }
-            console.log(toAdd)
-            await API.addPlaylistToUser(toAdd)
-            setModal(0)
-        })
+        addPlaylist(playlist)
         setName('')
 
     }
