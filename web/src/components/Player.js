@@ -163,7 +163,7 @@ const Player = () => {
                                     <Pause style= {{
                                         color:"#FFF",
                                     }}/>
-                                    :<Play style= {{
+                                    :<Play onClick={()=>{updateHistory(songQueue[currIndex])}} style= {{
                                         color:"#FFF",
                                         marginLeft:4
                                     }}/> 
