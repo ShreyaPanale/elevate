@@ -34,7 +34,7 @@ class FirestoreController:
             t=track.to_dict()
             if t['tid'] in likedSongs:
                 t=track.to_dict()
-                t['aname']=FirestoreController().retrieveTrackArtist(t['tid'])
+                #t['aname']=FirestoreController().retrieveTrackArtist(t['tid'])
                 trackarr.append(t)
         return {"data":trackarr}
 
@@ -45,7 +45,7 @@ class FirestoreController:
         trackarr=[]
         for track in tracks:
             t=track.to_dict()
-            t['aname']=FirestoreController().retrieveTrackArtist(t['tid'])
+            #t['aname']=FirestoreController().retrieveTrackArtist(t['tid'])
             if t['tid'] in history:
                 trackarr.append(t)
         return {"data":trackarr}
@@ -56,6 +56,7 @@ class FirestoreController:
         doc_ref.set({
             u'tname': track.tname,
             u'artist': track.artist,
+            u'aname':track.aname,
             u'genre': track.genre,
             u'desc': track.desc,
             u'coverurl': track.coverurl,
@@ -79,7 +80,7 @@ class FirestoreController:
             else:
                 t['like']=0
             '''
-            t['aname']=FirestoreController().retrieveTrackArtist(t['tid'])
+            #t['aname']=FirestoreController().retrieveTrackArtist(t['tid'])
             trackarr.append(t)
         return {"data":trackarr}
         
@@ -90,7 +91,7 @@ class FirestoreController:
         trackarr=[]
         for track in tracks:
             t=track.to_dict()
-            t['aname']=FirestoreController().retrieveTrackArtist(t['tid'])
+            #t['aname']=FirestoreController().retrieveTrackArtist(t['tid'])
             trackarr.append(t)
         return {"data":trackarr}
 

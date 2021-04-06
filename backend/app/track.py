@@ -3,9 +3,10 @@ from firebase import firebase
 firestore = firebase.FirestoreController()
 
 class Track(object):
-    def __init__(self,tname,artist,genre,desc,coverurl,mp3fileurl,duration,plays=0,tid=""):
+    def __init__(self,tname,artist,aname,genre,desc,coverurl,mp3fileurl,duration,plays=0,tid=""):
         self.tname=tname
         self.artist=artist
+        self.aname=aname
         self.genre=genre
         self.desc=desc
         self.coverurl=coverurl
@@ -17,13 +18,13 @@ class Track(object):
     @classmethod
     def fromDB(cls,tid):
         trackData = firestore.getTrack(tid)
-        return cls(trackData['tname'],trackData['artist'],trackData['genre'],trackData['desc'],trackData['coverurl'],trackData['mp3fileurl'],trackData['plays'],trackData['duration'],trackData['tid'])
+        return cls(trackData['tname'],trackData['artist'],trackData['aname'],trackData['genre'],trackData['desc'],trackData['coverurl'],trackData['mp3fileurl'],trackData['plays'],trackData['duration'],trackData['tid'])
     
     def saveTrack(self):
         return firestore.addNewTrack(self)
 
     def data(self):
-        return {'tname':self.tname,'artist':self.artist,'genre':self.genre,'desc':self.desc,'coverurl':self.coverurl,'mp3fileurl':self.mp3fileurl,'plays':self.plays,'duration':self.duration,'tid':self.tid}
+        return {'tname':self.tname,'artist':self.artist,'aname':self.aname,'genre':self.genre,'desc':self.desc,'coverurl':self.coverurl,'mp3fileurl':self.mp3fileurl,'plays':self.plays,'duration':self.duration,'tid':self.tid}
     
     def modifyTrack(self):
         pass
@@ -31,8 +32,8 @@ class Track(object):
 class TrackManager(object):
     def __init__(self):
         pass
-    def addNewTrack(self,tnm,artist,genre,desc,coverurl,mp3fileurl,duration):
-        newTrack=Track(tnm,artist,genre,desc,coverurl,mp3fileurl,duration)
+    def addNewTrack(self,tnm,artist,aname,genre,desc,coverurl,mp3fileurl,duration):
+        newTrack=Track(tnm,artist,aname,genre,desc,coverurl,mp3fileurl,duration)
         return newTrack.saveTrack()
         
     def getTrack(self,tid):

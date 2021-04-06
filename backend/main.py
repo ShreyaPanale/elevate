@@ -181,6 +181,7 @@ class APIServer:
             try:
                 tnm=request.form['tname']
                 artist=request.form['artist']
+                aname=request.form['aname']
                 genre=request.form['genre']
                 desc=request.form['desc']
                 cover=request.files['cover']
@@ -205,7 +206,7 @@ class APIServer:
                 audio = MP3(filepath)
                 audio_info = audio.info    
                 duration = int(audio_info.length)
-                tid=trackManager.addNewTrack(tnm=tnm,artist=artist,genre=genre,desc=desc,coverurl=coverurl,mp3fileurl=mp3fileurl,duration=duration)
+                tid=trackManager.addNewTrack(tnm=tnm,artist=artist,genre=genre,desc=desc,coverurl=coverurl,mp3fileurl=mp3fileurl,duration=duration,aname=aname)
                 response_msg=jsonify({"status":"200 ok","message":"successfully added track","tid":str(tid)}),200
                 return response_msg 
             except Exception as e:
@@ -238,7 +239,7 @@ class APIServer:
         try:
             tid=request.args.get('tid')
             res=trackManager.getTrackData(tid)
-            res['aname']=trackManager.retrieveTrackArtist(tid)
+            #res['aname']=trackManager.retrieveTrackArtist(tid)
             return res
         except:
             response_msg=jsonify({"error":"400","message":"Bad request"}),400

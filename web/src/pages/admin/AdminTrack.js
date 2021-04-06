@@ -142,6 +142,7 @@ const AdminPanel = ({children}) => {
     const [genre,setGenre] = React.useState('')
     const [desc,setDesc] = React.useState('')
     const [artist, setArtist] = React.useState(0);
+    const [aname,setAname] = React.useState('');
     const [selectedFile,setSelectedFile] = React.useState(null);
     const [selectedFileName,setSelectedFileName] = React.useState('Track Cover Image');
     const [selectedTrack,setSelectedTrack] = React.useState(null);
@@ -152,6 +153,7 @@ const AdminPanel = ({children}) => {
         var formData = new FormData();
         formData.append("tname",tname)
         formData.append("artist",artist)
+        formData.append("aname",aname)
         formData.append("genre",genre)
         formData.append("desc",desc)
         formData.append("mp3file",selectedTrack)
@@ -159,6 +161,7 @@ const AdminPanel = ({children}) => {
         
         API.createTrack(formData).then(res =>{
             setArtist('')
+            setAname('')
             setTname('')
             setDesc('')
             setGenre('')
@@ -171,6 +174,8 @@ const AdminPanel = ({children}) => {
     }
     const handleChange = (event) => {
     setArtist(event.target.value);
+    setAname(artists.filter(artist => artist.aid==event.target.value)[0].aname)
+    console.log(aname)
   };
     const handleImageUpload = (event) => {
         var file = event.target.files[0];
