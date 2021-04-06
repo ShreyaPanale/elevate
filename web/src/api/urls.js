@@ -31,10 +31,15 @@ const tracksURL = {
     getAllTracks:()=>`${ENDPOINT}/tracks/all`
 }
 
+const recommenderURL ={
+    getPopularity:(uid, limit) => `${ENDPOINT}/user/top?uid=${uid}&limit=${limit}`,
+    getUserRecommendations: (uid, limit) => `${ENDPOINT}/user/recommend?uid=${uid}&limit=${limit}`
+}
 export default URLS = {
     ...playlistURL,
     ...userURL,
     ...adminURL,
     ...artistURL,
-    ...tracksURL
+    ...tracksURL,
+    ...recommenderURL
 }
