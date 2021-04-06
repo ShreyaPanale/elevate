@@ -4,61 +4,95 @@
 
 import React,{useContext,useEffect, useState} from 'react';
 import DATA from './data';
-
+import API from "../api"
+import {useAuth} from '../firebase/provider'
 import {AddTrack,CreatePlaylist} from '../components/Modals';
-export const PlayerContext = React.createContext();
 
+export const PlayerContext = React.createContext();
 export const usePlayer = () => {
     return useContext(PlayerContext);
 }
 
 export const PlayerProvider = ({children}) => {
-    // const { currentUser } = useAuth();
-    const { userData, tracks, artists } = DATA;
-
-    const [play, setPlay] = useState(false);
-    const [songQueue, setSongQueue] = useState([
-    ]);
+    const {currentUser} = useAuth()
     
-    const [playlists, setPlaylists] = useState(userData.playlists);
-    const [history, setHistory] = useState(userData.history);
-    const [currSong, setCurrSong] = useState();
-    const [currIndex, setCurrIndex] = useState(-1);
-    const [likedSongs, setLikedSongs] = useState(userData.likedSongs);
-    const [artistList] = useState(artists);
-    const [trackList] = useState(tracks);
+    // state to make sure all of user data loads before app is shown to users
+    const [globalLoad, setGlobalLoad] = useState(true);
 
+    // ids of all the likedSongs by user
+    const [likedSongs,setLikedSongs] = useState([])
+
+    // all the playlists of the user
+    const [playlists, setPlaylists] = useState([]);
+
+    // ids of all of the user's history
+    const [history, setHistory] = useState([]);
+
+    // song queue of the current session
+    const [songQueue, setSongQueue] = useState([]);
+
+    // current song index that's being played from the queue
+    const [currIndex, setCurrIndex] = useState(-1);
+
+    // audio handles the current song that's being played
+    const [audio,setAudio] = useState(new Audio());
+
+    // flag to check whether a song is being played or not.
+    const [playing, setPlaying] = useState(false);
+    const toggle = () => setPlaying(!playing);
+
+
+    // modal indicators for the addtrack and addplaylist
     const [modal, setModal] = React.useState(0);
     const [tid, setTid] = React.useState();
     const handleClose = () => setModal(0);
-    
-    const [audio,setAudio] = useState(new Audio());
-    const [playing, setPlaying] = useState(false);
-  
-    const toggle = () => setPlaying(!playing);
-  
+
+    const [tracks, setTracks] = useState([]);
+
+    const userInit = async () => {
+        let data = await API.getUserData(currentUser.uid)
+        setPlaylists(data.playlists)
+        setHistory(data.history)
+        setLikedSongs(data.likedSongs)
+        let tracks = (await API.getAllTracks()).data
+        setTracks(tracks);
+    }
+    // Event to load all of the user data on the frontend on the first load.
+    useEffect(()=>{
+        userInit().then(()=>{
+            setGlobalLoad(false);
+        }).catch( err => {
+            console.log(err)
+            setGlobalLoad(false);
+        })
+    },[])
+
+    // event to trigger pause/play in the music player.
     useEffect(() => {
         playing ? audio && audio.play() : audio && audio.pause();
       },
       [playing]
     );
-      
+    
+    // event to set songs source as the current index changes.
     useEffect(()=>{
         if ( songQueue.length>0 && currIndex != -1 && songQueue[currIndex]){
-            audio.setAttribute('src', songQueue[currIndex].link)
+            audio.setAttribute('src', songQueue[currIndex].mp3fileurl)
             setAudio(audio);
         }
     },[currIndex])
 
+    // event to stop playing the music once the music ends.
     useEffect(() => {
-    if (audio){
-      audio.addEventListener('ended', () => setPlaying(false));
-      return () => {
-        audio.removeEventListener('ended', () => setPlaying(false));
-      };
-    }
+        if (audio){
+            audio.addEventListener('ended', () => setPlaying(false));
+            return () => {
+                audio.removeEventListener('ended', () => setPlaying(false));
+            };
+        }
     }, [audio]);
     
+
     const handleAddTrack = (tid) => {
         setTid(tid)
         setModal(1)
@@ -81,27 +115,42 @@ export const PlayerProvider = ({children}) => {
 
     }
 
+    //EP added
     const setLike = (tid,action) => {
         if(action==1){
+            API.setLike({"uid":currentUser.uid,"tid":tid,"action":"like"})
             likedSongs.push(tid);
             
         }else{
+            API.setLike({"uid":currentUser.uid,"tid":tid,"action":"unlike"})
             likedSongs.splice(likedSongs.indexOf(tid),1);
         }
         let newLikedSongs = [...likedSongs]
         setLikedSongs(newLikedSongs)
     }
 
+    //EP added
     const getSongsForPlaylist = (playlist) => {
-        let t =  tracks.filter(track => playlist.tracks.includes(track.tid))
-        return t
+        return new Promise((res,rej)=>res(tracks.filter(track => playlist.tracks.includes(track.tid))))
+       /*return API.getPlaylistTracks(playlist).then(res => {
+            return res.data.tracks
+        })*/
     }
 
+    //EP added
     const getFavouritesForUser = () => {
-        return tracks.filter(track => likedSongs.includes(track.tid))
+        /*return API.getUserFavourites(currentUser.uid).then(res =>{
+            return res.data
+        })*/
+        return new Promise((res,rej)=>res(tracks.filter(track => likedSongs.includes(track.tid))))
     }
 
+    //EP added
     const getHistoryForUser = () => {
+        /*
+        return API.getUserHistory(currentUser.uid).then(res =>{
+            return res.data
+        })*/
         return new Promise((res,rej) => {
             try{
                 let t = tracks.filter(track => history.includes(track.tid))
@@ -123,14 +172,34 @@ export const PlayerProvider = ({children}) => {
         })
     }
 
+    //EP added
     const addPlaylist = (playlist) => {
-        playlists.push(playlist);
-        let newPlaylists = playlists;
-        setPlaylists(newPlaylists);
-    }
-
-    const addTrack = (tid, pid) => {
+        API.createPlaylist(playlist).then(async res => {
+            //console.log(res.pid)
+            playlist['pid']=res.pid
+            playlist['tracks']=[]
+            const toAdd={
+                "pid":res.pid,
+                "uid":currentUser.uid,
+                "action":"addPlaylist"
+            }
+            playlists.push(playlist);
+            let newPlaylists = playlists;
+            setPlaylists(newPlaylists);
+            //console.log(toAdd)
+            await API.addPlaylistToUser(toAdd)
+            setModal(0)
+        })
         
+    }
+    //EP added
+    const addTrack = (tid, pid) => {
+        let temptrack = {
+            "tid" : tid,
+            "pid" : pid,
+            "action" : "addTrack"
+        }
+        API.addTrackToPlaylist(temptrack)
         let ps = playlists.map(playlist => {
             if(playlist.pid == pid){
                 playlist.tracks.push(tid);
@@ -138,11 +207,11 @@ export const PlayerProvider = ({children}) => {
             return playlist
         })
         setPlaylists(ps);
+        setModal(0);
     }
 
     const playNow = (track) => {
         setCurrIndex(songQueue.indexOf(track));
-        setCurrSong(track);
     }
 
     const addToQueue = (track) => {
@@ -153,15 +222,38 @@ export const PlayerProvider = ({children}) => {
         setSongQueue([...songQueue])
     }   
 
+    //EP added
     const getArtists = () => {
-        return artists
+        return API.getArtists().then(data => {
+            console.log(data.data)
+            return data.data
+          })
+        //return []
     }
+    //EP added
     const getTracks = () => {
-        return tracks
+        return API.getTracks(currentUser.uid).then(data =>{
+            return data.data
+          })
     }
-
+    //EP added
     const getTracksForArtist = (aid) => {
-        return tracks.filter(track => track.aid == aid);
+        /*
+        return API.getTracksByArtist(aid).then(data =>{
+            return data.data
+          })
+        */
+          return new Promise((res,rej) => {
+            try{
+                let t = tracks.filter(track => track.artist === aid)
+                console.log(tracks)
+                console.log(t)
+                res(t)
+            }catch(err){
+                rej(err)
+            }
+        })
+        //return trackList.filter(track => track.aid == aid);
     }
 
     return (
@@ -169,8 +261,6 @@ export const PlayerProvider = ({children}) => {
             value = {{
                 nextSong,
                 prevSong,
-                play,
-                setPlay,
                 seek,
                 setLike,
                 playNow,
@@ -181,8 +271,6 @@ export const PlayerProvider = ({children}) => {
                 setPlaylists,
                 history,
                 setHistory,
-                currSong, 
-                setCurrSong,
                 likedSongs, 
                 setLikedSongs,
                 currIndex, 
@@ -200,14 +288,15 @@ export const PlayerProvider = ({children}) => {
                 playing,
                 setPlaying,
                 toggle,
-                artistList,
                 getArtists,
-                trackList,
                 getTracks,
                 getTracksForArtist
             }}
         >
-            {children}
+            {
+                globalLoad? <p>Loading your app</p>
+                :children
+            }
             <AddTrack handleClose={handleClose} open={modal===1} tid={tid} />
             <CreatePlaylist handleClose={handleClose} open={modal===2} />
         </PlayerContext.Provider>

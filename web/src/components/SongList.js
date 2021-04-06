@@ -58,7 +58,7 @@ const columns = [
                 height:50,
                 borderRadius:10,
                 marginRight:12
-            }} alt="nf" src={track.coverUrl} />
+            }} alt="nf" src={track.coverurl} />
             <text style={{
                 fontFamily:"Poppins"
             }}>
@@ -105,6 +105,7 @@ const SongList = ({tracks}) => {
     const [loading,setLoading] = React.useState(true);
     React.useEffect(()=>{ setLikes(likedSongs);setLoading(false)},[likedSongs])
     console.log(likes)
+    console.log(tracks)
     return (
         <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
@@ -122,7 +123,7 @@ const SongList = ({tracks}) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {loading?<p>loading...</p>:tracks && tracks.map((track,idx) => {
+            {loading?<p>loading...</p>:tracks.length==0?<p>Oops no songs available</p>:tracks.map((track,idx) => {
               return (
                 <SongRow row={{
                   play: songQueue[currIndex] === track? playing?<Pause style={{color:'#E7576D'}} onClick={()=>toggle()} />: <Play style={{color:'#E7576D'}} onClick={()=>toggle()} />: <Play onClick={()=>{
@@ -133,7 +134,7 @@ const SongList = ({tracks}) => {
                   title: <TrackItem track={track} />,
                   artist:track.aname,
                   plays: track.plays,
-                  time: track.time,
+                  time: track.duration,
                   like: likes.includes(track.tid)?1:0,
                   plus: <IconButton onClick={()=>handleAddTrack(track.tid)}><Plus  /></IconButton>,
                   tid: track.tid

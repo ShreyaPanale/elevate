@@ -25,6 +25,30 @@ class FirestoreController:
         else:
             return False
 
+    def getUserFavourites(self,uid):
+        tracks_ref = self.db.collection(u'tracks')
+        likedSongs=self.db.collection(u'users').document(uid).get().to_dict()['likedSongs']
+        tracks = tracks_ref.stream()
+        trackarr=[]
+        for track in tracks:
+            t=track.to_dict()
+            if t['tid'] in likedSongs:
+                t=track.to_dict()
+                #t['aname']=FirestoreController().retrieveTrackArtist(t['tid'])
+                trackarr.append(t)
+        return {"data":trackarr}
+
+    def getUserHistory(self,uid):
+        tracks_ref = self.db.collection(u'tracks')
+        history=self.db.collection(u'users').document(uid).get().to_dict()['history']
+        tracks = tracks_ref.stream()
+        trackarr=[]
+        for track in tracks:
+            t=track.to_dict()
+            #t['aname']=FirestoreController().retrieveTrackArtist(t['tid'])
+            if t['tid'] in history:
+                trackarr.append(t)
+        return {"data":trackarr}
 
     def addNewTrack(self,track):
         doc_ref = self.db.collection(u'tracks').document()
@@ -32,6 +56,7 @@ class FirestoreController:
         doc_ref.set({
             u'tname': track.tname,
             u'artist': track.artist,
+            u'aname':track.aname,
             u'genre': track.genre,
             u'desc': track.desc,
             u'coverurl': track.coverurl,
@@ -44,15 +69,18 @@ class FirestoreController:
 
     def getTracks(self,uid):
         tracks_ref = self.db.collection(u'tracks')
-        likedSongs=self.db.collection(u'users').document(uid).get().to_dict()['likedSongs']
+        #likedSongs=self.db.collection(u'users').document(uid).get().to_dict()['likedSongs']
         tracks = tracks_ref.stream()
         trackarr=[]
         for track in tracks:
             t=track.to_dict()
+            '''
             if t['tid'] in likedSongs:
                 t['like']=1
             else:
                 t['like']=0
+            '''
+            #t['aname']=FirestoreController().retrieveTrackArtist(t['tid'])
             trackarr.append(t)
         return {"data":trackarr}
         
@@ -62,8 +90,9 @@ class FirestoreController:
         tracks = tracks_ref.stream()
         trackarr=[]
         for track in tracks:
-            print(f'{track.id} => {track.to_dict()}')
-            trackarr.append(track.to_dict())
+            t=track.to_dict()
+            #t['aname']=FirestoreController().retrieveTrackArtist(t['tid'])
+            trackarr.append(t)
         return {"data":trackarr}
 
     def deleteTrack(self,id):
@@ -89,8 +118,11 @@ class FirestoreController:
         artist = self.db.collection(u'artists').document(track['artist']).get().to_dict()
         return artist['aname']
 
+    def getAllTracks(self):
+        tracks = self.db.collection('tracks').stream()
+        return [track.to_dict() for track in tracks]
+    
     #Artist controller functions
-
     def addNewArtist(self,artist):
         print("am here")
         doc_ref = self.db.collection(u'artists').document()

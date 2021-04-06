@@ -1,4 +1,5 @@
 import React from 'react';
+import {useState,useEffect} from 'react'
 import { useHistory } from 'react-router-dom'
 import {makeStyles} from '@material-ui/core/styles';
 import { Avatar, Grid} from '@material-ui/core';
@@ -16,13 +17,22 @@ const useStyles = makeStyles(()=>({
 const ArtistList = () => {
     const classes = useStyles();
     const history = useHistory();
+    const [loading, setLoading] = useState(false);
     const { getArtists } = usePlayer();
-    const artistList = getArtists()
-    console.log(artistList);
+    
+    const [artistList,setArtistList]=React.useState([])
+    useEffect(()=>{
+        getArtists().then(res => {
+            setArtistList(res)
+        })
+    },[])
+    
+    //const artistList = getArtists()
+    //console.log(artistList);
     return (
         <Grid container direction="row" spacing={10} style={{padding:20}}>
             {
-                artistList.map(artist => 
+                artistList && artistList.map(artist => 
                     <Grid item direction="column" justify="center" align="center">
                         <Grid item onClick={()=>{
                             history.push(ROUTES.genArtist(artist.aid))
@@ -34,7 +44,7 @@ const ArtistList = () => {
                                     height:200,
                                     borderRadius:100,
                                 }} 
-                                src={artist.artistProfile}
+                                src={artist.photo}
                             />
                         </Grid>
                         <Grid item style={{

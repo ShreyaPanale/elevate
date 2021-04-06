@@ -1,4 +1,5 @@
 import React from 'react'
+import {useState,useEffect} from 'react'
 import TopBar from '../../components/TopBar';
 
 import { Button, Grid, Avatar } from '@material-ui/core';
@@ -25,10 +26,24 @@ const useStyles = makeStyles(()=>({
 const Artist = () => {
     const {id} = useParams();
     const classes = useStyles();
+    const [loading, setLoading] = useState(false);
     const { getArtists, getTracksForArtist } = usePlayer();
-    const artistList = getArtists()
-    const artist = artistList.filter(artist => artist.aid == id)[0];
-    const trackList = getTracksForArtist(id);
+    //const artistList = getArtists()
+    //const artist = artistList.filter(artist => artist.aid == id)[0];
+    //const trackList = getTracksForArtist(id);
+
+    const [artist,setArtist]=React.useState({})
+    const [trackList,setTrackList]=React.useState([])
+    useEffect(()=>{
+        getArtists().then(res => {
+            setArtist(res.filter(artist => artist.aid == id)[0])
+        })
+        getTracksForArtist(id).then(res => {
+            console.log("artist tracks",res)
+            setTrackList(res)
+        })
+        setLoading(false)
+    },[])
 
     const history = useHistory();
     const goBack = () => {
@@ -56,7 +71,7 @@ const Artist = () => {
                                             display:'inline-flex',
                                             marginRight:20
                                         }} 
-                                        src={artist.artistProfile}
+                                        src={artist.photo}
                                 />
                                 {artist.aname}</h1>
                             </Grid>
@@ -67,7 +82,7 @@ const Artist = () => {
                     </Grid>
                 </div>
                 <div item xs={12} style={{}}>
-                    <SongList tracks={trackList}/>
+                {loading? <p>Loading...</p>:<SongList tracks={trackList}/>}
                 </div>
             </div>
         </Grid>
