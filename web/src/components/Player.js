@@ -40,8 +40,12 @@ const useStyles = makeStyles(()=>({
 
 const Player = () => {
     const classes = useStyles();
-    let curPercentage = 80; // will handle progress
+    const {audio} = usePlayer();
     const { handleAddTrack, likedSongs, songQueue, currIndex, setLike:modifyLike,playing, toggle, nextSong, prevSong } = usePlayer();
+    let duration = songQueue[currIndex] && songQueue[currIndex].duration || 1
+    let durationstr = String(Math.floor(duration/60)).padStart(2, '0')+':'+ String(duration%60).padStart(2, '0')
+    const [curPercentage,setCurPercentage] = React.useState(0)
+    const [currtimestr,setCurtimestr] = React.useState("00:00")
     const history = useHistory();
     const location = useLocation();
     const [like,setLike] = React.useState(0);
@@ -49,6 +53,16 @@ const Player = () => {
     useEffect(()=>{
         (songQueue[currIndex] && likedSongs.includes(songQueue[currIndex].tid))?setLike(1):setLike(0)
     },[likedSongs,currIndex])
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            let sec = parseInt(audio.currentTime)
+            //console.log("Hello",sec/duration, sec, duration)
+            setCurPercentage(parseInt(sec/duration*100));
+            setCurtimestr(String(Math.floor(sec/60)).padStart(2, '0')+':'+ String(sec%60).padStart(2, '0'))
+        }, 1000);
+        return () => clearInterval(interval);
+      }, []);
 
     const [isQueue,setQueue] = React.useState(location.pathname==ROUTES.queue);
 
@@ -131,10 +145,9 @@ const Player = () => {
                                     :<Play style= {{
                                         color:"#FFF",
                                         marginLeft:4
-                                    }}/>
+                                    }}/> 
                                     
                                 }
-                                
                             </div>
                         </Grid>
                         <Grid item>
@@ -142,7 +155,7 @@ const Player = () => {
                         </Grid>
                     </Grid>
                     <Grid item container style={{width:'100%'}}>
-                        <span className={classes.barTime}>2:02</span>
+                        <span className={classes.barTime}>{currtimestr}</span>
                         <div
                             className={classes.progressBar}
                             style={{
@@ -154,7 +167,7 @@ const Player = () => {
                                 style={{ left: `${curPercentage - 2}%` }}
                             />
                         </div>
-                        <span className={classes.barTime}>2:30</span>
+                        <span className={classes.barTime}>{durationstr}</span>
                     </Grid>
             </Grid>
             <Grid item xs = {1} align="end">

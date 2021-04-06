@@ -39,6 +39,7 @@ export const PlayerProvider = ({children}) => {
 
     // flag to check whether a song is being played or not.
     const [playing, setPlaying] = useState(false);
+    const [currTime, setCurrTime] = useState(0);
     const toggle = () => setPlaying(!playing);
 
 
@@ -95,6 +96,11 @@ export const PlayerProvider = ({children}) => {
         }
     }, [audio]);
     
+    useEffect(() => {
+        if(audio){
+        setCurrTime(audio.currentTime)
+        }
+    },[audio.currentTime])
 
     const handleAddTrack = (tid) => {
         setTid(tid)
@@ -295,7 +301,8 @@ export const PlayerProvider = ({children}) => {
                 getTracks,
                 getTracksForArtist,
                 tracks,
-                artists
+                artists,
+                currTime
             }}
         >
             {
