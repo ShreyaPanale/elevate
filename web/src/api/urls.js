@@ -1,4 +1,4 @@
-const ENDPOINT = "http://localhost:5000"
+const ENDPOINT = process.env.NODE_ENV === 'production' ? "https://elevate-music-api.herokuapp.com" : "http://localhost:5000"
 let URLS;
 const playlistURL = {
     createPlaylist:()=>`${ENDPOINT}/playlist/create`,
