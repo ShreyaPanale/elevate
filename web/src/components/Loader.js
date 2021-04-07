@@ -3,7 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 const words = ["elevate."];
 const styles = makeStyles(()=>({
     root:{
-        backgroundColor:"black",
+        
+        backgroundColor:"#EF757D",
         justifyContent:"center",
         alignItems:"center",
         textAlign:"center",
@@ -15,7 +16,7 @@ const styles = makeStyles(()=>({
         color:"white",
         verticalAlign:"center",
         fontFamily:"Poppins",
-        fontSize:180,
+        fontSize:150,
     }
 }))
 export default function Loader() {
