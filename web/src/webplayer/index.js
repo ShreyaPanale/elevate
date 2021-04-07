@@ -7,7 +7,7 @@ import DATA from './data';
 import API from "../api"
 import {useAuth} from '../firebase/provider'
 import {AddTrack,CreatePlaylist} from '../components/Modals';
-
+import {default as Loader} from '../components/Loader'
 export const PlayerContext = React.createContext();
 export const usePlayer = () => {
     return useContext(PlayerContext);
@@ -322,7 +322,7 @@ export const PlayerProvider = ({children}) => {
             }}
         >
             {
-                globalLoad? <p>Loading your app</p>
+                globalLoad? <Loader/>
                 :children
             }
             <AddTrack handleClose={handleClose} open={modal===1} tid={tid} />
