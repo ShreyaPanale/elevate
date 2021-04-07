@@ -45,12 +45,14 @@ It helps you to easily access your **recommendation**, based on your likes,play 
 * web/ : Contains all files related to the frontend developed using ReactJS 
 ```console 
 cd web
+yarn install
 yarn start
 ```
-* backend/ : Contains all files related to the backend developed using Express
+* backend/ : Contains all files related to the backend developed using Flask
 
 *Env Setup*
-```console 
+```console
+cd backend 
 virtualenv myenv
 source myenv/Scripts/activate
 pip install -r requirements.txt
@@ -59,7 +61,7 @@ pip install -r requirements.txt
 ```console
 cd backend
 export FLASK_APP=main.py
-export FLASK-ENV=development
+export FLASK_ENV=development
 flask run
 ```
 
