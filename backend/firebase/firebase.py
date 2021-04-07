@@ -157,6 +157,9 @@ class FirestoreController:
         else:
             return {'error':"Artist doesn't exist"}
 
+    def updateArtist(self,artist,aid):
+        self.db.collection('artists').document(aid).update({'aname':artist.aname,'photo':artist.photo})
+
     #playlist controller functions
 
     def getPlaylist(self,pid):

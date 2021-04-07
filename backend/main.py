@@ -46,8 +46,6 @@ class APIServer:
         admin=userManager.userAdminStatus(uid)
         return {"admin":admin}
         
-        
-        
 
     # create user api
     @app.route('/user/create',methods=['POST'])
@@ -322,6 +320,19 @@ class APIServer:
             print(e)
             response_msg=jsonify({"error":"400","message":"Bad request"}),400
             return response_msg
+
+    @app.route('/artist/update',methods=['POST'])
+    def updateArtist():
+        if request.method == 'POST':
+            try:
+                aid = request.args.get('aid')
+                artistManager.updateArtist(aid=aid, anm=request.json.get("aname"),photo=request.json.get("photo"))
+                return {"message":"successfully updated artist"},200
+            except Exception as e:
+                print(e)
+                response_msg=jsonify({"error":"400","message":"Bad request"}),400
+                return response_msg
+
 
     #playlist endpoints
 

@@ -19,6 +19,12 @@ class Artist(object):
     def data(self):
         return {'aname':self.aname,'aid':self.aid,'photo':self.photo}
 
+    def update(self,aid):
+        firestore.updateArtist(self,aid)
+    
+    def delete(self):
+        firestore.deleteArtist(self.aid)
+
 
 class ArtistManager(object):
     def __init__(self):
@@ -29,7 +35,12 @@ class ArtistManager(object):
         return newArtist.save()
 
     def deleteArtist(self,id):
-        firestore.deleteArtist(id)
+        artist=Artist.fromDB(id)
+        artist.delete()
+
+    def updateArtist(self,aid,anm,photo):
+        updatedArtist=Artist(anm,photo)
+        updatedArtist.update(aid)
         
     def getArtists(self):
         return firestore.getArtists()
