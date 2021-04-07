@@ -21,6 +21,9 @@ class Playlist(object):
     def save(self):
         return firestore.savePlaylist(self)
 
+    def delete(self):
+        return firestore.deletePlaylist(self.pid)
+
     def update(self,pid):
         return firestore.updatePlaylist(self,pid)
 
@@ -55,4 +58,5 @@ class PlaylistManager(object):
         return firestore.getPlaylistTracks(pid)
 
     def deletePlaylist(self,pid):
-        firestore.deletePlaylist(pid)
+        playlist = Playlist.fromDB(pid)
+        playlist.delete()
