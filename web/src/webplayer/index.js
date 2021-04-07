@@ -94,6 +94,7 @@ export const PlayerProvider = ({children}) => {
                 trackLogs.push(songQueue[currIndex].tid);
                 API.updatePlay(songQueue[currIndex].tid);
             }
+            updateHistory(songQueue[currIndex]);
         }
     },[currIndex])
 
@@ -164,7 +165,8 @@ export const PlayerProvider = ({children}) => {
 
     //EP added
     const getHistoryForUser = () => {
-        return history;/*
+        return tracks.filter(track => history.includes(track.tid))
+        /*
         return API.getUserHistory(currentUser.uid).then(res =>{
             return res.data
         })
@@ -177,11 +179,15 @@ export const PlayerProvider = ({children}) => {
             }
         })*/
     }
+
     const updateHistory = (track) => {
+        
         let newHistory = history.filter(currTrack => currTrack.tid!=track.tid);
-        newHistory.push(track);
-        setHistory(newHistory);
+        newHistory.push(track.tid);
+        setHistory([...newHistory]);
+        API.updateHistory({"uid":currentUser.uid, "trackId":track.tid})
     }
+
     const getTopSongs = () => {
         return new Promise((res,rej) => {
             try{

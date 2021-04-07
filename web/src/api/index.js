@@ -14,7 +14,8 @@ const Users = {
     getUserData : async (id) => (await axios.get(URLS.getUserData(id))).data,
     setLike : async (params) => (await axios.post(URLS.setLike(),params)).data,
     getUserFavourites : async (id) => (await axios.get(URLS.getUserFavourites(id))).data,
-    getUserHistory : async (id) => (await axios.get(URLS.getUserHistory(id))).data
+    getUserHistory : async (id) => (await axios.get(URLS.getUserHistory(id))).data,
+    updateHistory: async (params) => (await axios.post(URLS.updateHistory(),params)).data
 }
 
 const Admin = {
