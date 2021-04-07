@@ -27,8 +27,6 @@ class Playlist(object):
     def data(self):
         return {'uid':self.uid,'pname':self.pname,'tracks':self.tracks,'pid':self.pid}
 
-
-
     def addSong(self,pid,trackID):
         self.tracks.append(trackID)
         self.update(pid)

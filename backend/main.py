@@ -24,6 +24,7 @@ playlistManager = PlaylistManager()
 popularityRecommender = PopularityRecommender()
 userRecommender = UserRecommender()
 
+
 class APIServer:
     
     def __init__(self,port):
@@ -256,13 +257,14 @@ class APIServer:
             return response_msg
 
 
-    @app.route('/track/update')
+    @app.route('/track/update',methods=['POST'])
     def updateTrack():
-        #updating cover and mp3file not added
+        #updating mp3 not added
         if request.method == 'POST':
             try:
-                trackManager.updateTrack(request.json.tname, request.json.artist, request.json.genre, request.json.desc)
-                return {"message":"success"},200
+                tid = request.args.get('tid')
+                trackManager.updateTrack(tid=tid,tnm=request.json.get("tname"),artist=request.json.get("artist"), aname=request.json.get("aname"),genre=request.json.get("genre"), desc=request.json.get("desc"), coverurl=request.json.get("coverurl"))
+                return {"message":"successfully updated track"},200
             except Exception as e:
                 print(e)
                 response_msg=jsonify({"error":"400","message":"Bad request"}),400
@@ -290,6 +292,7 @@ class APIServer:
             aid=artistManager.addNewArtist(anm=anm,photo=photo)
             response_msg=jsonify({"status":"200 ok","message":"successfully created artist","aid":str(aid)}),200
             return response_msg
+
         except Exception as e:
             print(e)
             response_msg=jsonify({"error":"400","message":"Bad request"}),400
@@ -406,3 +409,4 @@ class APIServer:
 
 server = APIServer(port = 5000)
 server.start()
+

@@ -67,6 +67,9 @@ class FirestoreController:
         })
         return doc_ref.id
 
+    def updateTrack(self,track,tid):
+        self.db.collection('tracks').document(tid).update({'tname':track.tname,'aname':track.aname,'artist':track.artist,'desc':track.desc,'coverurl':track.coverurl})
+
     def getTracks(self,uid):
         tracks_ref = self.db.collection(u'tracks')
         #likedSongs=self.db.collection(u'users').document(uid).get().to_dict()['likedSongs']
