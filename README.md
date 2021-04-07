@@ -1,6 +1,6 @@
 <p align="center">
   <br />
- <img src="" alt="To add image"></img>
+ <img src="https://github.com/avinash-vk/elevate/blob/main/Elevate.png" alt="To add image"></img>
 </p>
 
 ## What's special about Elevate
