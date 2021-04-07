@@ -13,7 +13,8 @@ const userURL = {
     getUserData : (id) => `${ENDPOINT}/user?uid=${id}`,
     setLike : () => `${ENDPOINT}/user/like`,
     getUserFavourites : (uid) => `${ENDPOINT}/user/tracks/favourites?uid=${uid}`,
-    getUserHistory : (uid) => `${ENDPOINT}/user/tracks/history?uid=${uid}`
+    getUserHistory : (uid) => `${ENDPOINT}/user/tracks/history?uid=${uid}`,
+    updateHistory: () => `${ENDPOINT}/user/history`
 }
 
 const adminURL = {

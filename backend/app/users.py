@@ -91,7 +91,8 @@ class User(object):
     # adds the song played recently to the users history
     def addToHistory(self,trackId):
         historyLimit = 20 # tracks only the last 20 iterations
-        self.history.append(trackId)
+        self.history.insert(0,trackId)
+        self.history = list(set(self.history))
         self.history = self.history[:historyLimit]
         self.save()
 

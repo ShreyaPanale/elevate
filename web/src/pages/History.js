@@ -27,7 +27,8 @@ const History = () => {
     const [ loading, setLoading ] = React.useState(true);
     React.useEffect(()=>{
         let Songs = getHistoryForUser();
-        setHistorySongs(Songs.reverse())
+        Songs.reverse()
+        setHistorySongs([...Songs])
         setLoading(false);
         console.log("IN history page",historySongs);
     },[history])

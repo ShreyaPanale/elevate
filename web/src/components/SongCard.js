@@ -32,9 +32,8 @@ const useStyles = makeStyles(()=>({
 
 const SongCard = ({song}) => {
     const classes = useStyles();
-    const { addToQueue, playNow, updateHistory, songQueue } = usePlayer();
+    const { addToQueue, playNow, songQueue } = usePlayer();
     const handleSongClick = ()=>{
-      updateHistory(song)
       if(songQueue.includes(song)) playNow(song)  
       else addToQueue(song)
     }
