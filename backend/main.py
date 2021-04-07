@@ -9,7 +9,8 @@ from app.users import UserManager
 from app.track import TrackManager
 from app.artist import ArtistManager
 from app.playlist import PlaylistManager
-from app.recommender import PopularityRecommender,UserRecommender
+from app.recommender.popularityRecommender import PopularityRecommender
+from app.recommender.userRecommender import UserRecommender
 from flask_cors import CORS
 import os
 from mutagen.mp3 import MP3
@@ -23,7 +24,6 @@ userManager = UserManager()
 playlistManager = PlaylistManager()
 popularityRecommender = PopularityRecommender()
 userRecommender = UserRecommender()
-
 
 class APIServer:
     
@@ -88,8 +88,8 @@ class APIServer:
     def getPopularityRecommendations():
         uid = request.args.get('uid')
         limit = int(request.args.get('limit'))
-        popularityRecommender.create(uid,limit)
-        recommendations = popularityRecommender.recommend(uid);
+        popularityRecommender.create(uid)
+        recommendations = popularityRecommender.recommend(limit);
         return {"data":recommendations}
     
     @app.route('/user/recommend')
