@@ -1,3 +1,6 @@
+# elevate api
+A Flask API server running on heroku interacting with firestore.
+
 # ENV config
 
 - Go to https://console.firebase.google.com/u/0/project/elevate-25d94/settings/serviceaccounts/adminsdk
