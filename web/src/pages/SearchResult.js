@@ -3,7 +3,7 @@ import InputBase from '@material-ui/core/InputBase';
 import ROUTES from '../routes';
 import { useAuth } from "../firebase/provider";
 
-import { Button, Grid } from '@material-ui/core';
+import { Button, Grid, Avatar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles'
 import { useHistory } from 'react-router-dom';
 import SongList from '../components/SongList';
@@ -60,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SearchResult = () => {
     const { currentUser } = useAuth();
+    var nameMatch = currentUser.email.match(/[^@]*/);
     const history = useHistory();
     const classes = useStyles();
     const goBack = () => {
@@ -114,14 +115,17 @@ const SearchResult = () => {
                         />
                     </div>   
                     </Grid>
-                    <Grid item container justify="flex-end" xs={4} style={{paddingRight:'4%',margin:0 }}>
-                        <span
-                        className={classes.profile}
-                        onClick = {
-                        ()=>{
-                            history.push(ROUTES.profile)
-                        }
-                    }>{currentUser.email}</span>
+                    <Grid item container justify="flex-end" alignItems="center" xs={4} style={{paddingRight:'4%',margin:0 }}>
+                      <span
+                      className={classes.profile}
+                      onClick = {
+                          ()=>{
+                              history.push(ROUTES.profile)
+                          }
+                      }>{nameMatch}</span>
+                      {
+                          currentUser.photoURL?<Avatar alt={nameMatch} style={{marginLeft:10}} src={currentUser.photoURL} />:null
+                      }
                     </Grid>
                 </Grid>
             </Grid>

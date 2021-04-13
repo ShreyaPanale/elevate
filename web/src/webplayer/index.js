@@ -1,19 +1,18 @@
-/*
-    Gotta clean this code up big time
-*/
-
 import React,{useContext,useEffect, useState} from 'react';
-import DATA from './data';
 import API from "../api"
 import {useAuth} from '../firebase/provider'
 import {AddTrack,CreatePlaylist} from '../components/Modals';
-import {default as Loader} from '../components/Loader'
+import {default as Loader} from '../components/Loader';
+import StatusAlert from '../components/StatusAlert';
+
 export const PlayerContext = React.createContext();
 export const usePlayer = () => {
     return useContext(PlayerContext);
 }
 
 export const PlayerProvider = ({children}) => {
+    const [statusAlert,setStatusAlert] = useState('');
+    
     const {currentUser} = useAuth()
     
     // state to make sure all of user data loads before app is shown to users
@@ -216,6 +215,7 @@ export const PlayerProvider = ({children}) => {
             //console.log(toAdd)
             await API.addPlaylistToUser(toAdd)
             setModal(0)
+            setStatusAlert('Playlist created!');
         })
         
     }
@@ -235,6 +235,7 @@ export const PlayerProvider = ({children}) => {
         })
         setPlaylists(ps);
         setModal(0);
+        setStatusAlert('Track added to playlist!');
     }
 
     const playNow = (track) => {
@@ -247,7 +248,8 @@ export const PlayerProvider = ({children}) => {
         if (currIndex === -1){
             setCurrIndex(0);
         }
-        setSongQueue([...songQueue])
+        setSongQueue([...songQueue]);
+        setStatusAlert('Song added to queue!');
     }   
 
     //EP added
@@ -324,13 +326,15 @@ export const PlayerProvider = ({children}) => {
                 tracks,
                 artists,
                 userRecommendations,
-                popularityRecommendations
+                popularityRecommendations,
+                setStatusAlert
             }}
         >
             {
                 globalLoad? <Loader/>
                 :children
             }
+            <StatusAlert statusAlert = {statusAlert} closeStatusAlert={()=>setStatusAlert('')} />
             <AddTrack handleClose={handleClose} open={modal===1} tid={tid} />
             <CreatePlaylist handleClose={handleClose} open={modal===2} />
         </PlayerContext.Provider>
