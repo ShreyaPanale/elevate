@@ -85,65 +85,70 @@ It helps you to easily access your **recommendation**, based on your likes,play 
   
 
 # Setup and Configuration
-> Filesystem
-- `web/` : Contains all files related to the frontend developed using ReactJS
-- `backend/`:  Contains all files related to the backend developed using Flask
 
+> Filesystem
+
+-  `web/` : Contains all files related to the frontend developed using ReactJS
+
+-  `backend/`: Contains all files related to the backend developed using Flask
+
+ 
 <br/>
 To setup the project and get it running, clone the repository into your system and follow the steps.
 <br/>
->Frontend
 
-The frontend is build using reactJS. Dependencies for this project would be [Node v12+](https://nodejs.org/en/) and [yarn](https://classic.yarnpkg.com/en/docs/install). 
+> Frontend
+
+  
+
+The frontend is build using reactJS. Dependencies for this project would be [Node v12+](https://nodejs.org/en/) and [yarn](https://classic.yarnpkg.com/en/docs/install).
+
+  
 
 ```console
-
 cd web
-
 yarn install
-
 yarn start
-
 ```
+
 Your client would be running at port 3000.
 <br/>
-> Backend  
+
+> Backend
+
+  
 
 Dependencies to run the server would be python 3.
 
+  
+
 -  **Step 1**: Env configuration.
 
+  
+
 ```console
-
 cd backend
-
 virtualenv myenv
-
 source myenv/Scripts/activate
-
 pip install -r requirements.txt
-
 ```
+
 -  **Step 2**: Setup the firebase credentials and the `.env` configuration, more information available [here](https://github.com/avinash-vk/elevate/tree/main/backend#readme).
 
-- **Step 3**: Run the server.
+-  **Step 3**: Run the server.
+
+  
 
 ```console
-
 cd backend
-
 export FLASK_APP=main.py
-
 export FLASK_ENV=development
-
 flask run
-
 ```
 
 Your server would be running at port 5000.
 
 *For local development, the server must be running in order to successfully query from the frontend, so make sure server runs before running the React app.*
-  
   
 ## Test out the API's acting as the backbone to this application on our *Postman* Workspace
 
