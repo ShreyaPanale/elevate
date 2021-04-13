@@ -67,6 +67,9 @@ class FirestoreController:
         })
         return doc_ref.id
 
+    def updateTrack(self,track,tid):
+        self.db.collection('tracks').document(tid).update({'tname':track.tname,'aname':track.aname,'artist':track.artist,'desc':track.desc,'coverurl':track.coverurl})
+
     def getTracks(self,uid):
         tracks_ref = self.db.collection(u'tracks')
         #likedSongs=self.db.collection(u'users').document(uid).get().to_dict()['likedSongs']
@@ -154,6 +157,9 @@ class FirestoreController:
         else:
             return {'error':"Artist doesn't exist"}
 
+    def updateArtist(self,artist,aid):
+        self.db.collection('artists').document(aid).update({'aname':artist.aname,'photo':artist.photo})
+
     #playlist controller functions
 
     def getPlaylist(self,pid):
@@ -211,7 +217,7 @@ class FirestoreController:
         else:
             return {'error':"Playlist doesn't exist"}
 
-    def getTopSongs(self,limit):
+    def getTopSongs(self,limit=20):
         tracks = self.db.collection('tracks').order_by('plays',direction=firestore.Query.DESCENDING).limit(limit).stream()
         return [track.to_dict() for track in tracks]
     

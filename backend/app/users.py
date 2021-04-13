@@ -21,6 +21,7 @@ class UserManager(object):
 
     def getUser(self,uid):
         return User.fromDB(uid)
+
     # getting the user object
     def getUserData(self,uid):
         user = User.fromDB(uid)
@@ -28,16 +29,20 @@ class UserManager(object):
 
     #deleting the user with id = uid
     def deleteUser(self,uid):
-        firestore.deleteUser(uid)
+        user = User.fromDB(uid)
+        user.delete()
 
     def userAdminStatus(self,uid):
-        return firestore.userAdminStatus(uid)
+        user = User.fromDB(uid)
+        return user.getAdminStatus()
 
     def getUserFavourites(self,uid):
-        return firestore.getUserFavourites(uid)
+        user = User.fromDB(uid)
+        return user.getFavourites()
 
     def getUserHistory(self,uid):
-        return firestore.getUserHistory(uid)
+        user = User.fromDB(uid)
+        return user.getHistory()
 
 # class to handle user objects and related functions
 class User(object):
@@ -95,4 +100,16 @@ class User(object):
         self.history = list(set(self.history))
         self.history = self.history[:historyLimit]
         self.save()
+
+    def delete(self):
+        firestore.deleteUser(self.uid)
+
+    def getAdminStatus(self):
+        return firestore.userAdminStatus(self.uid)
+
+    def getFavourites(self):
+        return firestore.getUserFavourites(self.uid)
+
+    def getHistory(self):
+        return firestore.getUserHistory(self.uid)
 
