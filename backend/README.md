@@ -11,3 +11,11 @@ A Flask API server running on heroku interacting with firestore.
     CREDS_PATH="./creds.json"
     ```
     or the appropriate filename you prefer.
+- Set the `APP_ENV` and `GOOGLE_CREDS` according to preference.
+- Final env sample:
+
+```bash
+CREDS_PATH="./creds.json"
+GOOGLE_CREDS={}
+APP_ENV="DEVELOPMENT"
+```
