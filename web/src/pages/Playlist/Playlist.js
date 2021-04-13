@@ -35,10 +35,14 @@ const Playlist = () => {
     const {id} = useParams();
     const classes = useStyles();
     const [loading, setLoading] = useState(false);
-    const { playlists, getSongsForPlaylist } = usePlayer();
+    const { playlists, getSongsForPlaylist, setSongQueue, setCurrIndex } = usePlayer();
     console.log(playlists)
     const playlist = playlists.filter(playlist => playlist.pid == id)[0];
     const [ songs, setSongs ] = useState([]);
+    const handleClick = () => {
+        setSongQueue(songs);
+        setCurrIndex(0);
+    }
     useEffect(() => {
         setLoading(true);
         console.log("playlist",playlist)
@@ -60,7 +64,7 @@ const Playlist = () => {
                             </h1>
                         </Grid>
                         <Grid item xs={1} justify='center'>
-                                <Button className = {classes.btn}>
+                                <Button className = {classes.btn} onClick={handleClick}>
                                     Play
                                 </Button>
                             </Grid>
