@@ -91,7 +91,7 @@ It helps you to easily access your **recommendation**, based on your likes,play 
 
 <br/>
 To setup the project and get it running, clone the repository into your system and follow the steps.
-  
+<br/>
 >Frontend
 
 The frontend is build using reactJS. Dependencies for this project would be [Node v12+](https://nodejs.org/en/) and [yarn](https://classic.yarnpkg.com/en/docs/install). 
@@ -126,7 +126,7 @@ pip install -r requirements.txt
 ```
 -  **Step 2**: Setup the firebase credentials and the `.env` configuration, more information available [here](https://github.com/avinash-vk/elevate/tree/main/backend#readme).
 
-- **Step3**: Run the server.
+- **Step 3**: Run the server.
 
 ```console
 
@@ -178,8 +178,7 @@ Your server would be running at port 5000.
     <td align="center"><a href="https://github.com/ShreyaPanale "><img src="https://avatars.githubusercontent.com/u/44115662?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Shreya Panale</b></sub></a><br /></td>
     <td align="center"><a href="https://github.com/sanskritip"><img src="https://avatars.githubusercontent.com/u/48806637?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sanskriti Pattanayak</b></sub></a><br /></td>
     <td align="center"><a href="https://github.com/avinash-vk"><img src="https://avatars.githubusercontent.com/u/51489449?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Avinash V K</b></sub></a><br /></td>
-
-
+</table>
 
   
 
