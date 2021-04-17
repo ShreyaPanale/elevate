@@ -158,23 +158,17 @@ Your server would be running at port 5000.
 
   
 
-## Class Diagram
-
   
 
 ## Technologies & Tools used
 
-<img  align="left" width="120px" src="https://media3.giphy.com/media/eNAsjO55tPbgaor7ma/giphy.gif"/>
+<img  align="left" width="70px" src="https://media3.giphy.com/media/eNAsjO55tPbgaor7ma/giphy.gif"/>
 
-<img  align="left" width="140px" margin=20px src="https://miro.medium.com/max/800/1*Q5EUk28Xc3iCDoMSkrd1_w.png"/>
+<img  align="left" width="70px" margin=20px src="https://miro.medium.com/max/800/1*Q5EUk28Xc3iCDoMSkrd1_w.png"/>
 
-<img width="140px"  src="https://cdn.dribbble.com/users/6295/screenshots/6509850/f.gif"/>
+<img width="140px" height="80px" src="https://cdn.dribbble.com/users/6295/screenshots/6509850/f.gif"/>
 
 <br />
-
-## Demo Link :
-
-  
 
 ## Team :
 
